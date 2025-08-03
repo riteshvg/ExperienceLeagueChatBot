@@ -1,0 +1,36 @@
+Source URL: https://experienceleague.adobe.com/en/docs/analytics/import/home
+================================================================================
+
+Documentation
+Analytics
+Import Guide
+Analytics Import Guide
+Last update: Fri Jan 31 2025 00:00:00 GMT+0000 (Coordinated Universal Time)
+Topics:
+Data Sources
+CREATED FOR:
+User
+Admin
+This guide explains how to get data into Analytics. It includes:
+Data Sources
+: Upload a file to a designated Adobe FTP site. Adobe retrieves the file and includes the data in your report suite.
+Bulk Data Insertion API
+lets you upload server call data in batches of files instead of using client-side libraries such as AppMeasurement.
+Data Insertion API
+: Send data directly to Adobe’s data collection through an API.
+Adobe Exchange Marketplace
+: Find current integrations available to enrich your Adobe Analytics report suite.
+recommendation-more-help
+See
+Adobe Analytics overview
+for a demo video.
+style
+shade-box
+More Analytics user guides
+Analytics User Guides
+Key Analytics resources
+Contact Customer Care
+Adobe Analytics Community on Experience League
+Adobe Analytics Resources
+Experience League
+e2513902-7735-497e-87fd-cfcbf5b5e56f

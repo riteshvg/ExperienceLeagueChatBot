@@ -1,0 +1,50 @@
+Source URL: https://experienceleague.adobe.com/en/docs/analytics/integration/home
+================================================================================
+
+Documentation
+Analytics
+Integration Guide
+Analytics Integration
+Last update: Thu Jun 26 2025 00:00:00 GMT+0000 (Coordinated Universal Time)
+Topics:
+Audience Analytics
+Advertising Analytics
+Activity Map
+CREATED FOR:
+User
+Admin
+This guide focuses on integrating multiple Adobe Experience Cloud solutions, such as Audience Manager, Advertising Cloud, or Target. It includes:
+Audience Analytics:
+Integrate Adobe Audience Manager with Adobe Analytics.
+Advertising Analytics:
+See paid search data side-by-side with Adobe Analytics data.
+Analytics for Advertising Cloud DSP:
+Integrates Adobe Analytics and Adobe Advertising Cloud to extend and enhance the capabilities of each product.
+recommendation-more-help
+See
+Analytics for Advertising Cloud
+for a demo video.
+style
+shade-box
+Analytics for Target:
+A4T integrates Adobe Analytics and Adobe Target together.
+Adobe Campaign reporting:
+Integrate Adobe Analytics with Adobe Campaign.
+AEM Assets reporting:
+Enables the collection of impressions and clicks on assets served from Adobe Experience Manager.
+See
+Adobe Analytics overview
+for a demo video.
+style
+shade-box
+Key Analytics Integration articles
+Advertising Analytics
+Audience Analytics
+More Analytics user guides
+Analytics User Guides
+Key Analytics resources
+Contact Customer Care
+Adobe Analytics Community on Experience League
+Adobe Analytics Resources
+Experience League
+8f22e1c7-2d6d-4f29-9883-6b2b4007fbdf

@@ -1,0 +1,51 @@
+Source URL: https://experienceleague.adobe.com/en/docs/analytics/components/home
+================================================================================
+
+Documentation
+Analytics
+Components Guide
+Analytics Components Guide
+Last update: Mon Jun 23 2025 00:00:00 GMT+0000 (Coordinated Universal Time)
+Topics:
+Components
+CREATED FOR:
+User
+Admin
+Analytics components help you fine tune and empower your analysis of data. Components include:
+Dimensions:
+Reference for dimensions usable in Adobe Analytics.
+Metrics:
+Reference for metrics usable in Adobe Analytics.
+Segmentation:
+Focus on a subset of your data.
+Calculated metrics:
+Use simple formulas to combine metrics, or advanced functions for statistical analysis.
+Virtual report suites:
+Create a virtual silo of data based on a report suite. Allows the ability to cleanse or segment data for a better user experience. Some features can only be used in virtual report suites.
+Cross-Device Analytics
+: A special type of virtual report suite allows you do configure Cross-Device Analytics.
+Alerts:
+Receive notifications any time data goes above or below a threshold.
+Classifications:
+Reorganize and group dimensions to obtain additional insight.
+Real-time reporting:
+Get reports and trends the minute they are available.
+Marketing channels:
+Understand how visitors arrive to your site and determine which channels are most successful.
+recommendation-more-help
+See
+Adobe Analytics overview
+for a demo video.
+style
+shade-box
+Key Analytics Components articles
+Dimensions
+Metrics
+More Analytics user guides
+Analytics User Guides
+Key Analytics resources
+Contact Customer Care
+Adobe Analytics Community on Experience League
+Adobe Analytics Resources
+Experience League
+46b8682c-fda6-4669-9355-1a44923e549e

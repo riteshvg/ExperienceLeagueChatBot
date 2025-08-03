@@ -1,0 +1,1195 @@
+Source URL: https://experienceleague.adobe.com/en/docs/analytics/release-notes/doc-updates
+================================================================================
+
+Documentation
+Analytics
+Release Notes
+Technical documentation updates for Adobe Analytics
+Last update: Fri Jul 18 2025 00:00:00 GMT+0000 (Coordinated Universal Time)
+Topics:
+Release Notes
+CREATED FOR:
+User
+Admin
+Content updates for the Adobe Analytics documentation set since January, 2019.
+For information on Customer Journey Analytics, go
+here
+.
+For information on the Streaming Media Collection, see
+Measuring audio and video in Analytics
+.
+Details on major documentation updates
+2025
+year2025
+Feature
+Description
+July 2025
+Processing rules
+The documentation for processing rules has been fully redone, providing more details on the interface and current use cases.
+Debugger
+New article on how to enable, use and disable the project debugger in Analysis Workspace.
+Flow visualization performance recommendation
+Added information stating that leaving more than 10 nodes expanded in a single flow visualization can affect reporting time.
+Review and updates
+Review and update of Analysis Workspace documentation. Where appropriate, the documentation is now in sync with the Customer Journey Analytics documentation on Analysis Workspace.
+June 2025
+New shortcut actions
+New keyboard shortcuts in Analysis Workspace now allow you to
+move Workspace panels
+up and down in a project.
+March 2025
+Analytics inventory
+Analytics Inventory
+provides a comprehensive overview of your Adobe Analytics environment, including the number of projects and components, report suites, users, and more.
+Customer Journey Analytics upgrade guide
+Lets you generate a
+step-by-step guide
+for upgrading from Adobe Analytics to Customer Journey Analytics.
+Clarified date formatting in Data Warehouse exports
+Time-based dimension values in Data Warehouse exports have non-standard date formatting. Added information explaining how to interpret date values from Data Warehouse exports.
+See
+Dimensions supported in a different way (non-standard date formatting)
+in
+Component support in Data Warehouse
+.
+Updated information about IP exclusions
+Added information explaining that
+IP exclusions
+can take up to 5 minutes before they take effect, and that changes apply only to new hits (data captured prior to the exclusion being set is not affected).
+Also updated the layout of content to improve readability.
+February 2025
+Updated information about pausing and reactivating a data feed
+When
+pausing and reactivating a data feed
+, clarified the behavior for live feeds. Data processing does not occur from the time the feed is paused to the time it is reactivated.
+Changed Transaction ID retention period
+The Transaction ID retention period of 90 days was extended to 25 months. The transactionID variable uniquely identifies a transaction so the hit can tie to data uploaded through Data Sources. Learn more
+here
+and
+here
+.
+Livestream API - Client implementation
+Use the
+Livestream client implementation
+to consume Livestream data.
+Update to Classifications API
+You can now
+remove individual classification fields or keys from the server
+. This provides an alternative to deleting an entire classification dataset with the DELETE method.
+January 2025
+Data Feeds API reference
+The
+reference for the Data Feeds API
+is now available.
+New documentation on Scheduling in the new Report Builder
+Scheduling
+not only allows you to schedule your new Report Builder workbooks. In addition, it lets you retrieve the metadata on old scheduled tasks when you convert legacy workbooks.
+Improvements to Reports (also known as Templates) in Analysis Workspace
+Various improvements are now available for Reports (also known as
+Templates
+)
+2024
+year2024
+Feature
+Description
+October 2024
+New information about Request factors in Analysis Workspace Performance
+A new
+Request factors
+section in the
+Optimize Analysis Workspace performance
+article explains how requests are processed and the various factors that influence processing times.
+New Report Builder
+New documentation
+for the streamlined Report Builder add-in that is supported on Mac, Windows, and web browsers.
+August 2024
+Alerts manager
+Streamlined documentation about the
+Alerts manager
+. Updated for clarity and accuracy.
+July 2024
+Success events
+Streamlined documentation about
+success events
+. Updated for clarity and accuracy.
+At least one account type must be selected when managing locations
+Clarified that when administrators are
+limiting the account types that are used for export and import
+, at least one account type must be selected.
+Added information about quick calculated metrics
+Updated information in
+Metrics
+to clarify the difference between
+calculated metrics that are created in the calculated metrics builder
+and
+those that are created as quick calculated metrics within a single project
+. Also added more details about hose to create quick calculated metrics.
+Calculated metrics that are created in the calculated metrics builder are available in the component list and can be applied to projects throughout the organization, while calculated metrics that are created as quick calculated metrics are available only within the project where they were created.
+Also updated information in
+Build metrics
+to make similar clarifications.
+Added threads.net to the ‘Referrer type’ dimension
+Added threads.net to the list of social networks that are used in the
+‘Referrer type’ dimension
+.
+Updated documentation for managing data feeds
+Updated information in
+Manage data feeds
+to improve clarity.
+Updates include:
+Created separate sections for various tasks in order to make the information easier to scan and consume.
+Added information about changes to the behavior of live feeds that are reactivated. These changes are currently in Limited Availability and are not yet available to all customers.
+Added information stating that data feeds must have a status of Active before they can be deleted.
+Updated common error messages
+Made minor updates to the
+common error messages
+.
+June 2024
+Updated product name that refers to streaming media features
+Replaced instances of “Media Analytics” and “Streaming Media” with the name “Streaming Media Collection Add-on” and “Streaming Media Collection” when referring to the set of streaming media features that collect streaming media data and surface it in Analysis Workspace.
+These updates are available throughout the Adobe Analytics documentation as well as the
+Streaming Media Collection documentation
+.
+Improved alerts documentation
+Updated and improved documentation about alerts. These updates include information about
+creating alerts
+,
+managing alerts
+, and
+overview information
+.
+Deprecated
+cookieDomainPeriods
+Now that AppMeasurement automatically detects the correct domain to set cookies on, the
+cookieDomainPeriods
+variable is deprecated.
+Retire Data Connectors documentation
+Moved the Data Connectors end-of-life page to
+Discontinued products
+.
+May 2024
+Required information when using organization policy constraints with Google Cloud Platform in Data Feeds and Data Warehouse
+Added the Adobe-owned Google Cloud Platform organization ID to the
+Data Feeds
+and
+Data Warehouse
+documentation.
+This information is required only for organizations that are using
+Organization policy constraints
+in Google Cloud Platform.
+Documentation about adding components to projects
+Added general information about how to
+add the various types of components to projects in Analysis Workspace
+.
+Updated Advertising Analytics documentation
+Updated documentation in line with updates made to the
+Advertising Analytics
+user interface.
+Explicit map XDM object variables to context data variables
+Documented the capability to
+explicitly set context data variables using XDM object variable mapping
+.
+New documentation for upgrading from Adobe Analytics to Customer Journey Analytics
+For organizations upgrading from Adobe Analytics to Customer Journey Analytics, there are multiple upgrade options and many considerations to keep in mind based on an organization’s current Adobe Analytics implementation and long-term goals.
+New documentation resources are now available to help you better understand:
+The various upgrade paths that exist
+Which upgrade paths are available based on an organization’s current Adobe Analytics implementation
+The advantages and disadvantages of each upgrade path
+Step-by-step guidance for each upgrade path
+Considerations for handling historical data
+And more!
+Get started with the upgrade to Customer Journey Analytics
+.
+Updated documentation about custom date ranges
+Updated screenshots and procedures related to
+creating custom date ranges
+in order to match the current product features and design.
+April 2024
+Removed documentation related to “Owner” in Classification sets
+The “Owner” filter and column was removed from the
+Classification set manager
+and the “Owner” field was removed from the
+Classification set settings
+.
+The documentation was updated to remove this filter, column, and field.
+Removed collapsible sections in documentation about configuring cloud import and export locations
+Removed collapsible sections in
+Configure cloud import and export locations
+for information explaining cloud account types.
+March 2024
+AppMeasurement update
+Release notes
+on AppMeasurement update v2.26.0.
+Includes reference to and update of
+cookieDomainPeriods
+config variable documentation.
+Usage information regarding the “Used in” column is available only starting in September 2023.
+Clarified that usage information regarding the
+Used in
+column on the
+projects landing page
+goes back only as far as September 2023.
+February 2024
+Updates to information about managing Data Warehouse requests
+Clarified that, by default, users can view only the requests they create when
+managing Data Warehouse requests
+.
+Updates to project sharing documentation
+Added information about how to
+view shared projects
+.
+Also streamlined information about
+sharing individual or multiple projects
+.
+Added permission requirements for uploading files to Azure SAS and Azure RBAC in Data Warehouse and Data Feeds
+Added exact permission requirements for uploading files to Azure SAS and Azure RBAC when
+configuring destinations for Data Warehouse
+and
+when configuring destinations for Data Feeds
+.
+Added permission requirements for uploading files to Amazon S3 and GCP buckets in Data Warehouse and Data Feeds
+Added exact permission requirements for uploading files to Amazon S3 and Google Cloud Platform buckets when
+configuring destinations for Data Warehouse
+and
+when configuring destinations for Data Feeds
+.
+January 2024
+Component migration applies to individual IMS orgs
+Clarified that
+component migration
+does not support cross-IMS org migration.
+Clarified that certain information is available only to administrators
+Added information stating that the “Last used” and “Used in” columns that are described in
+Calculated metrics manager
+and
+Segments manager
+are available only to system administrators.
+Updates to Media average minute audience documentation
+Updated information in
+Media average minute audience panel
+to improve clarity.
+Improvements include:
+Improved organization of information
+Added steps to indicate task-based information
+2023
+year2023
+Feature
+Description
+December 2023
+Improved bot rules documentation
+Updated information in
+Understand and configure bot rules
+to improve clarity.
+Improvements include:
+Updated article title to be more descriptive
+Improved organization of information
+Added steps to indicate task-based information
+Added more details about CSV file requirements when uploading bot rules
+New Reports section
+Added a new Reports section that includes information about
+Use templates
+and
+creating company templates
+.
+Updates to Anomaly Detection and Contribution Analysis documentation
+The documentation for Anomaly Detection and Contribution Analysis was previously located in a section about Virtual Analyst. The following changes were made:
+The term Virtual Analyst was removed from the documentation.
+The section about
+Anomaly Detection
+was moved directly beneath the Analysis Workspace section.
+The Contribution Analysis documentation was merged into the Anomaly Detection documentation.
+“Attribution IQ” changed to “Attribution”
+Changed all instances of “Attribution IQ” to “
+Attribution
+” throughout the documentation.
+November 2023
+Updates to Activity Map activation/enablement topic
+Added
+Web SDK
+(both manual and via Adobe Experience Platform tags extension) content.
+October 2023
+Added log information to Reporting Activity Manager
+Added information that any
+cancellations and subsequent restrictions of reporting activity
+in the Reporting Activity Manager are captured in the
+Logs
+.
+Updates to Data Warehouse component support
+Added availability for some components and removed availability for others for Data Warehouse. These changes are reflected in
+Component support in Data Warehouse
+.
+Added support for the Visit Depth dimension (removed Visit Depth from the list of dimensions not supported)
+Removed support for Participation metrics (added Participation metrics to the list of metrics not supported)
+Added support for the following time-based dimensions: Year, Quarter, Month, Week, Day, Hour, and Minute (removed these dimensions from the list of dimensions not supported)
+Previously, Data Warehouse supported these dimensions only in the first column of a Freeform table when Granularity was selected. Now these dimensions are always supported.
+However, the output of dates is non-standard when using these dimensions. The year is offset by 1900, and months are zero-based.
+September 2023
+Updated structure of articles for the Media Playback Time Spent panel
+Removed the folder called Media Playback Time Spent, and combined the contents of the folder into a single article:
+Media Playback Time Spent panel
+.
+This change is more in line with the documentation for other panels.
+Get started content enhancements
+Added information outlining key getting-started tasks and resources for administrators, analysts, end users, and developers. The following new articles are now available:
+Get started (by role)
+Understand the Analytics interface
+Use cases
+Improvements to Reporting documentation for the Streaming Media Collection
+Reorganized some of the content in the Reporting section of the the Streaming Media Collection guide, including consolidating the API documentation in its own section and adjusting the order of some articles.
+Renamed the Media Workspace Templates article to
+Media reports in Workspace
+to better align with the in-product naming.
+August 2023
+Data feed clarification
+Updated
+the definition of Start & End dates
+to clarify that when processing data feeds for historical data, you can set the start date to any date in the past when data is being collected.
+Adobe Experience Platform Edge Network data handling
+Added content around how Adobe Analytics
+handles data from the Edge Network
+.
+Media Playback Time Spent panel
+Updated content for
+Media Playback Time Spent panel
+to improve readability.
+Moved content about managing scheduled projects
+Created a new article in the Analytics Components Guide called
+Scheduled projects
+. This content was previously located in the
+Schedule projects
+article in the Analytics Tools Guide.
+Compare implementation methods
+Updated documentation that compares different implementation methods.
+Learn more
+Clarified that configuring SFTP for Data Feeds does not require Adobe Customer Care
+Clarified in
+Send Adobe data to an external FTP account with SFTP
+that customers do not need to engage Adobe Customer Care in order to configure SFTP for Data Feeds.
+Also added a note that SFTP is no longer recommended, and that customers should use a cloud destination when configuring Data Feeds.
+Documentation improvements for the Streaming Media Collection
+The following documentation improvements were made for the Streaming Media Collection:
+Updated the
+general overview
+to improve clarity and to include information related to Customer Journey Analytics.
+Updated the
+implementation overview
+to clearly differentiate between Edge implementations and Analytics-only implementations. Also included diagrams to illustrate the various implementation methods.
+Added prerequisites specific to
+Edge implementations
+and
+Analytics-only implementations
+. Also updated the
+general prerequisites
+.
+Updated tables in the
+Get Media SDKs, Extensions using Tags, and OTT SDKs
+article to include new columns for
+Supported solutions
+and
+Implementation method
+.
+Streamlined content and organization of articles in the
+Implementation
+area of the documentation. This included categorizing implementations by Edge implementations and Analytics-only implementations.
+Removed an extra level of hierarchy that wasn’t needed under
+Tracking
+and added redirects for changed URLs in this section.
+July 2023
+Adobe Experience Platform Edge Network API
+Added more comprehensive documentation on when and how to implement data collection with Adobe Analytics using the
+Adobe Experience Platform Edge Network API
+. For example, implementing data collection with Adobe Analytics in desktop applications, IoT devices, set top boxes.
+Global company ID
+Documented
+how to find the global company ID
+for the Analytics company you are logged into. This ID is required for Analytics 2.0 APIs.
+Updated FTP size limit
+Changed the default
+FTP data storage limit
+to 100 GB.
+New AppMeasurement variable
+The variable
+decodeLinkParameters
+accommodates edge cases where implementations encode multi-byte characters in link tracking variables.
+Learn more
+Configuring cloud account storage locations for ingesting classification data
+You can now manage cloud account storage locations that are used for classification set automation.
+Learn more
+Data Repair filter enhancements
+Three filtering improvements were added to Data Repair.
+Learn more
+June 2023
+New features for classification sets
+Classification sets
+have been updated with several new features:
+Consolidations
+: Combine classification sets into a single consolidated classification set. The consolidated classification set can be used like other classification sets or as a lookup data set in Customer Journey Analytics.
+Learn more
+Rules
+: Automatically classify values based on rules in the classification set.
+Learn more
+Automated import
+: Automatically import classification data from cloud storage destinations.
+Learn more
+Calculated metrics updates
+Updates were made to various articles related to calculated metrics, including updating screen shots and steps in procedures. These changes were made to bring documentation inline with current Adobe Analytics functionality.
+Secure destinations for data feed export
+Data feeds can now be sent to the following cloud storage destinations:
+Amazon S3
+Azure RBAC
+Azure SAS
+Google Cloud Platform
+Destinations that were previously available (FTP, SFTP, S3, and Azure Blob) are no longer recommended.
+Learn more
+Bot reporting in Workspace
+Bot reporting is now available in Analysis Workspace. This feature comes with several additions:
+A new dimension:
+Bot name
+Two new metrics:
+Bot page views
+and
+Bot occurrences
+.
+A new calculated metric template:
+Bot page views ratio
+A new Workspace report: Bot reporting
+The new dimension and metrics contain data that is backfilled starting in March 2023.
+May 2023
+Deep Linking (Mobile App) documentation
+Allows users to send links to scorecards that will lead them directly to the scorecard project in the app.
+Learn more
+Documentation for updated Home screen for the Analytics dashboards app (Mobile App)
+The new updated Home screen allows you to view all of your scorecards in one consolidated scorecard list.
+Learn more
+Spectrum icons
+Replaced, where appropriate, screenshots of user interface icons in the documentation with references to the equivalent icons in
+Adobe’s Spectrum Design System
+.
+Reporting Activity Manager
+Updated this beta documentation, specifically the section on
+Viewing reporting activity for individual report suites
+.
+Analysis Workspace overview
+Updated
+Analysis Workspace overview
+to include more general overview information and links to relevant content.
+Create projects
+Created a new article that explains in detail how to
+Create projects
+in Analysis Workspace.
+Sort components in the left rail
+Added information about sorting the list of components in the left rail. See the “Search, filter, and sort the component list” section in
+Components overview
+.
+Delete rows containing dynamic dimensions from a Freeform table
+Added information about how to quickly delete specific rows that contain dynamic dimensions using the x icon. See the “Quickly exclude specific rows from a table” section in
+Filter and sort tables
+.
+Button to add a visualization within a panel
+Added information about a new button at the bottom of each panel in Analysis Workspace that allows you to quickly add a visualization. See the “Add visualizations to a panel” section in
+Visualizations overview
+.
+April 2023
+Transfer user assets and set account expirations
+Added information about how to
+transfer user assets and set account expirations
+.
+2 new endpoint guides for the Adobe Analytics 2.0 API
+Analytics Dimensions API
+Analytics Metrics API
+Project segments (Ad hoc and quick segments)
+Streamlined docmentation about project segments and removed duplicated information. The steps for creating ad hoc segments are now combined with the steps for
+creating quick segments
+.
+Dynamic lookups
+Additional information around
+Dynamic lookups
+is added. Previously, Information only existed for mobile attributes, which is one of several dynamic lookups.
+March 2023
+Web SDK support for Activity Map
+Updated
+Implement Adobe Analytics
+.
+Traffic variables (props) overview
+Added sections and step-by-step procedures to clarify and improve article content. Merged content from an article titled, “Enable traffic variable reports” and removed that article. See
+Traffic variables (props) overview
+.
+Internal URL filters
+Added sections and step-by-step procedures to clarify and improve article content. See
+Internal URL filters
+.
+Create data stories in mobile scorecards
+A
+data story
+is a collection of supporting data points, business context, and related metrics built around a central theme or metric.
+Default calculated metrics
+Added content explaining the
+default calculated metrics provided by Adobe
+.
+Data Dictionary
+Added new documentation for the Data Dictionary, including an
+Overview
+,
+Viewing
+,
+Editing
+, and
+Monitoring
+the Data Dictionary.
+Information in
+Adding component descriptions
+was updated to account for Data Dictionary functionality.
+Link sharing for projects (no login required)
+Updated existing documentation to explain how to share a read-only link of a project with people who do not have access to Analysis Workspace.
+Updated user documentation includes
+Share projects
+and
+Create shareable links
+.
+Options for administrators were added to
+Preferences
+.
+February 2023
+Implementation
+Updated content on how to
+implement Adobe Analytics for web and mobile
+.
+Workspace calendars and date ranges
+Updated content to describe relative date ranges, formula calculation updates, and calendar UI changes. See
+About relative panel date ranges
+.
+Mobile scorecards
+New documentation section to describe how to show and hide comparison date ranges. See
+Show comparison date ranges
+in Customer Journey Analytics.
+1.4 API
+The
+Adobe Analytics 1.4 API
+received a full rewrite, and is now published on Adobe Developer.
+Tracking across implementation types
+Updated the use case
+Track across different implementation types
+to accommodate the Experience Cloud ID Service.
+January 2023
+Filter and sort tables
+Updated content (including adding procedures and explaining available options) in the
+Filter and sort tables
+article. Renamed this article from “Pagination, filtering and sorting tables.”
+Folders
+Dedicated pages for
+Folders management
+.
+User preferences
+Many additional user preferences are now available in
+Preferences
+.
+Auto-save for projects
+Updated content to include auto-save functionality in
+Save projects
+.
+Landing page
+New
+landing page updates
+2022
+year22
+Feature
+Description
+November 2022
+Consent management variables
+Dedicated pages for
+Consent management opt-in
+and
+Consent management opt-out
+.
+Multi-currency refresh
+Pages around
+Multi-currency support
+are updated.
+October 2022
+Data Workbench
+End-of-life announcement
+Client hints
+New
+overview and FAQ
+.
+Key Metric Summary
+New topic on the
+Key metric summary
+visualization.
+Classification sets
+The new user
+Classification sets
+experience provides a single interface to manage classifications and rules and improves visibility of customer-owned classification data.
+Mobile app: Custom detail views
+New topic on
+custom detail views
+.
+VISTA
+New page explaining the basics of
+VISTA rules
+.
+September 2022
+Combo charts
+New topic on the
+combo charts
+visualization.
+Updated plug-in
+Updated version of the
+getvalonce
+implementation plug-in.
+New configuration variable
+Documentation on
+collectHighEntropyUserAgentHints
+High-entropy client hints
+New topic on how Adobe is using
+client hints
+in addition to User-Agent to determine device information.
+Processing order
+Various help pages have been aggregated to provide a single help topic on
+Processing order
+.
+August 2022
+Support for List Variables in XDM for Edge Collection
+Enables customers collecting data using the Web SDK to use XDM to specify list variable contents.
+Learn more
+Use of SKU field in XDM for Edge Collection when setting product string Variables
+Enables customers collecting data using the Web SDK to use the SKU value to set the product field in the products variable.
+Learn more
+June 2022
+Merchandising variables in XDM for Edge Collection
+Documentation on
+support for Merchandising variables in XDM for Edge Collection
+Experience Platform Edge documentation
+New articles on Adobe Analytics implementation via
+Web SDK
+,
+Mobile SDK
+, and
+Edge API
+.
+Updated Flow visualization documentation
+Based on the
+new UI
+Documentation on sharing annotations in Mobile scorecards
+You can display
+annotations that are created in Workspace in Mobile Scorecards
+.
+May 2022
+Populate Lifecycle dimensions and metrics through the Edge Network
+Mobile Lifecycle data sent to the Edge Network now appears in Analytics reporting. See
+Analytics variable mapping
+for details on which XDM fields map to existing mobile Lifecycle reporting.
+April 2022
+Adobe Analytics landing page updates
+Updates to the joint
+Workspace/Reports & Analytics landing page
+that improves usability and ease of navigation.
+New topic on Page Summary panel
+Page summary panel
+New topic on Next/Previous item panel
+Next/previous dimension item panel
+March 2022
+New topic on supported HTTPS encryption algorithms
+Supported HTTPS encryption algorithms for customers with cipher security level set to “High”.
+New documentation on Annotations in Workspace
+Annotations in Workspace
+enable you to effectively communicate contextual data nuances and insights to your organization.
+Adobe Analytics landing page updates
+Updates
+to the joint Workspace/Reports & Analytics landing page that improves usability and ease of navigation.
+Next item or Previous item Workspace panel
+This panel allows you to explore items that follow or precede a dimension item of your choice.
+Page Summary Workspace panel
+This panel provides a deep-dive analysis for a page of your choosing.
+New topic on pausing older scheduled reports
+Effective
+April 15, 2022
+, Adobe intends to pause all scheduled reports that have a creation date greater than two years
+February 2022
+Mobile scorecard project preview mode
+The
+preview mode
+allows you to preview the experience before you save and share a scorecard.
+API projects endpoint
+Add, edit or delete Analysis Workspace projects using the API.
+Learn more
+Updated topic on pausing older scheduled Report Builder tasks
+Effective April 15, 2022
+, Adobe intends to
+pause all scheduled Report Builder tasks that were created more than two years ago
+.
+2021
+year2021
+Feature
+Description
+October 2021
+October 21, 2021
+New documentation on
+Quick Segments
+in Analysis Workspace
+October 21, 2021
+New documentation on the
+Media Playback Time Spent
+panel in Analysis Workspace.
+October 7, 2021
+New documentation on
+visualizations for mobile scorecards
+August 2021
+August 18, 2021
+Revised top-level structure and consolidated to a single
+Landing page
+August 18, 2021
+New topic on
+A4T and virtual report suites
+August 18, 2021
+New topic on
+Attribution best practices
+August 5, 2021
+New topic on
+Count repeat instances
+August 5, 2021
+Updated classifications documentation on
+templates
+,
+browser import
+, and
+browser export
+to indicate options unavailable for report suites that are enabled for the New Classification Architecture.
+August 2, 2021
+Updated multiple pages to reflect the re-branding of
+Adobe Experience Platform Launch
+July 2021
+July 23, 2021
+New in-depth discussion of
+Merchandising eVars
+July 15, 2021
+Added new documentation on the new
+Adobe Analytics landing page
+June 2021
+June 15, 2021
+Updated
+Marketing Channels best practices
+June 3, 2021
+Updated the documentation to better explain
+Data Feed Implementation
+and
+here
+.
+May 25, 2021
+Updated the documentation on
+eVar case sensitivity in reporting
+.
+May 13, 2021
+Updates to
+Data Warehouse API requests
+. They now support “Hours”.
+March 2021
+March, April 2021
+Updates to Adobe Analytics dashboards
+Executive guide
+and
+Curator guide
+March 25, 2021
+New documentation on the Components > User preferences page. It enables you to manage Analysis Workspace settings and its related components for your user. User preferences applies to all new projects and panels.
+Note:
+the following settings have moved to the User preferences page:
+Report Settings: Thousands separator (now called
+Number format
+)
+Report Settings: CSV separator
+Workspace projects: Help > Enable tips
+Workspace projects: Blank panel
+Start new projects with this panel
+option
+March 25, 2021
+Histogram Smart Bucket Prediction helps with high-cardinality-metrics histograms by automatically identifying the right width and number of buckets for your data spread. For low-cardinality metrics, the visualization behaves the same as it did previously.
+March 25, 2021
+Data Repair API
+updates (filtering for URLs, query strings, at signs, and more)
+March 25, 2021
+New
+Usage Log API
+documentation
+February 2021
+February 4, 2021
+Component Selection: The drop-down/drop zone component found in Quick Insights was added to all drop zones in Workspace. This enhancement lets you pick from a drop-down list of compatible components or continue to use the space as a drop zone.
+January 2021
+January 14, 2021
+Added language selection option to Analytics dashboards documentation.
+January 14, 2021
+Added documentation on how you can add images to Workspace projects by referencing a public image URL.
+January 14, 2021
+Combined source & settings manager for Workspace visualizations: The Data Source manager (dot) and settings manager (gear) for visualizations have been combined into a single popover, so you can easily manage your source and settings from the same location.
+2020
+year2020
+Feature
+Description
+December 2020
+December 7, 2020
+Amended all relevant pages to include or substitute the “adobedc.net” endpoint.
+December 8, 2020
+Updates to the
+Create new project
+page in Workspace.
+November 2020
+November 24, 2020
+Updates to
+Panel Overview
+page in Workspace.
+November 24, 2020
+New implementation review documents:
+Full Implementation Review
+Focused Implementation Review
+November 24, 2020
+Updated Analysis Workspace
+Visualizations overview
+page.
+November 12, 2020
+New page on
+Inherited Adobe Analytics Implementation
+.
+November 2, 2020
+Updated document on
+FTP for classifications
+.
+October 2020
+October 23, 2020
+Workspace Line visualization:
+Moving average trendline option
+: This setting was added to Line visualization trendline settings. Also known as a rolling average, a moving average uses a specific number of data points (determined by a
+Periods
+selection), averages them, and uses the average as a point in the line.
+October 23, 2020
+The Workspace
+Performance Help page
+shows the different factors that impact project performance and links to tips for optimization.
+October 23, 2020
+Added enhancements to Adobe Analytics dashboads documentation. In the mobile scorecard in Workspace, the styling of the scorecard now matches the app.
+September 2020
+September 17, 2020
+Download 50K items for a single dimension
+: You can now download 50,000 items for a single dimension in a freeform table, with segments and filters applied. This allows you to access more than the 400 rows of data outside of Analysis Workspace.
+September 17, 2020
+Enhancements to Line visualization
+:
+You can show or hide the X-axis and Y-axis of any Line visualization. This can be especially helpful when your Line visualizations are more compact.
+You can overlay a minimum and maximum value label on any Line visualization to quickly highlight the peaks and valleys in a metric.
+You can overlay different regression trend lines on any Line visualization to more easily see the trend in the data. Options include Linear, Logarithmic, Exponential, Power and Quadratic.
+September 17, 2020
+New date ranges in Workspace: We added 5 new date ranges so you can choose from date ranges that do not include partial day data from today: Last 7 full days, Last 14 full days, Last 30 full days, Last 60 full days, Last 90 full days
+September 17, 2020
+New documentation on
+Media Concurrent Viewer panel in Workspace
+August 2020
+August 31, 2020
+Added enhancements to
+field-based stitching documentation
+in Cross-Device Analytics.
+July 2020
+July 21, 2020
+Major updates and revisions to
+Cross-Device Analytics
+. Added
+Field-based stitching
+.
+July 16, 2020
+New date range presets in Workspace. Added 4 new date ranges: (This week/month/quarter/year (excluding today)). This lets you choose from date ranges that do not include partial-day data from today.
+June 2020
+June 25, 2020
+New documentation for
+Quick Insights panel
+in Workspace. It provides guidance for non-analysts and new users of Analysis Workspace to learn how to answer business questions quickly and easily.
+June 25, 2020
+New documentation for
+Analytics for Target panel
+in Workspace. It lets you analyze your Adobe Target activities and experiences, with lift and confidence.
+June 18, 2020
+New documentation on
+Attribution: Algorithmic Attribution
+June 18, 2020
+New documentation on
+Attribution: Custom Lookback windows
+June 18, 2020
+New documentation for
+Project roles
+for shared Workspace projects. When sharing a Workspace project, you can now place recipients in one of three project roles, depending on the project experience you want them to have: Edit, Duplicate and View.
+June 18, 2020
+New documentation on
+“View only” Workspace projects
+. Projects can be shared to users as “Can view” only. When a View recipient opens the shared project, they receive a more restrictive project experience, with no left rail and limited interactions.
+June 18, 2020
+New documentation on
+Project roles
+for shared Workspace projects. When sharing a Workspace project, you can now place recipients in one of three project roles, depending on the project experience you want them to have: Edit, Duplicate and View.
+June 18, 2020
+New documentation on
+Co-editing Workspace projects
+. Recipients added to the “Can edit” role can save over a project that has been shared to them. This extends to both admins and non-admins.
+May 2020
+May 31, 2020
+New documentation on
+Bulk Data Insertion API
+May 21, 2020
+New documentation for
+Adobe Analytics dashboards
+May 21, 2020
+New documentation on
+accessibility improvements
+to Analysis Workspace, including improved keyboard navigation, color contrast, and screen reader support.
+April 2020
+April 28, 2020
+Added documentation for the
+Content Velocity
+metric.
+April 16, 2020
+Documentation on how to automatically build Freeform Tables from a blank state. Previously, you could not drop components directly into a blank project or blank panel; you had to add a freeform table first. You can now drop components directly into a blank project or panel, and a freeform table will automatically be built for you in a recommended format. Additionally, improvements were made to how mixed component types (e.g. dimensions & metrics) are handled when dropped into a blank Freeform Table together.
+March 2020
+March 12, 2020
+Added updates to
+Publish segments to the Experience Cloud
+.
+March 12, 2020
+Updates to CDA stitching latency.
+March 12, 2020
+Support for multiple report suites in Workspace. You can now bring in data from multiple report suites into a single project to view side by side.
+Learn more…
+March 12, 2020
+Training Tutorial template in Workspace. This new standard template walks you through common terminology and steps for building your first analysis in Workspace. It is available as a standard template in the New Project modal and replaces the sample project that exists today for new users that do not have other projects in their list.
+Learn more…
+February 2020
+February 27, 2020
+Added documentation for
+Adobe Analytics Labs
+.
+February 25, 2020
+Added
+useLinkTrackSessionStorage
+variable.
+February 20, 2020
+New Workspace template for organizations using Cross-Device Analytics. This template shows how effective CDA is at stitching visits together and educates you on CDA-exclusive dimensions and metrics. A report suite using CDA is required. See
+Set up Cross-Device Analytics
+for more information.
+February 20, 2020
+New hotkeys in Workspace:
+Collapse/Expand All panels:
+alt + m
+Collapse/Expand Active panel:
+alt + ctrl + m
+Search left rail:
+ctrl + /
+Move to next panel:
+alt + Right Key
+Move to previous panel:
+alt + Left Key
+Learn more…
+February 20, 2020
+Workspace enhancements:
+When a panel or visualization is dropped into Workspace, the left rail will now auto-switch to components for a more seamless workflow.
+Template components can now be actioned upon (e.g. tagged, favorited, approved).
+Filtered metric and segment lists offer the + button to add a new component if you don’t find what you need.
+February 20, 2020
+Workspace debugger was added to the Help menu, giving you a more seamless way to enable it for debugging Workspace requests.
+Learn more…
+February 18, 2020
+Added
+writeSecureCookies
+variable.
+February 12, 2020
+Updates to and reorganization of the
+Marketing Channels
+documentation.
+February 12, 2020
+Added new hotkeys to
+this Workspace page
+February 7, 2020
+Updates to
+Setting up Cross-Device Analytics
+and
+FAQ
+February 4, 2020
+Complete rewrite of the
+Implementation user guide
+.
+January 22, 2020
+Updated Freeform Table page to include information on the new
+Freeform Table Builder
+.
+January 2020
+January 24, 2020
+Updates to the
+Row Settings
+page in Workspace.
+January 16, 2020
+New documentation on
+Freeform Table Builder
+. With Table Builder enabled, you can drag and drop in many dimensions, breakdowns, metrics and segments to build tables that answer more complex business questions. Data will not update immediately. Instead, updates occur after you click
+Build
+, saving you time once you know what table you want to construct. Additionally, this feature offers:
+Preview
+: You can preview the format of a table before spending time to render real data.
+Flexible Row and breakdown settings
+: You can set your row and breakdown levels for every dimension row. Previously, Workspace imposed defaults that could not be changed until after the data was returned.
+Breakdown by position
+: You can set dimension rows to always
+breakdown by position
+instead of
+by specific item
+(the default).
+Manual static row ordering
+: You can manually order static rows so that the table rows are displayed exactly as you need them. Previously, static rows could be sorted only by a metric column or alphabetically.
+January 13, 2020
+Added
+Adobe Analytics and browser cookies
+.
+January 13, 2020
+Modified the
+Which Adobe Analytics Tool should I use
+page.
+2019
+year2019
+Feature
+Description
+December 19, 2020
+Changed the default
+FTP data storage limit
+to 10 GB.
+November 29, 2019
+Overhaul to the
+Data feed documentation
+November 25, 2019
+New topic on End-of-life for Enforce IP login restrictions.
+November 21, 2019
+New documentation set for
+Customer Journey Analytics
+November 21, 2019
+Updated
+Audience Analytics Workflow FAQ
+to indicate availability in LiveStream.
+October 25, 2019
+Updated
+Adobe Analytics Key Concepts
+page.
+October 10, 2019
+Update to Freeform table totals: they now include two totals, a
+Table total
+and a
+Grand total
+. The Table total row accounts for
+report filters
+applied. Previously, only segmentation impacted totals.
+Learn more
+In addition,
+Show Totals
+and
+Show Grand Total
+options have been added to
+Column Settings
+.
+With this change to Freeform totals, dependent visualizations will be updated (e.g. linked
+Summary Number
+visualizations), as well as exported CSV and PDF data.
+October 10,2019
+In Workspace, the ability to easily remove ‘Unspecified (None)’ was added as an option to report filters.
+October 10,2019
+In Workspace, purple granularity components (Minute, Hour, Day, Week, Month, Quarter, Year) were deprecated.
+No action
+needs to taken if you previously used one of the purple time components.
+With this change, the purple
+Time
+section has also been renamed to
+Date Ranges
+.
+October 1, 2019
+New article on
+Workspace totals
+.
+September 28, 2019
+New articles on
+configuration variables for Javascript implementation
+September 19, 2019
+Revised segmentation documentation to explain
+Logic Group containers
+.
+September 12, 2019
+New documentation for
+Cross-Device Analytics
+September 12, 2019
+Update
+Calculated metrics totals
+document.
+August 28, 2019
+New article on
+Progressive Web Apps (PWAs) for Analytics
+August 8, 2019
+New article on
+Calculated Metrics Totals
+August 8, 2019
+Clarification on
+timestamp-enabled session data
+August 8, 2019
+In Workspace, Adobe increased the limit of items that can be placed in a static drop-down filter from 50 to 200. This enhancement accommodates a variety of use cases, such as adding all countries (195) to a filter, or all US states and provinces (52).
+August 2, 2019
+Major update to
+Analytics glossary
+July 22, 2019
+Added Magento: Marketing and Commerce template to the
+Analysis Workspace templates
+documentation.
+July 18, 2019
+Updated
+Cohort Table settings
+.
+July 18, 2019
+In the left rail in Workspace, users now have the option to
+Show items from last 18 months
+. Previously, the lookback period was a maximum of 6 months. This makes it easier to compare to pages or campaigns from last year, up to 18 months ago.
+July 18, 2019
+Documentation on a new Workspace template called
+“Magento: Marketing & Commerce”
+to Analysis Workspace. It is designed specifically for Magento e-commerce customers, but any retailer can use it to get unique insights into their commerce activities.
+June 13, 2019
+Added new out-of-the-box filters to the left rail search in Workspace. Beyond what you see today (Dimensions, Metrics, Approved, etc.), new filters such as Calculated Metrics, Customer Attributes, eVars, Props, Video, etc. were added to make it easier to find the components you need.
+June 4, 2019
+New guide authored, titled
+Transitioning from a third-party analytics platform to Adobe Analytics
+.
+May 30, 2019
+Overhaul to the
+Data Feed Column Reference
+.
+May 09, 2019
+A new setting was added to the Flow visualization settings: Include Repeat Instances. See
+Flow Settings
+April 11, 2019
+Enhancements to Workspace optimization best practices: Optimizing Performance
+April 11, 2019
+Updates to
+Optimize Workspace Performance
+.
+March 14, 2019
+Major Update to Regional Data Collection.
+February 7, 2019
+Minor update to the “Replace the last octet of IP addresses with 0” and the “IP Obfuscation” settings in
+General Account Settings
+.
+February 1, 2019
+Major update to the
+getPercentPageViewed
+implementation plug-in.
+January 17, 2019
+Cohort Analysis
+- Major improvements to Cohort Analysis let you:
+Apply a segment inclusion and return metrics separately.
+Show churn instead of retention.
+Show latency tables (time elapsed before and after an inclusion event).
+Customize cohort dimension (to group visitors based on an eVar, not just time).
+Do a rolling cohort calculation: calculate retention/churn based on prior time period, not original cohort.
+Add in multiple metrics in inclusion & return fields, as well as apply segments. (Calculated metrics are not supported)
+January 17, 2019
+View Density
+. This new setting lets you see more data on a single screen by reducing the vertical padding of the left rail, freeform tables and cohort tables. Accessible via Project > Project Info & Settings.
+January 17, 2019
+Support for multi-valued variables in Attribution
+. Some dimensions in Analytics can contain multiple values on a single hit, such as listVars, the product variable, list props, or merchandising eVars. Analysis Workspace lets you apply Attribution to any of these types of variables at the hit level.
+recommendation-more-help
+69b719ed-622a-4df7-a307-14caa7222de3
