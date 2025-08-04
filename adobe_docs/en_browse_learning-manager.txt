@@ -1,0 +1,60 @@
+Source URL: https://experienceleague.adobe.com/en/browse/learning-manager
+================================================================================
+
+Adobe Learning Manager
+Adobe Learning Manager helps you manage and share all your training in one easy place, making it simple to assign courses and follow each learner’s progress. Learn about creating fun and personalized learning journeys, guiding trainees with clear programs, and using easy reports to help everyone succeed and stay on track.
+exl:solution/TGVhcm5pbmcgTWFuYWdlcg==
+style
+default
+Get started with Learning Manager
+Content to help you get started with your solution
+/en/docs/learning-manager/using/get-started/getting-started-admin
+/en/docs/learning-manager/using/get-started/getting-started-author
+/en/docs/learning-manager/using/get-started/getting-started-learner
+/en/docs/learning-manager/using/user-guide
+style
+default
+EVENTS
+Live learning events with your peers and Adobe experts.
+Learn new skills and discover better solutions for your business when you attend upcoming live learning events.
+tertiary
+--spectrum-gray-700
+000000
+white
+View events
+primary
+--spectrum-gray-700
+000000
+white
+style
+default
+Popular articles for Learning Manager
+The most popular documentation articles for Learning
+View all documentation
+documentation
+exl:solution/TGVhcm5pbmcgTWFuYWdlcg==
+MOST_POPULAR
+style
+default
+ADOBE LEARNING MANAGER COMMUNITY
+Connect and get inspired.
+Learn and grow with your peers through the Learning Manager community.
+tertiary
+custom-hexcode
+FFFFFF
+black
+Join the Community
+primary
+--spectrum-gray-700
+000000
+white
+style
+default
+Recent Learning Manager documentation updates
+Recently added and updated documentation
+View documentation
+documentation
+exl:solution/TGVhcm5pbmcgTWFuYWdlcg==
+MOST_RECENT
+style
+default

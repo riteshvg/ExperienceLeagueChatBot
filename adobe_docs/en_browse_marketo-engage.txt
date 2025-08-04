@@ -1,0 +1,112 @@
+Source URL: https://experienceleague.adobe.com/en/browse/marketo-engage
+================================================================================
+
+Adobe Marketo Engage
+Use Marketo Engage to easily manage leads, send automated personalized emails, and track how well your programs are working. Learn how smart tools and useful data can help your team build strong customer relationships and grow your business.
+style
+default
+exl:solution/TWFya2V0byBFbmdhZ2U=
+Browse Marketo Engage by topic
+exl:feature/TWFya2V0byBFbmdhZ2U=/R2V0dGluZyBTdGFydGVk,exl:feature/TWFya2V0byBFbmdhZ2U=/V29ya3NwYWNlcw==,exl:feature/TWFya2V0byBFbmdhZ2U=/VXNlcnMgYW5kIFJvbGVz,exl:feature/TWFya2V0byBFbmdhZ2U=/VGVtcGxhdGVz,exl:feature/TWFya2V0byBFbmdhZ2U=/U21hcnQgTGlzdHM=,exl:feature/TWFya2V0byBFbmdhZ2U=/UmVwb3J0aW5n,exl:feature/TWFya2V0byBFbmdhZ2U=/UHJvZ3JhbXM=,exl:feature/TWFya2V0byBFbmdhZ2U=/UmVsZWFzZSBJbmZvcm1hdGlvbg==,exl:feature/TWFya2V0byBFbmdhZ2U=/TWFya2V0byB3aXRoIEFkb2JlIElkZW50aXR5,exl:feature/TWFya2V0byBFbmdhZ2U=/TW9kZXJuIFVY,exl:feature/TWFya2V0byBFbmdhZ2U=/TXVuY2hraW4gVHJhY2tpbmcgQ29kZQ==,exl:feature/TWFya2V0byBFbmdhZ2U=/SW50ZWdyYXRpb25z,exl:feature/TWFya2V0byBFbmdhZ2U=/R3VpZGVkIExhbmRpbmcgUGFnZSBUZW1wbGF0ZXM=,exl:feature/TWFya2V0byBFbmdhZ2U=/RXZlbnRz,exl:feature/TWFya2V0byBFbmdhZ2U=/RXZlbnQgUHJvZ3JhbXM=,exl:feature/TWFya2V0byBFbmdhZ2U=/RW1haWwgU2V0dXA=
+feature/Marketo Engage/Getting Started:Getting Started,feature/Marketo Engage/Workspaces:Workspaces,feature/Marketo Engage/Users and Roles:Users and Roles,feature/Marketo Engage/Templates:Templates,feature/Marketo Engage/Smart Lists:Smart Lists,feature/Marketo Engage/Reporting:Reporting,feature/Marketo Engage/Programs:Programs,feature/Marketo Engage/Release Information:Release Information,feature/Marketo Engage/Marketo with Adobe Identity:Marketo with Adobe Identity,feature/Marketo Engage/Modern UX:Modern UX,feature/Marketo Engage/Munchkin Tracking Code:Munchkin Tracking Code,feature/Marketo Engage/Integrations:Integrations,feature/Marketo Engage/Guided Landing Page Templates:Guided Landing Page Templates,feature/Marketo Engage/Events:Events,feature/Marketo Engage/Event Programs:Event Programs,feature/Marketo Engage/Email Setup:Email Setup
+style
+default
+Get started with Marketo Engage
+Content to help you get started with your solution
+/en/playlists/marketo-engage-get-started-for-new-marketing-practitioners
+/en/perspectives/tips-and-tricks-for-implementing-a-new-marketo-engage-instance
+/en/perspectives/tips-and-tricks-for-auditing-an-inherited-marketo-engage-instanc
+/en/docs/marketo/using/getting-started-with-marketo/getting-started
+style
+default
+Newest tutorials for Marketo Engage
+The most recently published tutorials for Marketo Engage
+View all tutorials
+tutorial
+exl:solution/TWFya2V0byBFbmdhZ2U=,exl:solution/TWFya2V0bw==
+MOST_RECENT
+style
+default
+Learn from your peers
+perspective
+exl:solution/TWFya2V0byBFbmdhZ2U=
+MOST_POPULAR
+style
+default
+/content/dam/adobe-summit-background.jpeg
+EVENTS
+Live Marketo Engage learning events with your peers and Adobe experts.
+Learn new skills and discover better solutions for your business when you attend upcoming live learning events.
+tertiary
+--spectrum-gray-700
+000000
+white
+View events
+primary
+--spectrum-gray-700
+000000
+white
+style
+default
+Learn new skills from your peers and Adobe experts at your convenience with on-demand events.
+On-demand Marketo Engage learning event recordings.
+View all event recordings
+event
+exl:solution/TWFya2V0byBFbmdhZ2U=
+style
+default
+COMMUNITY
+Connect and learn with your Marketo peers in the Marketing Nation community.
+Learn and grow with your peers through the Marketing Nation community.
+tertiary
+--spectrum-gray-700
+000000
+white
+Join Marketing Nation
+primary
+--spectrum-gray-700
+000000
+white
+style
+default
+Upcoming instructor-led trainings for Marketo Engage
+Learn more about the upcoming Adobe instructor led trainings
+Visit the catalog
+Marketo Engage
+recommended
+style
+default
+CERTIFICATION
+Go further with an Adobe Marketo Engage certification.
+Sharpen your Adobe skills and bring value to your company. We offer certification programs that can help you take your career to the next level.
+tertiary
+--spectrum-gray-700
+000000
+white
+Learn more
+primary
+--spectrum-gray-700
+000000
+white
+style
+default
+Get Certified
+certification
+exl:solution/TWFya2V0bw==,exl:solution/TWFya2V0byBFbmdhZ2U=
+style
+default
+Recent Marketo Engage documentation updates
+Recently added and updated documentation
+View documentation
+documentation
+exl:solution/TWFya2V0byBFbmdhZ2U=
+MOST_RECENT
+style
+default
+Popular troubleshooting articles for Marketo Engage
+The most popular troubleshooting articles for Marketo Engage
+troubleshooting
+exl:solution/TWFya2V0byBFbmdhZ2U=
+MOST_POPULAR
+style
+default

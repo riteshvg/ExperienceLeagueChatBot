@@ -1,0 +1,98 @@
+Source URL: https://experienceleague.adobe.com/en/browse/workfront
+================================================================================
+
+Adobe Workfront
+With Adobe Workfront, you can organize projects, set up automatic workflows, and see what’s happening with your work in real time. Browse for tips on how working together through one system can help your team get better results quickly and spark new ideas across your company.
+exl:solution/V29ya2Zyb250
+Browse Workfront by topic
+exl:feature/V29ya2Zyb250/R2V0IFN0YXJ0ZWQgd2l0aCBXb3JrZnJvbnQ=,exl:feature/V29ya2Zyb250/V29ya2Zyb250IEludGVncmF0aW9ucyBhbmQgQXBwcw==,exl:feature/V29ya2Zyb250/V29ya2Zyb250IEFQSQ==,exl:feature/V29ya2Zyb250/VXBkYXRlcyBhbmQgTm90aWZpY2F0aW9ucw==,exl:feature/V29ya2Zyb250/U3lzdGVtIFNldHVwIGFuZCBBZG1pbmlzdHJhdGlvbg==,exl:feature/V29ya2Zyb250/UmVzb3VyY2UgTWFuYWdlbWVudA==,exl:feature/V29ya2Zyb250/UmVwb3J0cyBhbmQgRGFzaGJvYXJkcw==,exl:feature/V29ya2Zyb250/UHJvZHVjdCBBbm5vdW5jZW1lbnRz,exl:feature/V29ya2Zyb250/UGVvcGxlIFRlYW1zIGFuZCBHcm91cHM=
+feature/Workfront/Get Started with Workfront:Get Started with Workfront,feature/Workfront/Workfront Integrations and Apps:Workfront Integrations and Apps,feature/Workfront/Workfront API:Workfront API,feature/Workfront/Updates and Notifications:Updates and Notifications,feature/Workfront/System Setup and Administration:System Setup and Administration,feature/Workfront/Resource Management:Resource Management,feature/Workfront/Reports and Dashboards:Reports and Dashboards,feature/Workfront/Product Announcements:Product Announcements,feature/Workfront/People Teams and Groups:People Teams and Groups
+style
+default
+Get started with Workfront
+Content to help you get started with your solution
+/en/playlists/workfront-create-a-new-project
+/en/playlists/workfront-create-and-manage-plans-in-scenario-planner
+/en/playlists/workfront-configure-settings-for-the-resource-management-tools
+/en/docs/workfront-learn/tutorials-workfront/manage-work/issues-requests/make-a-request
+style
+default
+Popular tutorials for Workfront
+The most popular tutorials for Workfront
+View all Workfront tutorials
+tutorial
+exl:solution/V29ya2Zyb250
+MOST_POPULAR
+style
+default
+Popular playlists for Workfront
+The most popular playlists for Workfront
+View more Workfront playlists
+playlist
+exl:solution/V29ya2Zyb250
+MOST_POPULAR
+style
+default
+Upcoming events for Workfront
+Learn new skills when you attend an upcoming live event
+View all events
+exl:solution/V29ya2Zyb250
+style
+default
+Workfront Community conversations
+Workfront Community conversations
+Connect with the Workfront community
+community
+exl:solution/V29ya2Zyb250
+style
+default
+COMMUNITY
+"Through engagement with the Adobe Community, I have gained a deeper understanding of Adobe's product ecosystem."
+- Arun Patidar, Adobe Experience Manager Architect
+tertiary
+--spectrum-gray-700
+000000
+white
+Join the Community
+primary
+--spectrum-gray-700
+000000
+white
+style
+default
+Upcoming instructor-led trainings for Workfront
+Learn more about the upcoming Adobe instructor led trainings
+Visit the catalog
+Workfront
+recommended
+style
+default
+CERTIFICATION
+Go further with an Adobe Workfront certification.
+Sharpen your Adobe skills and bring value to your company. We offer certification programs that can help you take your career to the next level.
+tertiary
+--spectrum-gray-700
+000000
+white
+Learn more
+primary
+--spectrum-gray-700
+000000
+white
+style
+default
+Recent Workfront documentation updates
+Recently added and updated documentation
+View documentation
+documentation
+exl:solution,exl:solution/V29ya2Zyb250
+MOST_RECENT
+style
+default
+Popular troubleshooting articles for Workfront
+The most popular troubleshooting articles for Workfront
+troubleshooting
+exl:solution,exl:solution/V29ya2Zyb250
+MOST_POPULAR
+style
+default

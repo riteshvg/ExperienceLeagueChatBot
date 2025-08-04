@@ -1,0 +1,122 @@
+Source URL: https://experienceleague.adobe.com/en/docs/analytics/admin/admin-tools/manage-report-suites/edit-report-suite/report-suite-general/processing-rules/pr-use-cases
+================================================================================
+
+Documentation
+Analytics
+Admin Guide
+Processing rules use cases
+Last update: Tue Jul 15 2025 00:00:00 GMT+0000 (Coordinated Universal Time)
+Topics:
+Processing Rules
+CREATED FOR:
+Admin
+The applications of how you can use processing rules in your organization are extensive. The following sections elaborate on some common ways that you can use them to your advantage.
+Copy a context data variable to an eVar
+Processing rules are used to move values from
+Context data variables
+to
+Props
+and
+eVars
+. Without processing rules, context data variables are meaningless and do not populate any reports in Analytics.
+The Context Variables list contains all variables that were sent to the report suite in the last 30 days. If you know the context data variable name but have not sent it into the current report suite, you can manually add it:
+The following example takes the
+search_term
+context data variable and places its value into eVar3:
+| Rule set | Value |
+| Condition |
+search_term
+(Context data) is set |
+| Action | Overwrite value of eVar3 With
+search_term
+(Context data) |
+The above example works great when there are only a few eVars to populate. If your organization has hundreds of context data variables that each need their own eVar, you can use conditional statements. Dozens of conditional statements can fit inside a single processing rule, allowing your organization the ability to populate all eVars in a report suite without running into the processing rule limit of 150 rules.
+The following example populates multiple variables with varying context data variables. One action also contains a conditional statement:
+| Rule set | Value |
+| Action | Overwrite value of eVar55 with
+spa.billing_customer_name
+(Context data) |
+| Action | Overwrite value of Prop7 with
+testhierarchy
+(Context data), if
+testhierarchy
+(Context data) is set |
+| Action | Overwrite value of eVar8 with
+spa.ims_org
+(Context data) |
+Set an event using a context data variable
+Processing rules can trigger events based on
+Context data variables
+.
+The Context Variables list contains all variables that were sent to the report suite in the last 30 days. If you know the context data variable name but have not sent it into the current report suite, you can manually add it:
+The following rule definition sets an event on every hit that contains a specific context data variable:
+table 0-row-2 1-row-2 2-row-2
+Rule set
+Value
+Condition
+search_term
+(Context data) is set
+Action
+Set event Event1 to Custom Value
+1
+Populate a variable using a query string parameter
+You can populate a variable using a query string parameter. In most cases, you would typically adjust your implementation to obtain the desired query string values. However, if you cannot easily adjust your implementation to collect this data, processing rules are an adequate alternative. If a typo or similar issue prevents the value from being populated, you can populate the variable using processing rules.
+Always check to see if a value is empty or contains the expected value before you overwrite it.
+table 0-row-2 1-row-2 2-row-2
+Rule set
+Value
+Condition
+Campaign is not set
+Action
+Overwrite value of Campaign with Query String Parameter
+cpid
+table 0-row-2 1-row-2 2-row-2
+Rule set
+Value
+Condition
+Query String Parameter
+q
+Is Set
+Action
+Overwrite value of Internal search terms With Query String Parameter
+q
+Conditionally set any event
+Events can be set based on any condition available in processing rules. For example, you can trigger an event when the page name equals “Product overview”.
+table 0-row-2 1-row-2 2-row-2
+Rule set
+Value
+Condition
+If Page Name Equals “Product overview”
+Action
+Set event Product Views To Custom Value
+1
+Add a subcategory by concatenating the category and page name
+You can use the concatenate option to populate values by combining other values.
+table 0-row-2 1-row-2 2-row-2
+Rule set
+Value
+Condition
+None (Always execute)
+Action
+Overwrite value of eVar1 with Concatenated Value Category + Page Name
+Clean up values in a report
+You can match values against misspellings collected and update them to display correctly in reports.
+Adobe recommends using the most restrictive matching option possible to avoid undesired overwrites. You can run a report on the variable and search for potential rule conditions that you want to use. String comparisons are not case-sensitive.
+table 0-row-2 1-row-2 2-row-2
+Rule set
+Value
+Condition
+If prop1 Starts With “Shoping”
+Action
+Overwrite value of Prop1 With Custom Value “Shopping”
+Remove an event from a hit
+You can remove or discard a specific event from a hit using processing rules without altering your implementation. If you set the event to custom value
+0
+, the event does not count.
+| Rule set | Value |
+| Condition | None (Always execute) |
+| Action | Set event Event1 to Custom value
+0
+|
+recommendation-more-help
+2969e653-1f9b-4947-8b90-367efb66d529

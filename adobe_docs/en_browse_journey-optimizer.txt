@@ -1,0 +1,124 @@
+Source URL: https://experienceleague.adobe.com/en/browse/journey-optimizer
+================================================================================
+
+Adobe Journey Optimizer
+Easily manage customer journeys, send personalized messages on different channels, and see real-time results with Adobe Journey Optimizer. Find ways to connect with every audience using targeted experiences and make your marketing work smarter as your business grows.
+Looking for Journey Optimizer B2B edition resources?
+FFFFFF
+custom
+custom-hexcode
+FFFFFF
+black
+Go here
+primary
+--spectrum-gray-700
+000000
+white
+exl:solution/Sm91cm5leSBPcHRpbWl6ZXI=
+Browse Journey Optimizer by topic
+exl:feature/Sm91cm5leSBPcHRpbWl6ZXI=/R2V0IFN0YXJ0ZWQ=,exl:feature/Sm91cm5leSBPcHRpbWl6ZXI=/T3ZlcnZpZXc=,exl:feature/Sm91cm5leSBPcHRpbWl6ZXI=/VXNlIENhc2Vz,exl:feature/Sm91cm5leSBPcHRpbWl6ZXI=/UnVsZXM=,exl:feature/Sm91cm5leSBPcHRpbWl6ZXI=/UmVwb3J0aW5n,exl:feature/Sm91cm5leSBPcHRpbWl6ZXI=/UGVyc29uYWxpemF0aW9u,exl:feature/Sm91cm5leSBPcHRpbWl6ZXI=/UGVyZm9ybWFuY2UgTW9uaXRvcmluZw==,exl:feature/Sm91cm5leSBPcHRpbWl6ZXI=/TW9iaWxlIFNESw==,exl:feature/Sm91cm5leSBPcHRpbWl6ZXI=/Sm91cm5leXM=,exl:feature/Sm91cm5leSBPcHRpbWl6ZXI=/SWRlbnRpdGllcw==,exl:feature/Sm91cm5leSBPcHRpbWl6ZXI=/RXhwZXJpbWVudGF0aW9u,exl:feature/Sm91cm5leSBPcHRpbWl6ZXI=/RXZlbnRz
+feature/Journey Optimizer/Get Started:Get Started,feature/Journey Optimizer/Overview:Overview,feature/Journey Optimizer/Use Cases:Use Cases,feature/Journey Optimizer/Rules:Rules,feature/Journey Optimizer/Reporting:Reporting,feature/Journey Optimizer/Personalization:Personalization,feature/Journey Optimizer/Performance Monitoring:Performance Monitoring,feature/Journey Optimizer/Mobile SDK:Mobile SDK,feature/Journey Optimizer/Journeys:Journeys,feature/Journey Optimizer/Identities:Identities,feature/Journey Optimizer/Experimentation:Experimentation,feature/Journey Optimizer/Events:Events
+style
+default
+Get started with Journey Optimizer
+Content to help you get started with your solution
+/en/playlists/journey-optimizer-getting-started-with-decision-management-for-marketers
+/en/playlists/journey-optimizer-getting-started-with-decision-management-for-marketers
+/en/playlists/journey-optimizer-configure-journey-optimizer-for-administrators
+/en/docs/journey-optimizer-learn/tutorials/introduction-to-journey-optimizer/introduction
+style
+default
+Popular tutorials for Journey Optimizer
+The most popular tutorials for Journey Optimizer
+View all tutorials
+tutorial
+exl:solution/Sm91cm5leSBPcHRpbWl6ZXI=
+MOST_POPULAR
+style
+default
+Popular playlists for Journey Optimizer
+The most popular playlists for your solution
+View more playlists
+playlist
+exl:solution/Sm91cm5leSBPcHRpbWl6ZXI=
+MOST_POPULAR
+style
+default
+Learn new skills from your peers and Adobe experts at your convenience with on-demand events.
+On-demand Journey Optimizer learning event recordings.
+event
+exl:solution/Sm91cm5leSBPcHRpbWl6ZXI=
+style
+default
+/content/dam/adobe-summit-background.jpeg
+EVENTS
+Live Journey Optimizer learning events with your peers and Adobe experts.
+Learn new skills and discover better solutions for your business when you attend upcoming live learning events.
+tertiary
+--spectrum-gray-700
+000000
+white
+View events
+primary
+--spectrum-gray-700
+000000
+white
+style
+default
+Journey Optimizer Community conversations
+Get help and learn from your peers with Community conversations
+Connect with the Community
+community
+exl:solution/Sm91cm5leSBPcHRpbWl6ZXI=
+style
+default
+COMMUNITY
+"Through engagement with the Adobe Community, I have gained a deeper understanding of Adobe's product ecosystem."
+- Arun Patidar, Adobe Experience Manager Architect
+tertiary
+--spectrum-gray-700
+000000
+white
+Join the Community
+primary
+--spectrum-gray-700
+000000
+white
+style
+default
+Upcoming instructor-led trainings for Journey Optimizer
+Learn more about the upcoming Adobe instructor led trainings
+Visit the catalog
+Journey Optimizer
+recommended
+style
+default
+CERTIFICATION
+Go further with an Adobe Journey Optimizer certification.
+Sharpen your Adobe skills and bring value to your company. We offer certification programs that can help you take your career to the next level.
+tertiary
+--spectrum-gray-700
+000000
+white
+Learn more
+primary
+--spectrum-gray-700
+000000
+white
+style
+default
+Recent Journey Optimizer documentation updates
+Recently added and updated documentation
+View documentation
+documentation
+exl:solution/Sm91cm5leSBPcHRpbWl6ZXI=
+MOST_RECENT
+style
+default
+Popular troubleshooting articles for Journey Optimizer
+The most popular troubleshooting articles for Journey Optimizer
+troubleshooting
+exl:solution/Sm91cm5leSBPcHRpbWl6ZXI=
+MOST_POPULAR
+style
+default

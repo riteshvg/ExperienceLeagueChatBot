@@ -1,0 +1,106 @@
+Source URL: https://experienceleague.adobe.com/en/browse/audience-manager
+================================================================================
+
+Adobe Audience Manager
+Use Adobe Audience Manager to gather all your audience data in one place, group users quickly, and run campaigns made just for them. Get help on using audience insights to reach the best people, make your campaigns work better, and help your business grow.
+exl:solution/QXVkaWVuY2UgTWFuYWdlcg==
+Browse Audience Manager by topic
+exl:feature/QXVkaWVuY2UgTWFuYWdlcg==/SW1wbGVtZW50YXRpb24gQmFzaWNz,exl:feature/QXVkaWVuY2UgTWFuYWdlcg==/T3ZlcnZpZXc=,exl:feature/QXVkaWVuY2UgTWFuYWdlcg==/RGVzdGluYXRpb24gQmFzaWNz,exl:feature/QXVkaWVuY2UgTWFuYWdlcg==/RGF0YSBTb3VyY2Vz,exl:feature/QXVkaWVuY2UgTWFuYWdlcg==/SW5ib3VuZCBEYXRhIFRyYW5zZmVycw==,exl:feature/QXVkaWVuY2UgTWFuYWdlcg==/TWVkaWEgUGl4ZWwgVHJhY2tpbmc=,exl:feature/QXVkaWVuY2UgTWFuYWdlcg==/T25ib2FyZGluZyBPZmZsaW5lIERhdGE=,exl:feature/QXVkaWVuY2UgTWFuYWdlcg==/U3VwcG9ydA==,exl:feature/QXVkaWVuY2UgTWFuYWdlcg==/VGhpcmQtcGFydHkgSW50ZWdyYXRpb24=,exl:feature/QXVkaWVuY2UgTWFuYWdlcg==/U3lzdGVtIENvbXBvbmVudHM=,exl:feature/QXVkaWVuY2UgTWFuYWdlcg==/VXNhZ2UgYW5kIEJpbGxpbmc=,exl:feature/QXVkaWVuY2UgTWFuYWdlcg==/V2ViIEltcGxlbWVudGF0aW9uIGluIExhdW5jaA==
+feature/Audience Manager/Implementation Basics:Implementation Basics,feature/Audience Manager/Overview:Overview,feature/Audience Manager/Destination Basics:Destination Basics,feature/Audience Manager/Data Sources:Data Sources,feature/Audience Manager/Inbound Data Transfers:Inbound Data Transfers,feature/Audience Manager/Media Pixel Tracking:Media Pixel Tracking,feature/Audience Manager/Onboarding Offline Data:Onboarding Offline Data,feature/Audience Manager/Support:Support,feature/Audience Manager/Third-party Integration:Third-party Integration,feature/Audience Manager/System Components:System Components,feature/Audience Manager/Usage and Billing:Usage and Billing,feature/Audience Manager/Web Implementation in Launch:Web Implementation in Launch
+style
+default
+Get started with Audience Manager
+Content to help you get started with your solution
+/en/playlists/audience-manager-get-started
+/en/playlists/audience-manager-grow-advanced-skills
+/en/docs/audience-manager-learn/tutorials/intro-to-audience-manager/understanding-basic-terms-and-concepts-in-audience-manager
+/en/docs/audience-manager-learn/tutorials/intro-to-audience-manager/how-a-dmp-can-change-your-business
+style
+default
+Popular tutorials for Audience Manager
+The most popular tutorials for Audience Manager
+View all tutorials
+tutorial
+exl:solution/QXVkaWVuY2UgTWFuYWdlcg==
+MOST_POPULAR
+style
+default
+Popular playlists for Audience Manager
+The most popular courses for Audience Manager
+View more playlists
+playlist
+exl:solution/QXVkaWVuY2UgTWFuYWdlcg==
+MOST_POPULAR
+style
+default
+EVENTS
+Live learning events with your peers and Adobe experts.
+Learn new skills and discover better solutions for your business when you attend upcoming live learning events.
+tertiary
+--spectrum-gray-700
+000000
+white
+View events
+primary
+--spectrum-gray-700
+000000
+white
+style
+default
+Audience Manager Community conversations
+Get help and learn from your peers with Community conversations
+Connect with the Community
+community
+exl:solution/QXVkaWVuY2UgTWFuYWdlcg==
+style
+default
+COMMUNITY
+"Through engagement with the Adobe Community, I have gained a deeper understanding of Adobe's product ecosystem."
+- Arun Patidar, Adobe Experience Manager Architect
+tertiary
+--spectrum-gray-700
+000000
+white
+Join the Community
+primary
+--spectrum-gray-700
+000000
+white
+style
+default
+Upcoming instructor-led trainings for Audience Manager
+Learn more about the upcoming Adobe instructor led trainings
+Visit the catalog
+Audience Manager
+recommended
+style
+default
+CERTIFICATION
+Go further with an Adobe Audience Manager certification.
+Sharpen your Adobe skills and bring value to your company. We offer certification programs that can help you take your career to the next level.
+tertiary
+--spectrum-gray-700
+000000
+white
+Learn more
+primary
+--spectrum-gray-700
+000000
+white
+style
+default
+Recent Audience Manager documentation updates
+Recently added and updated documentation
+View documentation
+documentation
+exl:solution/QXVkaWVuY2UgTWFuYWdlcg==
+MOST_RECENT
+style
+default
+Popular troubleshooting articles for Audience Manager
+The most popular troubleshooting articles for Audience Manager
+troubleshooting
+exl:solution/QXVkaWVuY2UgTWFuYWdlcg==
+MOST_POPULAR
+style
+default

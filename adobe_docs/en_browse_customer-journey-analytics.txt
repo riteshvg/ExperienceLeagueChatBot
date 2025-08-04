@@ -1,0 +1,111 @@
+Source URL: https://experienceleague.adobe.com/en/browse/customer-journey-analytics
+================================================================================
+
+Adobe Customer Journey Analytics
+Unify data from every customer touchpoint, see the whole customer journey across different channels, and use AI to get helpful insights with Customer Journey Analytics. Learn to turn your data into smart actions to make customer experiences better, improve marketing results, and keep data safe while personalizing at a large scale.
+Discover how to accelerate decisions with intelligent insights and guided actions—powered by Data Insights Agent.
+FFFFFF
+custom
+custom-hexcode
+FFFFFF
+black
+Learn more
+primary
+--spectrum-gray-700
+000000
+white
+exl:solution/Q3VzdG9tZXIgSm91cm5leSBBbmFseXRpY3M=
+Browse Customer Journey Analytics by topic
+exl:feature/Q3VzdG9tZXIgSm91cm5leSBBbmFseXRpY3M=/VXNlIENhc2Vz,exl:feature/Q3VzdG9tZXIgSm91cm5leSBBbmFseXRpY3M=/V29ya3NwYWNlIEJhc2ljcw==,exl:feature/Q3VzdG9tZXIgSm91cm5leSBBbmFseXRpY3M=/VXNlciBNYW5hZ2VtZW50,exl:feature/Q3VzdG9tZXIgSm91cm5leSBBbmFseXRpY3M=/VmlzdWFsaXphdGlvbnM=,exl:feature/Q3VzdG9tZXIgSm91cm5leSBBbmFseXRpY3M=/VHJvdWJsZXNob290aW5n,exl:feature/Q3VzdG9tZXIgSm91cm5leSBBbmFseXRpY3M=/UmVsZWFzZSBOb3Rlcw==,exl:feature/Q3VzdG9tZXIgSm91cm5leSBBbmFseXRpY3M=/R3VpZGVkIEFuYWx5c2lz,exl:feature/Q3VzdG9tZXIgSm91cm5leSBBbmFseXRpY3M=/RnJlZWZvcm0gVGFibGVz,exl:feature/Q3VzdG9tZXIgSm91cm5leSBBbmFseXRpY3M=/RGltZW5zaW9ucw==,exl:feature/Q3VzdG9tZXIgSm91cm5leSBBbmFseXRpY3M=/RkFR
+feature/Customer Journey Analytics/Use Cases:Use Cases,feature/Customer Journey Analytics/Workspace Basics:Workspace Basics,feature/Customer Journey Analytics/User Management:User Management,feature/Customer Journey Analytics/Visualizations:Visualizations,feature/Customer Journey Analytics/Troubleshooting:Troubleshooting,feature/Customer Journey Analytics/Release Notes:Release Notes,feature/Customer Journey Analytics/Guided Analysis:Guided Analysis,feature/Customer Journey Analytics/Freeform Tables:Freeform Tables,feature/Customer Journey Analytics/Dimensions:Dimensions,feature/Customer Journey Analytics/FAQ:FAQ
+style
+default
+Get started with Customer Journey Analytics
+Content to help you get started with your solution
+View more playlists
+/en/docs/customer-journey-analytics-learn/tutorials/cja-basics/what-is-customer-journey-analytics
+/en/playlists/customer-journey-analytics-create-data-views
+/en/playlists/customer-journey-analytics-create-filters-and-cross-channel-visualizations
+/en/docs/customer-journey-analytics-learn/tutorials/analysis-workspace/workspace-projects/analysis-workspace-overview
+style
+default
+Popular tutorials for Customer Journey Analytics
+The most popular tutorials for Customer Journey Analytics
+View all tutorials
+tutorial
+exl:solution/Q3VzdG9tZXIgSm91cm5leSBBbmFseXRpY3M=
+MOST_POPULAR
+style
+default
+Events
+Live Customer Journey Analytics learning events with your peers and Adobe experts.
+Learn new skills and discover better solutions for your business when you attend upcoming live learning events.
+tertiary
+--spectrum-gray-700
+000000
+white
+View events
+primary
+--spectrum-gray-700
+000000
+white
+style
+default
+Popular playlists for Customer Journey Analytics
+The most popular playlists for Customer Journey Analytics
+View more playlists
+playlist
+exl:solution/Q3VzdG9tZXIgSm91cm5leSBBbmFseXRpY3M=
+MOST_POPULAR
+style
+default
+COMMUNITY
+"Through engagement with the Adobe Community, I have gained a deeper understanding of Adobe's product ecosystem."
+- Arun Patidar, Adobe Experience Manager Architect.
+tertiary
+--spectrum-gray-700
+000000
+white
+Join the Community
+primary
+--spectrum-gray-700
+000000
+white
+style
+default
+Upcoming instructor-led trainings for Customer Journey Analytics
+Learn more about the upcoming Adobe instructor led trainings
+Visit catalog
+Customer Journey Analytics
+recommended
+style
+default
+CERTIFICATION
+Go further with an Adobe Customer Journey Analytics certification.
+Sharpen your Adobe skills and bring value to your company. We offer certification programs that can help you take your career to the next level.
+tertiary
+--spectrum-gray-700
+000000
+white
+Learn more
+primary
+--spectrum-gray-700
+000000
+white
+style
+default
+Recent documentation updates
+Recently added and updated documentation
+View documentation
+documentation
+exl:solution/Q3VzdG9tZXIgSm91cm5leSBBbmFseXRpY3M=
+MOST_RECENT
+style
+default
+Popular troubleshooting articles for Customer Journey Analytics
+The most popular troubleshooting articles for Customer Journey Analytics
+troubleshooting
+exl:solution/Q3VzdG9tZXIgSm91cm5leSBBbmFseXRpY3M=
+MOST_POPULAR
+style
+default

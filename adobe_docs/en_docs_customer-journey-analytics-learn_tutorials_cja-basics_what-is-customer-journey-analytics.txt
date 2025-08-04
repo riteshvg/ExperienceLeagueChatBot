@@ -1,0 +1,17 @@
+Source URL: https://experienceleague.adobe.com/en/docs/customer-journey-analytics-learn/tutorials/cja-basics/what-is-customer-journey-analytics
+================================================================================
+
+Documentation
+Customer Journey Analytics
+Customer Journey Analytics
+What is Customer Journey Analytics?
+Last update: Mon Oct 02 2023 00:00:00 GMT+0000 (Coordinated Universal Time)
+Topics:
+Basics
+CREATED FOR:
+Beginner
+Leader
+Customer Journey Analytics (CJA) allows you to analyze your customer’s journey across channels using any data available to you in Adobe Experience Platform, leveraging the power of Analysis Workspace for rapid insights.
+https://video.tv.adobe.com/v/3418680/?quality=12&learn=on
+recommendation-more-help
+a05d7212-fdba-4b70-a337-d5897f329c68

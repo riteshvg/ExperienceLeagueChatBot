@@ -1,0 +1,38 @@
+Source URL: https://experienceleague.adobe.com/en/docs/experience-cloud-kcs/kbarticles/ka-25262
+================================================================================
+
+Documentation
+Too many ‘Contains’ operators cause segments to work incorrectly
+Last update: Wed Jun 18 2025 00:00:00 GMT+0000 (Coordinated Universal Time)
+This article provides a workaround to the Adobe Analytics issue where too many
+Contains
+operators cause segments to work incorrectly.
+Description
+description
+Environment
+Adobe Analytics
+Issue/Symptoms
+The
+Contains
+related operators are the most processing-intensive features in segmentation, as these analyze the entire content of every value. Using hundreds of
+Contains
+operators in segments prevent the segments from working correctly.
+contains
+does not contain
+contains all of
+does not contain all of
+contains any of
+does not contain any of
+For more information, refer to our documentation on
+Comparison Operators for Segments
+.
+Resolution
+resolution
+If you have many segment conditions (for example, Page equals X, Page equals Y, or Page equals Z repeated with hundreds of different values), follow the workaround below:
+Create segments separately for one hundred different values per segment.
+Use classifications to group dimension items. Instead of writing out hundreds of conditions, classify all desired values into a classified value, then use the classified value in a segment.
+Also, refer to
+Segmentation best practices
+for details.
+recommendation-more-help
+3d58f420-19b5-47a0-a122-5c9dab55ec7f

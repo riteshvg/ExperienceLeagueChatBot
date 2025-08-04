@@ -1,0 +1,40 @@
+Source URL: https://experienceleague.adobe.com/en/docs/certification/program/technical-certifications/aem/aem-overview
+================================================================================
+
+Certification
+Certification at Adobe
+Adobe Experience Manager Certification Overview
+Last update: Tue Jul 08 2025 00:00:00 GMT+0000 (Coordinated Universal Time)
+CREATED FOR:
+Experienced
+Select your level and job role to find certification exam details, access study resources, and schedule your exam. You can also explore the
+full certification catalog
+as well as
+technical training courses
+.
+Professional
+Business Practitioner
+Developer (Sites)
+Developer (Assets)
+Back-end Developer (Forms)
+Technical Foundations
+Digital Librarian
+(Please note that this certification does not count toward partner requirements.){target=“_blank”}
+Content Author
+(Please note that this certification does not count toward partner requirements.)
+{target=“_blank”}
+Expert
+Business Practitioner (Sites)
+Business Practitioner (Sites) - Japanese
+Developer (Sites)
+DevOps
+DevOps - Japanese
+Developer (Forms)
+Cloud Service Migration
+Master
+Architect (Sites)
+Architect (Sites) - Japanese
+Questions?
+Contact us
+recommendation-more-help
+7c2da12b-aeec-4d0c-a163-77461d697d86

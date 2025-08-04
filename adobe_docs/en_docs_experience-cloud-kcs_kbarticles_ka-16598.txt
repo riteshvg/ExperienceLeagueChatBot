@@ -1,0 +1,27 @@
+Source URL: https://experienceleague.adobe.com/en/docs/experience-cloud-kcs/kbarticles/ka-16598
+================================================================================
+
+Documentation
+Intermittent 503 and 409 errors in the Live Stream APIs
+Last update: Tue Jul 23 2024 00:00:00 GMT+0000 (Coordinated Universal Time)
+The
+Live Stream Application Programming Interface (APIs)
+in Adobe Analytics may sometimes encounter 503 and/or 409 errors. This usually happens when you connect and disconnect repeatedly. To avoid this, you should establish a connection and continue reading from the stream without disconnecting. For more details, please refer to the article.
+Description
+description
+Environment
+Analytics
+Customer Journey Analytics
+Issue/Symptoms
+Live Stream application programming interface (APIs) may return 503 and/or 409 errors sometimes. The reason behind these errors is described in the
+troubleshooting guide
+. It can happen even if
+maxConnections
+have been specified (409) and have regular flow of hits in the report suites (503).
+Resolution
+resolution
+This could happen mainly if you connect/disconnect repeatedly. This behavior may result in a myriad of issues, as neither the load balancer nor the API endpoints would be able to determine if the connection is lost temporarily or permanently. As per our documentation, you should establish a connection and then continue to read from the stream without disconnecting. If the connection is lost, wait
+~60 seconds
+(to allow the load balancer and API to recognize the severed connection) and then attempt to re-establish the connection to the API.
+recommendation-more-help
+3d58f420-19b5-47a0-a122-5c9dab55ec7f

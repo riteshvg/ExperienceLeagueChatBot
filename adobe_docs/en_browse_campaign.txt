@@ -1,0 +1,106 @@
+Source URL: https://experienceleague.adobe.com/en/browse/campaign
+================================================================================
+
+Adobe Campaign
+Boost your marketing results with Adobe Campaign by running marketing campaigns across different channels, using AI to automate personalized emails, and managing customer data from all touchpoints. Learn to improve every customer’s experience with real-time insights and combined profiles to deliver relevant and engaging messages on a large scale.
+exl:solution/Q2FtcGFpZ24=
+Browse Campaign by solution
+exl:solution/Q2FtcGFpZ24=/Q2FtcGFpZ24gdjggQ2xpZW50IENvbnNvbGU=,exl:solution/Q2FtcGFpZ24=/Q2FtcGFpZ24gdjggV2ViIFVzZXIgSW50ZXJmYWNl,exl:solution/Q2FtcGFpZ24=/Q2FtcGFpZ24gQ2xhc3NpYyB2Nw==,exl:solution/Q2FtcGFpZ24=/Q2FtcGFpZ24gU3RhbmRhcmQ=
+solution/Campaign/Campaign v8 Client Console:Campaign v8 Client Console,solution/Campaign/Campaign v8 Web User Interface:Campaign v8 Web User Interface,solution/Campaign/Campaign Classic v7:Campaign Classic v7,solution/Campaign/Campaign Standard:Campaign Standard
+style
+default
+Get started with Campaign
+Content to help you get started with your solution
+/en/playlists/campaign-classic-v7-getting-started-for-business-users
+/en/playlists/campaign-standard-getting-started-for-business-users
+/en/playlists/campaign-v8-getting-started-for-business-users
+/en/playlists/campaign-v8-building-advanced-campaigns-for-business-users
+style
+default
+Popular tutorials for Campaign
+The most popular tutorials for Campaign
+View all tutorials
+tutorial
+exl:solution/Q2FtcGFpZ24=
+MOST_POPULAR
+style
+default
+Popular playlists for Campaign
+The most popular playlists for Campaign
+View more Campaign playlists
+playlist
+exl:solution/Q2FtcGFpZ24=
+MOST_POPULAR
+style
+default
+EVENTS
+Live Campaign learning events with your peers and Adobe experts.
+Learn new skills and discover better solutions for your business when you attend upcoming live learning events.
+tertiary
+--spectrum-gray-700
+000000
+white
+View events
+primary
+--spectrum-gray-700
+000000
+white
+style
+default
+Campaign Community conversations
+Community conversations with customers like you
+Connect with the Campaign community
+community
+exl:solution/Q2FtcGFpZ24=
+style
+default
+COMMUNITY
+"Through engagement with the Adobe Community, I have gained a deeper understanding of Adobe's product ecosystem."
+- Arun Patidar, Adobe Experience Manager Architect
+tertiary
+--spectrum-gray-700
+000000
+white
+Join the Community
+primary
+--spectrum-gray-700
+000000
+white
+style
+default
+Upcoming instructor-led trainings for Campaign
+Learn more about the upcoming Adobe instructor led trainings
+Visit the catalog
+Campaign Classic,Campaign Standard
+recommended
+style
+default
+CERTIFICATION
+Go further with an Adobe Campaign certification.
+Sharpen your Adobe skills and bring value to your company. We offer certification programs that can help you take your career to the next level.
+tertiary
+--spectrum-gray-700
+000000
+white
+Learn more
+primary
+--spectrum-gray-700
+000000
+white
+style
+default
+Recent Campaign documentation updates
+Recently added and updated documentation
+View Campaign documentation
+documentation
+exl:solution/Q2FtcGFpZ24=
+MOST_RECENT
+style
+default
+Popular troubleshooting articles for Campaign
+The most popular troubleshooting articles for Campaign
+troubleshooting
+exl:solution/Q2FtcGFpZ24=
+MOST_POPULAR
+style
+default

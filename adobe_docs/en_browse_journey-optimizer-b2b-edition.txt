@@ -1,0 +1,36 @@
+Source URL: https://experienceleague.adobe.com/en/browse/journey-optimizer-b2b-edition
+================================================================================
+
+Adobe Journey Optimizer B2B Edition
+Use Journey Optimizer B2B Edition to send automatic follow-ups, personalize messages on many channels, and see how customers interact with your business. Learn how to help your team connect with more accounts, close sales faster, and grow your company’s success.
+Looking for Journey Optimizer resources?
+FFFFFF
+custom
+custom-hexcode
+FFFFFF
+black
+Go here
+primary
+--spectrum-gray-700
+000000
+white
+exl:solution/Sm91cm5leSBPcHRpbWl6ZXIgQjJCIEVkaXRpb24=
+Browse Journey Optimizer B2B Edition by topic
+exl:feature/Sm91cm5leSBPcHRpbWl6ZXIgQjJCIEVkaXRpb24=/QWNjb3VudCBJbnNpZ2h0cw==,exl:feature/Sm91cm5leSBPcHRpbWl6ZXIgQjJCIEVkaXRpb24=/QWNjb3VudCBKb3VybmV5cw==,exl:feature/Sm91cm5leSBPcHRpbWl6ZXIgQjJCIEVkaXRpb24=/QUkgQXNzaXN0YW50,exl:feature/Sm91cm5leSBPcHRpbWl6ZXIgQjJCIEVkaXRpb24=/QXNzZXRz,exl:feature/Sm91cm5leSBPcHRpbWl6ZXIgQjJCIEVkaXRpb24=/QnV5aW5nIEdyb3Vwcw==,exl:feature/Sm91cm5leSBPcHRpbWl6ZXIgQjJCIEVkaXRpb24=/Q29udGVudA==,exl:feature/Sm91cm5leSBPcHRpbWl6ZXIgQjJCIEVkaXRpb24=/RGFzaGJvYXJkcw==,exl:feature/Sm91cm5leSBPcHRpbWl6ZXIgQjJCIEVkaXRpb24=/RW1haWwgQXV0aG9yaW5n,exl:feature/Sm91cm5leSBPcHRpbWl6ZXIgQjJCIEVkaXRpb24=/RW5nYWdlbWVudA==,exl:feature/Sm91cm5leSBPcHRpbWl6ZXIgQjJCIEVkaXRpb24=/SW50ZWdyYXRpb25z,exl:feature/Sm91cm5leSBPcHRpbWl6ZXIgQjJCIEVkaXRpb24=/U2V0dXA=,exl:feature/Sm91cm5leSBPcHRpbWl6ZXIgQjJCIEVkaXRpb24=/U01TIEF1dGhvcmluZw==
+feature/Journey Optimizer B2B Edition/Account Insights:Account Insights,feature/Journey Optimizer B2B Edition/Account Journeys:Account Journeys,feature/Journey Optimizer B2B Edition/AI Assistant:AI Assistant,feature/Journey Optimizer B2B Edition/Assets:Assets,feature/Journey Optimizer B2B Edition/Buying Groups:Buying Groups,feature/Journey Optimizer B2B Edition/Content:Content,feature/Journey Optimizer B2B Edition/Dashboards:Dashboards,feature/Journey Optimizer B2B Edition/Email Authoring:Email Authoring,feature/Journey Optimizer B2B Edition/Engagement:Engagement,feature/Journey Optimizer B2B Edition/Integrations:Integrations,feature/Journey Optimizer B2B Edition/Setup:Setup,feature/Journey Optimizer B2B Edition/SMS Authoring:SMS Authoring
+style
+default
+Get started with Journey Optimizer B2B Edition
+Content to help you get started with your solution
+/en/docs/journey-optimizer-b2b-learn/tutorials/overview
+/en/docs/journey-optimizer-b2b/user/get-started/about-journey-optimizer-b2b-edition
+/en/docs/journey-optimizer-b2b/user/get-started/get-started
+style
+default
+Recent Journey Optimizer B2B Edition documentation updates
+Recently added and updated documentation
+View documentation
+exl:solution/Sm91cm5leSBPcHRpbWl6ZXIgQjJCIEVkaXRpb24=
+MOST_RECENT
+style
+default

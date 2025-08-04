@@ -1,0 +1,71 @@
+Source URL: https://experienceleague.adobe.com/en/browse/advertising
+================================================================================
+
+Adobe Advertising
+With Adobe Advertising, you can plan and start campaigns, manage ads on different channels, and see how well they are working right away. Learn about how using one platform can help you reach more people, make your ads work better, and build your brand.
+exl:solution/QWR2ZXJ0aXNpbmc=
+Browse Advertising by topic
+exl:feature/QWR2ZXJ0aXNpbmc=/R0RQUg==,exl:feature/QWR2ZXJ0aXNpbmc=/SW50ZWdyYXRpb24gd2l0aCBBZG9iZSBBbmFseXRpY3M=,exl:feature/QWR2ZXJ0aXNpbmc=/UG9saWNpZXM=,exl:feature/QWR2ZXJ0aXNpbmc=/UHJpdmFjeQ==,exl:feature/QWR2ZXJ0aXNpbmc=/U2VhcmNoIEFkbWlu,exl:feature/QWR2ZXJ0aXNpbmc=/U2VhcmNoIEFkdmVydGlzaW5nIEluc2lnaHRz,exl:feature/QWR2ZXJ0aXNpbmc=/U2VhcmNoIEFsZXJ0cw==,exl:feature/QWR2ZXJ0aXNpbmc=/U2VhcmNoIEJhc2ljIFJlcG9ydHM=,exl:feature/QWR2ZXJ0aXNpbmc=/U2VhcmNoIEJlc3QgUHJhY3RpY2Vz,exl:feature/QWR2ZXJ0aXNpbmc=/U2VhcmNoIFJlY29tbWVuZGF0aW9ucw==,exl:feature/QWR2ZXJ0aXNpbmc=/U2VhcmNoIE5vdGlmaWNhdGlvbnM=,exl:feature/QWR2ZXJ0aXNpbmc=/U2VhcmNoIFRyYWNraW5n,exl:feature/QWR2ZXJ0aXNpbmc=/U2VhcmNoIFRvb2xz
+feature/Advertising/GDPR:GDPR,feature/Advertising/Integration with Adobe Analytics:Integration with Adobe Analytics,feature/Advertising/Policies:Policies,feature/Advertising/Privacy:Privacy,feature/Advertising/Search Admin:Search Admin,feature/Advertising/Search Advertising Insights:Search Advertising Insights,feature/Advertising/Search Alerts:Search Alerts,feature/Advertising/Search Basic Reports:Search Basic Reports,feature/Advertising/Search Best Practices:Search Best Practices,feature/Advertising/Search Recommendations:Search Recommendations,feature/Advertising/Search Notifications:Search Notifications,feature/Advertising/Search Tracking:Search Tracking,feature/Advertising/Search Tools:Search Tools
+style
+default
+Get started with Advertising
+Content to help you get started with your solution
+/en/docs/advertising-learn/tutorials/dsp/intro
+/en/docs/advertising-learn/tutorials/dsp/ui
+/en/docs/advertising-learn/tutorials/analytics/intro-a4adc
+/en/docs/advertising/dsp/introduction/dsp-about
+style
+default
+Popular tutorials for Advertising
+The most popular tutorials for Advertising
+View all tutorials
+tutorial
+exl:solution/QWR2ZXJ0aXNpbmc=
+MOST_POPULAR
+style
+default
+COMMUNITY
+"Through engagement with the Adobe Community, I have gained a deeper understanding of Adobe's product ecosystem."
+- Arun Patidar, Adobe Experience Manager Architect
+tertiary
+--spectrum-gray-700
+000000
+white
+Join the Community
+primary
+--spectrum-gray-700
+000000
+white
+style
+default
+Advertising Community conversations
+Get help and learn from your peers with Community conversations
+Connect with the Community
+community
+exl:solution/QWR2ZXJ0aXNpbmc=
+RELEVANCE
+style
+default
+CERTIFICATION
+Go further with an Adobe Advertising certification.
+Sharpen your Adobe skills and bring value to your company. We offer certification programs that can help you take your career to the next level.
+tertiary
+--spectrum-gray-700
+000000
+white
+Learn more
+primary
+--spectrum-gray-700
+000000
+white
+style
+default
+Recent Advertising documentation updates
+Recently added and updated documentation
+View documentation
+documentation
+exl:solution,exl:solution/QWR2ZXJ0aXNpbmc=
+MOST_RECENT
+style
+default

@@ -1,0 +1,17 @@
+Source URL: https://experienceleague.adobe.com/en/docs/analytics-learn/tutorials/analysis-workspace/building-freeform-tables/row-and-column-settings-in-freeform-tables
+================================================================================
+
+Documentation
+Analytics
+Analytics Tutorials
+Row and Column Settings in Freeform Tables
+Last update: Wed May 31 2023 00:00:00 GMT+0000 (Coordinated Universal Time)
+Topics:
+Freeform Tables
+CREATED FOR:
+Beginner
+User
+Learn about the settings in Freeform Tables in Analysis Workspace, and how they affect the data coming into those tables.
+https://video.tv.adobe.com/v/40382/?quality=12&learn=on
+recommendation-more-help
+b5d9c99f-be9f-4b96-8809-4e7d6ae353ba

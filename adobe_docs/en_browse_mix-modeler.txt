@@ -1,0 +1,56 @@
+Source URL: https://experienceleague.adobe.com/en/browse/mix-modeler
+================================================================================
+
+Adobe Mix Modeler
+Adobe Mix Modeler helps you organize all your marketing data so you can see which ads and channels work best and plan where to spend your budget. Learn about making smart marketing plans, using AI tools to compare results, and getting quick insights that help your team make better decisions and grow your business.
+exl:solution/TWl4IE1vZGVsZXI=
+Browse Mix Modeler by topic
+exl:feature/TWl4IE1vZGVsZXI=/RGF0YXNldHM=,exl:feature/TWl4IE1vZGVsZXI=/RGF0YXNldCBSdWxlcw==,exl:feature/TWl4IE1vZGVsZXI=/TWFya2V0aW5nIFRvdWNoIFBvaW50cw==,exl:feature/TWl4IE1vZGVsZXI=/UGxhbnM=,exl:feature/TWl4IE1vZGVsZXI=/UG9saWNpZXM=,exl:feature/TWl4IE1vZGVsZXI=/U2NoZW1hcw==,exl:feature/TWl4IE1vZGVsZXI=/UmVsZWFzZSBOb3Rlcw==
+feature/Mix Modeler/Datasets:Datasets,feature/Mix Modeler/Dataset Rules:Dataset Rules,feature/Mix Modeler/Marketing Touch Points:Marketing Touch Points,feature/Mix Modeler/Plans:Plans,feature/Mix Modeler/Policies:Policies,feature/Mix Modeler/Schemas:Schemas,feature/Mix Modeler/Release Notes:Release Notes
+style
+default
+Get started with Mix Modeler
+Content to help you get started with your solution
+View all tutorials
+/en/docs/mix-modeler-learn/tutorials/intro/use-cases
+/en/docs/mix-modeler-learn/tutorials/intro/user-interface-tour
+/en/docs/mix-modeler/using/get-started/about
+/en/docs/mix-modeler/using/overview
+style
+default
+EVENTS
+Live learning events with your peers and Adobe experts.
+Learn new skills and discover better solutions for your business when you attend upcoming live learning events.
+tertiary
+--spectrum-gray-700
+000000
+white
+View events
+primary
+--spectrum-gray-700
+000000
+white
+style
+default
+Recent Mix Modeler documentation updates
+Recently added and updated documentation
+View documentation
+documentation
+exl:solution/TWl4IE1vZGVsZXI=
+MOST_RECENT
+style
+default
+COMMUNITY
+"Through engagement with the Adobe Community, I have gained a deeper understanding of Adobe's product ecosystem."
+- Arun Patidar, Adobe Experience Manager Architect
+tertiary
+--spectrum-gray-700
+000000
+white
+Join the Community
+primary
+--spectrum-gray-700
+000000
+white
+style
+default

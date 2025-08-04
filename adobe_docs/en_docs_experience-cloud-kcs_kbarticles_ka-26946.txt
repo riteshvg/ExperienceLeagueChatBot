@@ -1,0 +1,119 @@
+Source URL: https://experienceleague.adobe.com/en/docs/experience-cloud-kcs/kbarticles/ka-26946
+================================================================================
+
+Documentation
+Resolving Entry/Exit prop identification issues in Adobe Analytics
+Last update: Fri Aug 01 2025 00:00:00 GMT+0000 (Coordinated Universal Time)
+Entry and exit prop values in Adobe Analytics data feeds aren’t labeled explicitly, which can make visit-level analysis more complex. If you’re trying to understand how to extract these dimensions from raw data, this article provides a clear method for deriving them using visit identifiers and timestamps. By isolating the first and last values of a given
+post_propX
+, you can reconstruct entry and exit dimensions for more accurate reporting.
+Description
+description
+Environment
+Adobe Analytics
+Issue/Symptoms
+Entry and Exit prop dimensions are not explicitly labeled as
+Entry
+or
+Exit
+in Adobe data feeds but are derived from the
+post_propX
+column. To determine which prop fired on entry and which on exit, isolate the first (Entry) and last (Exit) values of the prop for each visit. This requires processing the raw data using visit and hit-level information.
+Resolution
+resolution
+Since entry and exit prop values are not directly labeled in Adobe Analytics data feeds, you need to derive them by processing the raw data. This involves grouping hits by visit, sorting them chronologically, and identifying the first and last non-empty values of the relevant
+post_propX
+column. The steps below outline how to approach this using SQL or similar tools.
+Key columns for visit identification:
+post_visid_high
+and
+post_visid_low
+: Concatenate these to identify unique visitors.
+visit_num
+: Identifies the visit number for a visitor.
+visit_page_num
+: The Hit depth dimension. Increments by 1 for each hit the visitor generates and resets with each visit.
+visit_start_time_gmt
+: Timestamp (in UNIX time) when Adobe’s data collection servers received the hit.
+hit_time_gmt
+: Timestamp (in UNIX time) when Adobe data collection servers received the hit, expressed in UNIX time.
+To derive Entry and Exit dimensions from a data feed, process the raw data (for example, using a tool like Python, SQL, or R) to identify the first and last prop values for each visit. The query would need to account for the following:
+Group data by visitor and visit:
+Use the concatenated visitor ID (
+post_visid_high
++
+post_visid_low
+) along with
+visit_num
+to group hits by individual visits.
+Sort hits within each visit:
+Sort hits chronologically using either
+hit_time_gmt
+or another sequence indicator.
+Identify entry dimension:
+Extract the first non-empty value of the desired prop column (
+post_propX
+) for each visit as the entry dimension.
+Identify exit dimension:
+Extract the last non-empty value of the same prop column (
+post_propX
+) for each visit as the exit dimension.
+Merge results if necessary:
+Combine entry and exit dimension results into a single dataset, ensuring no duplication occurs at the visit level.
+Optional conditions
+hit_source
+: To exclude data without timestamps or from certain sources, include WHERE
+hit_source = 2.
+exclude_hit
+: Analytics Workspace only includes data where exclude_hit = 0. Include this condition in your query if you want a similar result. Review the Data column reference table to see additional
+exclude_hit
+values.
+post_page_event
+: To focus on standard page views and exclude custom, download, or exit link hits, include
+post_page_event = 0.
+Example SQL Queries:
+Entry Dimension:
+SELECT
+   post_visid_high,
+   post_visid_low,
+   visit_num,
+   visit_start_time_gmt,
+   FIRST_VALUE(post_prop1 IGNORE NULLS) OVER (
+       PARTITION BY post_visid_high, post_visid_low, visit_num
+       ORDER BY hit_time_gmt
+   ) AS entry_prop1
+FROM your_data_feed_table
+WHERE hit_source = '2'
+  AND exclude_hit ='0'
+  AND post_page_event = 0
+Exit Dimension:
+SELECT
+   post_visid_high,
+   post_visid_low,
+   visit_num,
+   visit_start_time_gmt,
+   LAST_VALUE(post_prop1 IGNORE NULLS) OVER (
+       PARTITION BY post_visid_high, post_visid_low, visit_num
+       ORDER BY hit_time_gmt
+       ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+   ) AS exit_prop1
+FROM your_data_feed_table
+WHERE hit_source = '2'
+AND exclude_hit ='0'
+AND post_page_event = 0
+Example output:
+Visitor ID
+Visit Num
+Entry Prop1
+Exit Prop1
+xxxx
+x
+view_article
+browse_topic
+xxxx
+x
+startpage
+escalation_request
+By following this approach, you should be able to derive entry and exit dimensions from props in an Adobe Analytics data feed.
+recommendation-more-help
+3d58f420-19b5-47a0-a122-5c9dab55ec7f

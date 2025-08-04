@@ -1,0 +1,49 @@
+Source URL: https://experienceleague.adobe.com/en/browse/document-cloud
+================================================================================
+
+Adobe Document Cloud
+With Adobe Document Cloud, you can edit, share, and sign documents safely from anywhere. Browse for tips on how to get approvals faster, work better with others, and keep your projects moving using easy digital tools.
+exl:solution/RG9jdW1lbnQgQ2xvdWQ=
+Browse Document Cloud by topic
+exl:feature/RG9jdW1lbnQgQ2xvdWQ=/SW50ZWdyYXRpb25z,exl:feature/RG9jdW1lbnQgQ2xvdWQ=/RWRpdCBQREY=,exl:feature/RG9jdW1lbnQgQ2xvdWQ=/T3B0aW1pemUgUERG,exl:feature/RG9jdW1lbnQgQ2xvdWQ=/UmVwb3J0,exl:feature/RG9jdW1lbnQgQ2xvdWQ=/U2lnbg==,exl:feature/RG9jdW1lbnQgQ2xvdWQ=/V29ya2Zsb3c=,exl:solution/QWNyb2JhdA==,exl:solution/QWNyb2JhdCBTaWdu
+feature/Document Cloud/Integrations:Integrations,feature/Document Cloud/Edit PDF:Edit PDF,feature/Document Cloud/Optimize PDF:Optimize PDF,feature/Document Cloud/Report:Report,feature/Document Cloud/Sign:Sign,feature/Document Cloud/Workflow:Workflow,solution/Acrobat:Acrobat,solution/Acrobat Sign:Acrobat Sign
+style
+default
+Get started with Document Cloud tutorials
+Tutorials to help you get started with Document Cloud
+/en/docs/document-cloud-learn/acrobat-learning/overview
+/en/docs/document-cloud-learn/sign-learning-hub/overview
+/en/docs/acrobat-services-learn/tutorials/overview
+/en/docs/document-cloud-learn/acrobat-learning/getting-started/new-workspace
+style
+default
+Popular tutorials for Document Cloud
+The most popular tutorials for Document Cloud
+View all tutorials
+tutorial
+exl:solution/RG9jdW1lbnQgQ2xvdWQ=
+MOST_POPULAR
+style
+default
+ADOBE COMMUNITY
+Connect and get inspired.
+Learn and grow with your peers through the Adobe Community.
+tertiary
+--spectrum-gray-700
+000000
+white
+Join the Community
+primary
+--spectrum-gray-700
+000000
+white
+style
+default
+New Document Cloud tutorials
+Newly published or updated tutorials for Document Cloud
+View all tutorials
+tutorial
+exl:solution/RG9jdW1lbnQgQ2xvdWQ=
+MOST_RECENT
+style
+default

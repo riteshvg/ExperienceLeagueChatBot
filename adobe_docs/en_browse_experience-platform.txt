@@ -1,0 +1,107 @@
+Source URL: https://experienceleague.adobe.com/en/browse/experience-platform
+================================================================================
+
+Adobe Experience Platform
+Quickly get useful insights by bringing together real-time data from all your channels, organizing customer information, and using smart AI tools in Adobe Experience Platform. Find topics that help you create personalized experiences, keep customer data safe, and easily connect with other tools using APIs to build better customer journeys and help your business grow.
+exl:solution/RXhwZXJpZW5jZSBQbGF0Zm9ybQ==
+Browse Experience Platform by topic
+exl:feature/RXhwZXJpZW5jZSBQbGF0Zm9ybQ==/R2V0IFN0YXJ0ZWQ=,exl:feature/RXhwZXJpZW5jZSBQbGF0Zm9ybQ==/UGxheWJvb2tz,exl:feature/RXhwZXJpZW5jZSBQbGF0Zm9ybQ==/VXNlIENhc2Vz,exl:feature/RXhwZXJpZW5jZSBQbGF0Zm9ybQ==/V2ViIFNESw==,exl:feature/RXhwZXJpZW5jZSBQbGF0Zm9ybQ==/VHJvdWJsZXNob290aW5n,exl:feature/RXhwZXJpZW5jZSBQbGF0Zm9ybQ==/UGVyc29uYWxpemF0aW9u,exl:feature/RXhwZXJpZW5jZSBQbGF0Zm9ybQ==/RGF0YSBQcmVw,exl:feature/RXhwZXJpZW5jZSBQbGF0Zm9ybQ==/RGF0YXN0cmVhbXM=,exl:feature/RXhwZXJpZW5jZSBQbGF0Zm9ybQ==/RGVidWdnZXI=,exl:feature/RXhwZXJpZW5jZSBQbGF0Zm9ybQ==/TW9iaWxlIFNESw==,exl:feature/RXhwZXJpZW5jZSBQbGF0Zm9ybQ==/TW9uaXRvcmluZw==,exl:feature,exl:feature/RXhwZXJpZW5jZSBQbGF0Zm9ybQ==/QUkgQXNzaXN0YW50
+feature/Experience Platform/Get Started:Get Started,feature/Experience Platform/Playbooks:Playbooks,feature/Experience Platform/Use Cases:Use Cases,feature/Experience Platform/Web SDK:Web SDK,feature/Experience Platform/Troubleshooting:Troubleshooting,feature/Experience Platform/Personalization:Personalization,feature/Experience Platform/Data Prep:Data Prep,feature/Experience Platform/Datastreams:Datastreams,feature/Experience Platform/Debugger:Debugger,feature/Experience Platform/Mobile SDK:Mobile SDK,feature/Experience Platform/Monitoring:Monitoring,feature/Experience Platform/AI Assistant:AI Assistant
+style
+default
+Get started with Experience Platform
+Content to help you get started with your solution
+/en/playlists/experience-platform-introduction
+/en/docs/platform-learn/getting-started-for-data-architects-and-data-engineers/overview
+/en/docs/platform-learn/tutorials/admin/add-users
+/en/docs/platform-learn/tutorials/platform-api-authentication
+style
+default
+Popular tutorials for Experience Platform
+The most popular tutorials for Experience Platform
+View all tutorials
+tutorial
+exl:solution/RXhwZXJpZW5jZSBQbGF0Zm9ybQ==
+MOST_POPULAR
+style
+default
+Popular playlists for Experience Platform
+The most playlists for Experience Platform
+View more playlists
+playlist
+exl:solution/RXhwZXJpZW5jZSBQbGF0Zm9ybQ==
+MOST_POPULAR
+style
+default
+EVENTS
+Live Experience Platform learning events with your peers and Adobe experts.
+Learn new skills and discover better solutions for your business when you attend upcoming live learning events.
+tertiary
+--spectrum-gray-700
+000000
+white
+View events
+primary
+--spectrum-gray-700
+000000
+white
+style
+default
+Learn new skills from Adobe experts at your convenience with on-demand events.
+On-demand Experience Platform learning event recordings.
+View all past events
+event
+exl:solution/RXhwZXJpZW5jZSBQbGF0Zm9ybQ==
+MOST_POPULAR
+style
+default
+COMMUNITY
+"Through engagement with the Adobe Community, I have gained a deeper understanding of Adobe's product ecosystem."
+- Arun Patidar, Adobe Experience Manager Architect
+tertiary
+--spectrum-gray-700
+000000
+white
+Join the community
+primary
+--spectrum-gray-700
+000000
+white
+style
+default
+Upcoming instructor-led trainings for Experience Platform
+Learn more about the upcoming Adobe instructor led trainings
+Visit the catalog
+Experience Platform
+recommended
+style
+default
+CERTIFICATION
+Go further with an Adobe certification.
+Sharpen your Adobe skills and bring value to your company. We offer certification programs that can help you take your career to the next level.
+tertiary
+--spectrum-gray-700
+000000
+white
+Learn more
+primary
+--spectrum-gray-700
+000000
+white
+style
+default
+Recent Experience Platform documentation updates
+Recently added and updated documentation
+View documentation
+documentation
+exl:solution/RXhwZXJpZW5jZSBQbGF0Zm9ybQ==
+MOST_RECENT
+style
+default
+Popular troubleshooting articles for Experience Platform
+The most popular troubleshooting articles for Experience Platform
+troubleshooting
+exl:solution/RXhwZXJpZW5jZSBQbGF0Zm9ybQ==
+MOST_POPULAR
+style
+default

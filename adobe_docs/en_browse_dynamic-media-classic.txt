@@ -1,0 +1,60 @@
+Source URL: https://experienceleague.adobe.com/en/browse/dynamic-media-classic
+================================================================================
+
+Adobe Dynamic Media Classic
+Adobe Dynamic Media Classic helps you manage and share images and videos from one easy spot, letting you create many different versions for websites, social media, or apps. Learn how to use tools like Smart Crop, Mixed Media Sets, and image presets to quickly build interactive content that looks amazing on any device.
+exl:solution/RHluYW1pYyBNZWRpYSBDbGFzc2lj
+style
+default
+Get started with Dynamic Media and Dynamic Media Classic
+Content to help you get started with your solution
+/en/docs/experience-manager-learn/dynamic-media-classic-tutorial/overview
+/en/docs/dynamic-media-classic/using/upgrade/upgrade
+/en/docs/dynamic-media-classic/using/upgrade/upgrade-feature-comparison
+/en/docs/dynamic-media-classic/using/home
+style
+default
+Popular documentation for Dynamic Media Classic
+The most popular documentation articles for Dynamic Media Classic.
+View all documentation
+documentation
+exl:solution/RHluYW1pYyBNZWRpYSBDbGFzc2lj
+MOST_POPULAR
+style
+default
+EVENTS
+Live learning events with your peers and Adobe experts.
+Learn new skills and discover better solutions for your business when you attend upcoming live learning events.
+tertiary
+--spectrum-gray-700
+000000
+white
+View events
+primary
+--spectrum-gray-700
+000000
+white
+style
+default
+New and updated articles for Dynamic Media Classic
+Recently added and updated documentation
+View all documentation
+documentation
+exl:solution/RHluYW1pYyBNZWRpYSBDbGFzc2lj
+MOST_RECENT
+style
+default
+COMMUNITY
+"Through engagement with the Adobe Community, I have gained a deeper understanding of Adobe's product ecosystem."
+- Arun Patidar, Adobe Experience Manager Architect
+tertiary
+--spectrum-gray-700
+000000
+white
+Join the Community
+primary
+--spectrum-gray-700
+000000
+white
+style
+default

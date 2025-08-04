@@ -1,0 +1,38 @@
+Source URL: https://experienceleague.adobe.com/en/docs/customer-journey-analytics
+================================================================================
+
+Documentation
+Customer Journey Analytics
+Customer Journey Analytics Documentation
+Welcome to the Adobe Customer Journey Analytics documentation home page. Find self-help, support, and tutorial information with our array of product and technical documentation for Customer Journey Analytics (CJA).
+Get started with introductory guides and learn how to best implement CJA for your business. If you’re already an experienced user, explore our in-depth videos and tutorials to connect your channel data and gain vital insights to help improve performance. Explore our full range of Adobe Customer Journey Analytics docs today.
+Guides
+lists-documentation-1
+Customer Journey Analytics Guide
+Learn about Adobe Customer Journey Analytics and how to use Analysis Workspace with data from Experience Platform.
+Overview
+Learn how Customer Journey Analytics lets you use Analysis Workspace with data from Experience Platform.
+Getting Started
+Understand the prerequisites and workflow required to implement Customer Journey Analytics.
+Media Analytics
+Implement Streaming Media. Includes the Media SDK and the Media Collection API.
+Tutorials
+tiles-tutorials-1
+Understanding Customer Journey Analytics
+Learn how to do multi-channel analysis on any of your Experience Platform data sets.
+Architecture and Integrations
+Get a walkthrough of the architecture of Adobe Customer Journey Analytics, including how it connects to and integrates with Adobe Experience Platform.
+Working with Data
+Learn how dataset schemas are translated into variables in Adobe Customer Journey Analytics, as well as how CJA handles very high cardinality.
+Blueprint: Customer Journey Analytics
+Unify and analyze data and customer behaviors from across the customer journey
+See All Tutorials
+Customer Journey Analytics
+Release Information
+lists-release-1
+Customer Journey Analytics Release Notes
+Related Resources
+lists-resources-1
+Experience Platform Community Forum
+Experience Platform Support
+Customer Journey Analytics Playlists

@@ -1,0 +1,21 @@
+Source URL: https://experienceleague.adobe.com/en/docs/experience-cloud-kcs/kbarticles/ka-17254
+================================================================================
+
+Documentation
+Setup Bulk Data Insertion API
+Last update: Fri Oct 27 2023 00:00:00 GMT+0000 (Coordinated Universal Time)
+Learn how to setup Bulk Data Insertion API using Postman.
+Description
+description
+Environment
+Customer Journey Analytics
+Analytics
+Issues/Symptoms
+Detailed steps to setup Bulk Data Insertion API using Postman.
+Resolution
+resolution
+This document
+contains detailed steps to set up Bulk Data Insertion API using Postman.
+Additionally, here’s our detailed documentation for more information: https://www.adobe.io/apis/experiencecloud/analytics/docs.html#!AdobeDocs/analytics-2.0-apis/master/bdia.md.
+recommendation-more-help
+3d58f420-19b5-47a0-a122-5c9dab55ec7f

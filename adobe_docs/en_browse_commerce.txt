@@ -1,0 +1,85 @@
+Source URL: https://experienceleague.adobe.com/en/browse/commerce
+================================================================================
+
+Adobe Commerce
+Create super-fast online storefronts, offer real-time personalized shopping experiences, and help your team work faster using an API-first, flexible platform with Adobe Commerce. Find ways to improve your ecommerce plan to get more sales, grow your business safely with cloud security, and build shopping experiences that can change as your business grows.
+exl:solution/Q29tbWVyY2U=
+Browse Commerce by topic
+exl:feature/Q29tbWVyY2U=/QXBwIEJ1aWxkZXI=,exl:feature/Q29tbWVyY2U=/QmVzdCBQcmFjdGljZXM=,exl:feature/Q29tbWVyY2U=/Q2F0YWxvZyBNYW5hZ2VtZW50,exl:feature/Q29tbWVyY2U=/Q2hlY2tvdXQ=,exl:feature/Q29tbWVyY2U=/Q3VzdG9tZXJz,exl:feature/Q29tbWVyY2U=/SW50ZWdyYXRpb24=,exl:feature/Q29tbWVyY2U=/TWVyY2hhbmRpc2luZw==,exl:feature/Q29tbWVyY2U=/T2JzZXJ2YWJpbGl0eQ==,exl:feature/Q29tbWVyY2U=/T3JkZXJz,exl:feature/Q29tbWVyY2U=/UGF5bWVudHM=,exl:feature/Q29tbWVyY2U=/UGVyc29uYWxpemF0aW9u,exl:feature/Q29tbWVyY2U=/UHJvZHVjdHM=,exl:feature/Q29tbWVyY2U=/U2Fhcw==,exl:feature/Q29tbWVyY2U=/U2VjdXJpdHk=
+feature/Commerce/App Builder:App Builder,feature/Commerce/Best Practices:Best Practices,feature/Commerce/Catalog Management:Catalog Management,feature/Commerce/Checkout:Checkout,feature/Commerce/Customers:Customers,feature/Commerce/Integration:Integration,feature/Commerce/Merchandising:Merchandising,feature/Commerce/Observability:Observability,feature/Commerce/Orders:Orders,feature/Commerce/Payments:Payments,feature/Commerce/Personalization:Personalization,feature/Commerce/Products:Products,feature/Commerce/Saas:Saas,feature/Commerce/Security:Security
+style
+default
+Get started with Commerce
+Content to help you get started with your solution
+/en/playlists/commerce-get-started-for-developers
+/en/docs/commerce-learn/tutorials/getting-started/cloud/1-overview
+/en/docs/commerce-admin/start/guide-overview
+/en/docs/commerce-business-intelligence/mbi/guide-overview
+style
+default
+Popular tutorials for Commerce
+The most popular tutorials for Commerce
+View all Commerce tutorials
+tutorial
+exl:solution/Q29tbWVyY2U=
+MOST_POPULAR
+style
+default
+Popular playlists and events for Commerce
+The most popular playlists and on demand event recordings for Commerce
+View more Commerce playlists
+event,playlist
+exl:solution/Q29tbWVyY2U=
+RELEVANCE
+style
+default
+EVENTS
+Live Commerce learning events with your peers and Adobe experts.
+Learn new skills and discover better solutions for your business when you attend upcoming live learning events.
+tertiary
+--spectrum-gray-700
+000000
+white
+View events
+primary
+--spectrum-gray-700
+000000
+white
+style
+default
+Upcoming Commerce Instructor-Led trainings
+Learn more about the upcoming Adobe instructor led trainings
+Visit the catalog
+Commerce
+recommended
+style
+default
+CERTIFICATION
+Go further with an Adobe Commerce certification.
+Sharpen your Adobe skills and bring value to your company. We offer certification programs that can help you take your career to the next level.
+tertiary
+--spectrum-gray-700
+000000
+white
+Learn more
+primary
+--spectrum-gray-700
+000000
+white
+style
+default
+Recent Commerce documentation updates
+Recently added and updated documentation
+View documentation
+documentation
+exl:solution/Q29tbWVyY2U=
+MOST_RECENT
+style
+default
+Popular troubleshooting articles for Commerce
+The most popular troubleshooting articles for Commerce
+troubleshooting
+exl:solution/Q29tbWVyY2U=
+RELEVANCE
+style
+default

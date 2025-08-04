@@ -1,0 +1,113 @@
+Source URL: https://experienceleague.adobe.com/en/browse/analytics
+================================================================================
+
+Adobe Analytics
+Discover important customer insights with Adobe Analytics by seeing how customers use different channels, tracking real-time activity on websites and mobile apps, and using AI to make smart decisions based on data. Browse for topics that help you improve user experiences, get more from your marketing, and help your business grow with clear, useful data.
+exl:solution/QW5hbHl0aWNz
+Browse Analytics by topic
+exl:feature/QW5hbHl0aWNz/V29ya3NwYWNlIEJhc2ljcw==,exl:feature/QW5hbHl0aWNz/VmlzdWFsaXphdGlvbnM=,exl:feature/QW5hbHl0aWNz/VXNlIENhc2Vz,exl:feature/QW5hbHl0aWNz/UmVwb3J0cyAmIEFuYWx5dGljcyBCYXNpY3M=,exl:feature/QW5hbHl0aWNz/UmVwb3J0IEJ1aWxkZXI=,exl:feature/QW5hbHl0aWNz/TW9iaWxlIFNESw==,exl:feature/QW5hbHl0aWNz/SW1wbGVtZW50YXRpb24gQmFzaWNz,exl:feature/QW5hbHl0aWNz/RGF0YSBXb3JrYmVuY2g=,exl:feature/QW5hbHl0aWNz/RGF0YSBTY2llbmNl,exl:solution/RGF0YSBDb2xsZWN0aW9u,exl:topic
+feature/Analytics/Workspace Basics:Workspace Basics,feature/Analytics/Visualizations:Visualizations,feature/Analytics/Use Cases:Use Cases,feature/Analytics/Reports & Analytics Basics:Reports & Analytics Basics,feature/Analytics/Report Builder:Report Builder,feature/Analytics/Mobile SDK:Mobile SDK,feature/Analytics/Implementation Basics:Implementation Basics,feature/Analytics/Data Workbench:Data Workbench,feature/Analytics/Data Science:Data Science,solution/Data Collection:Data Collection
+style
+default
+Get started with Analytics
+Content to help you get started with your solution
+/en/playlists/analytics-configure-report-suite-general-settings-in-adobe-analytics
+/en/playlists/analytics-get-started-with-analysis-workspace
+/en/playlists/analytics-build-freeform-tables
+/en/playlists/analytics-use-visualizations-to-tell-your-data-stories
+style
+default
+Popular tutorials for Analytics
+The most popular tutorials for Analytics
+View all Analytics tutorials
+tutorial
+exl:solution/QW5hbHl0aWNz
+MOST_POPULAR
+style
+default
+Learn from your peers
+perspective
+exl:solution/QW5hbHl0aWNz
+MOST_POPULAR
+style
+default
+Popular playlists for Analytics
+The most popular playlists for Analytics
+View more Analytics playlists
+playlist
+exl:solution/QW5hbHl0aWNz
+MOST_POPULAR
+style
+default
+EVENT
+Live Analytics learning events with your peers and Adobe experts.
+Learn new skills and discover better solutions for your business when you attend upcoming live learning events.
+tertiary
+--spectrum-gray-700
+000000
+white
+Learn more
+primary
+--spectrum-gray-700
+000000
+white
+style
+default
+Analytics Community conversations
+The most recent Analytics Community conversations
+Connect with the Analytics community
+community
+exl:solution/QW5hbHl0aWNz
+RELEVANCE
+style
+default
+COMMUNITY
+"Through engagement with Adobe Community, I have gained a deeper understanding of Adobe's products ecosystem."
+- Arun Patidar, Adobe Experience Manager Architect.
+tertiary
+--spectrum-gray-700
+000000
+white
+Join the community
+primary
+--spectrum-gray-700
+000000
+white
+style
+default
+Upcoming Analytics instructor-led trainings
+Learn more about the upcoming Adobe instructor led trainings
+Visit the catalog
+Analytics
+recommended
+style
+default
+CERTIFICATIONS
+Go further with an Adobe Analytics certification.
+Sharpen your Adobe skills and bring value to your company. We offer certification programs that can help you take your career to the next level.
+tertiary
+--spectrum-gray-700
+000000
+white
+Learn more
+primary
+--spectrum-gray-700
+000000
+white
+style
+default
+Recent Analytics documentation updates
+Recently added and updated documentation
+View documentation
+documentation
+exl:solution/QW5hbHl0aWNz
+MOST_RECENT
+style
+default
+Popular troubleshooting articles for Analytics
+The most popular troubleshooting articles for Analytics
+troubleshooting
+exl:solution/QW5hbHl0aWNz
+RELEVANCE
+style
+default

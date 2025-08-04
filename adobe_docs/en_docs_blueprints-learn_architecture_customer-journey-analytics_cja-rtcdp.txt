@@ -1,0 +1,22 @@
+Source URL: https://experienceleague.adobe.com/en/docs/blueprints-learn/architecture/customer-journey-analytics/cja-rtcdp
+================================================================================
+
+Documentation
+Tutorials
+Blueprints
+Customer Journey Analytics with Real-time Customer Data Platform blueprint
+Last update: Fri Aug 01 2025 00:00:00 GMT+0000 (Coordinated Universal Time)
+CREATED FOR:
+Developer
+User
+Create and publish audiences identified in Customer Journey Analytics (CJA) to Real-time Customer Profile in Adobe Experience Platform for customer targeting and personalization. Ideal for creating audiences using historical data or more refined audiences from granular filtering and computed fields in Customer Journey Analytics.
+Customer Journey Analytics audience publishing guide
+See the following documentation for guidance on implementation and configuration on publication of audiences from Customer Journey Analytics to Real-time Customer Data Platform.
+Documentation
+Architecture for Customer Journey Analytics blueprints
+{modal="regular"}
+Guardrail diagram for Customer Journey Analytics blueprints
+For detailed guardrails and end to end latencies refer to the
+deployment guardrails document
+recommendation-more-help
+045b7d44-713c-4708-a7a6-5dea7cc2546b

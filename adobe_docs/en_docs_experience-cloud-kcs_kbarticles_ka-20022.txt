@@ -1,0 +1,28 @@
+Source URL: https://experienceleague.adobe.com/en/docs/experience-cloud-kcs/kbarticles/ka-20022
+================================================================================
+
+Documentation
+Workspace Project truncated when scheduling or downloading PDF
+Last update: Fri Oct 27 2023 00:00:00 GMT+0000 (Coordinated Universal Time)
+Learn how to resolve the issue when scheduled or downloaded PDF contains truncated rows.
+Description
+description
+Environment
+Analytics
+Customer Journey Analytics
+Issue/Symptoms
+Scheduled or downloaded PDF contains truncated rows as below example.
+Resolution
+resolution
+On the
+truncated Freeform table
+, click the
+Return to default height
+icon, save the project, and reschedule or download the Workspace Project again.
+Cause
+It is very similar to a collapsed panel, and when downloading a collapsed PDF, it will not expand the panel.
+For the same reason, we need to expand the truncated Freeform table by clicking the
+Return to default height
+icon. It is working as designed.
+recommendation-more-help
+3d58f420-19b5-47a0-a122-5c9dab55ec7f

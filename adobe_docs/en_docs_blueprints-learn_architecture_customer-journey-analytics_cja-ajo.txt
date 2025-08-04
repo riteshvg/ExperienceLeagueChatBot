@@ -1,0 +1,20 @@
+Source URL: https://experienceleague.adobe.com/en/docs/blueprints-learn/architecture/customer-journey-analytics/cja-ajo
+================================================================================
+
+Documentation
+Tutorials
+Blueprints
+Customer Journey Analytics with Journey Optimizer blueprint
+Last update: Mon Feb 06 2023 00:00:00 GMT+0000 (Coordinated Universal Time)
+CREATED FOR:
+Developer
+User
+Data from Journey Optimizer is shared to Experience Platform’s data lake and is available for ingestion, analysis and reporting within Customer Journey Analytics. Journey delivery, interaction, and effectiveness can be analyzed and reported within Customer Journey Analytics.
+Additionally audiences that are authored in Customer Journey Analytics can be published to the Experience Platform Real-time Customer Profile and are available for journey execution in Journey Optimizer.
+Implementation guide
+See the following documentation for guidance on implementation and configuration of Journey Optimizer data within Customer Journey Analytics.
+Documentation
+Architecture for Customer Journey Analytics with Journey Optimizer
+{modal="regular"}
+recommendation-more-help
+045b7d44-713c-4708-a7a6-5dea7cc2546b

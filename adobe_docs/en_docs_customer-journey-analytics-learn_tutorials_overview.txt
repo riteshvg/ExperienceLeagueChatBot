@@ -1,0 +1,44 @@
+Source URL: https://experienceleague.adobe.com/en/docs/customer-journey-analytics-learn/tutorials/overview
+================================================================================
+
+Documentation
+Customer Journey Analytics
+Customer Journey Analytics
+Customer Journey Analytics tutorials
+Last update: Tue Feb 27 2024 00:00:00 GMT+0000 (Coordinated Universal Time)
+CREATED FOR:
+Beginner
+User
+Developer
+Admin
+Leader
+Welcome to the Customer Journey Analytics tutorials Site. Using these tutorials along with the
+documentation
+will give you a better understanding how to use Adobe Analytics to gain multi-channel customer insights faster than ever. To get started,
+See the
+“What’s New”
+section below for the latest goodies
+Staff Picks
+highlights some of our favorite content
+Explore the content by topic and subtopic in the
+left navigation
+Use the
+search
+field at the top of the page if you know what you are looking for
+Customer Journey Analytics lets you control how you connect your online and offline data in Analysis Workspace on any common customer ID, finally allowing you to do attribution, segmentation, flow, fallout, etc. across your entire customer data set.
+recs-overview-body-1
+recs-overview-body-2
+recs-overview-body-3
+recs-overview-body-4
+recs-overview-body-5
+recs-overview-body-6
+Staff picks
+table 0-row-3 html-authored no-header
+Understanding How Customer Journey Analytics Uses Identity
+A practical look at how identity affects your analysis in Customer Journey Analytics
+Architecture and Integrations of Customer Journey Analytics
+Walkthrough of the architecture of Customer Journey Analytics, including integration with the Adobe Experience Platform.
+Cross-Channel Attribution in Customer Journey Analytics
+How you can use visualizations to show attribution (give credit) across channels.
+recommendation-more-help
+a05d7212-fdba-4b70-a337-d5897f329c68

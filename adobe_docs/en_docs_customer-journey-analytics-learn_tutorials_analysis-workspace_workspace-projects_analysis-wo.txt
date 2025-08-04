@@ -1,0 +1,17 @@
+Source URL: https://experienceleague.adobe.com/en/docs/customer-journey-analytics-learn/tutorials/analysis-workspace/workspace-projects/analysis-workspace-overview
+================================================================================
+
+Documentation
+Customer Journey Analytics
+Customer Journey Analytics
+Analysis Workspace overview
+Last update: Tue Aug 01 2023 00:00:00 GMT+0000 (Coordinated Universal Time)
+Topics:
+Workspace Basics
+CREATED FOR:
+Beginner
+User
+Analysis Workspace is a flexible, freeform analysis environment used to explore and visualize data from Experience Platform. Learn about the basic components used to create projects and dashboards.
+https://video.tv.adobe.com/v/3418008/?quality=12&learn=on
+recommendation-more-help
+a05d7212-fdba-4b70-a337-d5897f329c68

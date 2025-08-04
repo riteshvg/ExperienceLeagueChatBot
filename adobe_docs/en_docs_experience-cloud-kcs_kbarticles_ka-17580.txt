@@ -1,0 +1,108 @@
+Source URL: https://experienceleague.adobe.com/en/docs/experience-cloud-kcs/kbarticles/ka-17580
+================================================================================
+
+Documentation
+Migrating users from Adobe ID to Fed ID
+Last update: Mon Jun 17 2024 00:00:00 GMT+0000 (Coordinated Universal Time)
+This article explains how to migrate from an Adobe ID to a Fed ID and how to change the domain name.
+Description
+description
+Environment
+Customer Journey Analytics
+Analytics
+Issue/Symptoms
+How to migrate from an Adobe ID to a Fed ID? Also, how to change the domain name, for example, from
+user@olddomain.com
+(Adobe ID) to
+user@newdomain.com
+(Fed ID)?
+Note:
+Follow the same process as described below if you want to change the domain name from one Adobe ID to another Adobe ID (for example, from
+user@olddomain.com
+(Adobe ID) to
+user@newdomain.com
+(Adobe ID)). Ensure that Adobe ID is selected in all the steps mentioned below.
+Resolution
+resolution
+Steps to be followed
+.Obtain a backup of all your current users and their product profiles
+Go to the Experience Cloud Admin Console
+>
+Users
+tab.
+Click on the 3 dots and select
+Export users list to CSV
+.
+Unlink Adobe Analytics user accounts with Experience Cloud Admin Console accounts.
+This can be done by simply deleting the user account from the Experience Cloud Admin Console.
+Go to the Experience Cloud Admin Console
+>
+Users
+tab.
+Either use the
+Remove users by CSV
+option using 3 dots, or just select the user and click
+Remove User
+.
+Upload new users as Federated ID without Analytics product profiles.
+Go to the Experience Cloud Admin Console
+>
+Users
+tab.
+Click
+Add users by CSV
+and download the standard template.
+Populate the following fields only:
+Identity Type
+Username
+Domain
+Email
+First Name
+Last Name
+Country Code
+You can take the help of the reference backup file (from 1) for information like First Name, Last Name, and Country Code.
+Ensure that
+Identity Type
+is Federated ID, and that Username, Domain, Email are all updated as per the updated Federated ID user detail.
+Upload the file.
+Update the email address of the Analytics user account.
+Go to Analytics
+>
+Admin
+>
+Analytics users & assets
+.
+The Analytics user account corresponding to the removed Experience Cloud user account (as done in 2) will show “
+Not Initiated
+” as the
+Migration
+status.
+Click the user account and update the email address and save the changes. Like
+user@olddomain.com
+was updated to
+user@newdomain.com
+for the “UserID” Analytics user account.
+Upload Analytics product profiles to the uploaded Federated ID users in step 3.
+Do a bulk upload.
+Go to the Experience Cloud Admin Console
+>
+Users
+tab.
+Click on the 3 dots and
+Edit user details by CSV
+.
+Use the file from step 3 and update the required details.
+For information on “
+Product Configurations and other columns
+” use the file from step 1.
+Ensure that the column “
+ID
+” is empty.
+Verify and validate the details of other columns.
+Upload the file.
+This will change the email address of your user, update the identity type to the Federated ID, and link it to the existing Analytics user account (while retaining all the assets).
+Considerations
+It’s advisable to complete it in batches rather than doing it all at once.
+Also, if the Analytics user ID is using the email address, the user ID can’t be changed – it will continue to show the old email address through the email address and other things will change and work as expected.
+recommendation-more-help
+3d58f420-19b5-47a0-a122-5c9dab55ec7f

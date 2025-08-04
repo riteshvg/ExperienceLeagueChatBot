@@ -1,0 +1,23 @@
+Source URL: https://experienceleague.adobe.com/en/docs/blueprints-learn/architecture/architecture-overview/experience-cloud
+================================================================================
+
+Documentation
+Tutorials
+Blueprints
+Adobe Experience Cloud architecture diagrams
+Last update: Mon May 05 2025 00:00:00 GMT+0000 (Coordinated Universal Time)
+CREATED FOR:
+Developer
+User
+These diagrams show how Experience Cloud applications, application services, and Experience Platform fit into an enterprise marketing architecture.
+Adobe Experience Cloud marketecture
+The following diagram illustrates the various components of Adobe Experience Cloud across Data Insights & Audiences, Content & Commerce, Customer Journeys, Marketing Workflow, built and integrated on the foundation of the Adobe Experience Platform.
+{modal="regular"}
+Integration architecture of data & insights, content & commerce, and experience delivery
+The architecture diagram below illustrates how the various components of the Adobe Experience Cloud connect and integrate to achieve personalization at scale across data, content, and experience delivery.
+{modal="regular"}
+Adobe Experience Cloud in the enterprise landscape
+The architecture diagram below illustrates how Adobe Experience Cloud applications and Adobe Experience Platform fit into an enterprise customer experience architecture across the four categories of Data, Insights, Orchestration, and Engagement.
+{modal="regular"}
+recommendation-more-help
+045b7d44-713c-4708-a7a6-5dea7cc2546b

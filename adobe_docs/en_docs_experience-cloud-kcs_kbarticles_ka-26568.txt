@@ -1,0 +1,72 @@
+Source URL: https://experienceleague.adobe.com/en/docs/experience-cloud-kcs/kbarticles/ka-26568
+================================================================================
+
+Documentation
+Mobile Device Model Tracking for iPhone in Adobe Analytics and CJA
+Last update: Mon Jul 21 2025 00:00:00 GMT+0000 (Coordinated Universal Time)
+Adobe utilizes a lookup from 3rd Party DeviceAtlas to gather device information from user data. In Adobe Analytics, the lookup data populates in the
+Mobile Device
+Dimension, while in CJA, the lookup data populates in the
+Mobile Device Name
+Dimension.  When comparing these for iPhone, more than 90% of hits (AA) or events (CJA) will display the device model as ‘Apple iPhone’ without displaying the specific model. The reason for this is due to the way that data is passed in the user agent string.
+“Mobile devices report their firmware version in the user agent string, not the device version. For example, a current-gen iPhone contains an identical user agent as its last generation iPhone if they are on the same firmware version. Since there is no way to determine an iPhone’s device version using JavaScript, all iPhones belong in the same bucket.”
+Refer to
+Mobile lookup dimensions
+for more information.
+When the information is unique to a specific device model, the system will display the model name; however in situations where it can’t, the generic ‘Apple iPhone’ is used. In order to get more specific device model information, Adobe has set aside variables which can be implemented to track and display this information in AA and CJA.
+a.DeviceName
+(Analytics Context Variable)
+xdm:model
+(AEP Edge Network Property)
+xdm:modelNumber
+(AEP Edge Network Property)
+Description
+description
+Environment
+Adobe Analytics
+Adobe Customer Journey Analytics (CJA)
+Symptoms
+a.DeviceName
+When configured, this variable will pass data to the Lifecyle Dimension “Device Name (SDK)” in the Analytics Workspace. For Apple devices, the mobile device models populate using Apple Mobile Device Codes and not the market friendly device name. For example, a record would display as iPhone16,1 which translates to iPhone 15 Pro. The full list can be found in the Identifier column in the table at
+https://theapplewiki.com/wiki/Models#iPhone
+.
+In order to display the market friendly model name instead of the device code, a processing rule can be created to change the display name post processing.
+table 0-row-1
+Note
+:
+Even though the Analytics Lifecyle Dimension name contains (SDK) the
+a.DeviceName
+context data variable is ONLY used for the Analytics Extension, not for data passing through Edge Network. Refer to
+Lifecycle data
+.
+xdm:model
+and
+xdm:modelNumber
+Unlike the preconfigured Analytics Lifecycle Dimension, the device model data collected in Edge Network implementations will display in whichever dimension is mapped to the schema field using the model and
+modelNumber
+properties. Based on your implementation, these properties can be configured independently, or combined into one “device model” schema field. For Apple mobile devices,
+xdm:model
+popluates the market friendly name of the device, and the
+xdm:modelNumber
+displays the “A” Number which correlates to the color of the device. An example of data displayed from a combined implementation would look like: iPhone 15 Pro Max (A2849).
+For the full list of
+modelNumber
+translations, see the ‘ “A” Number’ column in the table at
+https://theapplewiki.com/wiki/Models#iPhone
+.
+Resolution
+resolution
+Final Note
+It is important to understand the distinction of how
+a.DeviceName
+and
+xdm:model/xdm:modelNumber
+collect and display data for situations where both
+AppMeasurement
+and
+Edge Network
+implementations exist in tandem. Generally this happens during migration which can cause confusion when comparing data collected in
+AppMeasurement
+to data collected in Edge Network, even when everything is set up and working as designed. If there is a concern regarding the implementation for your organization, reach out to your organization’s development team for Adobe Data Collection, or Adobe Consulting Services for assistance.
+recommendation-more-help
+3d58f420-19b5-47a0-a122-5c9dab55ec7f

@@ -1,0 +1,108 @@
+Source URL: https://experienceleague.adobe.com/en/browse/target
+================================================================================
+
+Adobe Target
+With Adobe Target, you can personalize website content, test different versions of your pages, and give smart product suggestions to visitors. Get help on using targeting and automation to connect with your audience, boost sales, and make your digital experiences stand out.
+exl:solution/VGFyZ2V0
+Browse Target by topic
+exl:solution,exl:feature,exl:feature/VGFyZ2V0/T3ZlcnZpZXc=,exl:feature/VGFyZ2V0/UHJpdmFjeSAmIFNlY3VyaXR5,exl:feature/VGFyZ2V0/RXhwZXJpZW5jZSBUYXJnZXRpbmc=,exl:feature/VGFyZ2V0/RXhwZXJpZW5jZXMgYW5kIE9mZmVycw==,exl:feature/VGFyZ2V0/SW1wbGVtZW50YXRpb24=,exl:feature/VGFyZ2V0/SW50ZWdyYXRpb25z,exl:feature/VGFyZ2V0/UmVsZWFzZSBOb3Rlcw==,exl:feature/VGFyZ2V0/UmVwb3J0cw==,exl:feature/VGFyZ2V0/Rm9ybS1iYXNlZCBFeHBlcmllbmNlIENvbXBvc2Vy
+feature/Target/Overview:Overview,feature/Target/Privacy & Security:Privacy & Security,feature/Target/Experience Targeting:Experience Targeting,feature/Target/Experiences and Offers:Experiences and Offers,feature/Target/Implementation:Implementation,feature/Target/Integrations:Integrations,feature/Target/Release Notes:Release Notes,feature/Target/Reports:Reports,feature/Target/Form-based Experience Composer:Form-based Experience Composer
+style
+default
+Get started with Target
+Content to help you get started with your solution
+/en/playlists/target-get-started-recommendations-business-users
+/en/playlists/target-perform-advanced-tasks
+/en/docs/target-learn/tutorials/administration/strategy/create-personalization-roadmap-testing-plan
+/en/docs/target-learn/tutorials/administration/strategy/target-best-practices-for-optimization
+style
+default
+Popular tutorials for Target
+The most popular tutorials for Target
+View all Target tutorials
+tutorial
+exl:solution/VGFyZ2V0
+MOST_POPULAR
+style
+default
+EVENTS
+Live Target learning events with your peers and Adobe experts.
+Learn new skills and discover better solutions for your business when you attend upcoming live learning events.
+tertiary
+--spectrum-gray-700
+000000
+white
+View events
+primary
+--spectrum-gray-700
+000000
+white
+style
+default
+Popular playlists for Target
+The most popular playlists for Target
+View more Target playlists
+playlist
+exl:solution/VGFyZ2V0
+MOST_POPULAR
+style
+default
+Target Community conversations
+Community conversations with customers like you
+Connect with the Target Community
+community
+exl:solution/VGFyZ2V0
+style
+default
+COMMUNITY
+"Through engagement with Adobe Community, I have gained a deeper understanding of Adobe's products ecosystem."
+- Arun Patidar, Adobe Experience Manager Architect.
+tertiary
+--spectrum-gray-700
+000000
+white
+Join the community
+primary
+--spectrum-gray-700
+000000
+white
+style
+default
+Upcoming instructor-led trainings for Target
+Learn more about the upcoming Adobe instructor led trainings
+Visit the catalog
+Target
+recommended
+style
+default
+CERTIFICATION
+Go further with an Adobe Target certification.
+Sharpen your Adobe skills and bring value to your company. We offer certification programs that can help you take your career to the next level.
+tertiary
+--spectrum-gray-700
+000000
+white
+Learn more
+primary
+--spectrum-gray-700
+000000
+white
+style
+default
+Recent Target documentation updates
+Recently added and updated documentation
+View documentation
+documentation
+exl:solution/VGFyZ2V0
+MOST_RECENT
+style
+default
+Popular troubleshooting articles for Target
+The most popular troubleshooting articles for Target
+troubleshooting
+exl:solution/VGFyZ2V0
+MOST_POPULAR
+style
+default
+style
+default

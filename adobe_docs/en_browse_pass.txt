@@ -1,0 +1,45 @@
+Source URL: https://experienceleague.adobe.com/en/browse/pass
+================================================================================
+
+Adobe Pass
+Adobe Pass lets your viewers watch their favorite shows anywhere, on any device, and helps you identify, measure, and limit account sharing. Learn about setting up secure logins, controlling how many people can watch at a time, and using smart tools to give your subscribers a smooth and safe TV experience.
+exl:solution/UGFzcw==,exl:solution/UHJpbWV0aW1l
+style
+default
+Get started with Pass
+Content to help you get started with your solution
+/en/docs/pass/aiq-help/get-started
+/en/docs/pass/aiq-help/best-practices
+/en/docs/pass/aiq-help/faq
+/en/docs/pass/aiq-help/home
+style
+default
+EVENTS
+Live Adobe Pass learning events with your peers and Adobe experts.
+Learn new skills and discover better solutions for your business when you attend upcoming live learning events.
+tertiary
+--spectrum-gray-700
+000000
+white
+View events
+primary
+--spectrum-gray-700
+000000
+white
+style
+default
+Recent Pass documentation updates
+Recently added and updated documentation
+View documentation
+documentation
+exl:solution/UGFzcw==
+MOST_RECENT
+style
+default
+Popular troubleshooting articles for Pass
+The most popular troubleshooting articles for Pass
+troubleshooting
+exl:solution/UGFzcw==
+MOST_POPULAR
+style
+default

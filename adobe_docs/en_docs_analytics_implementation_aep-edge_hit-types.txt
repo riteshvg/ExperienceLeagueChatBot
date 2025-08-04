@@ -1,0 +1,113 @@
+Source URL: https://experienceleague.adobe.com/en/docs/analytics/implementation/aep-edge/hit-types
+================================================================================
+
+Documentation
+Analytics
+Implementation Guide
+Edge Network event types in Adobe Analytics
+Last update: Thu Jul 31 2025 00:00:00 GMT+0000 (Coordinated Universal Time)
+Topics:
+Implementation Basics
+CREATED FOR:
+Admin
+Developer
+Adobe Analytics treats hits differently depending on what functions you call in AppMeasurement. For example,
+s.t
+and
+s.tl
+include or omit certain dimensions and increment page views differently. Adobe Experience Platform only contains the
+sendEvent
+command. Specific properties within the
+xdm
+payload determine how that data is interpreted in Adobe Analytics.
+The Edge Network uses the following logic to determine Adobe Analytics page views and link events:
+XDM payload contains…
+Adobe Analytics…
+xdm.web.webPageDetails.name
+or
+xdm.web.webPageDetails.URL
+and no
+xdm.web.webInteraction.type
+considers payload a
+page view
+xdm.eventType = web.webPageDetails.pageViews
+considers payload a
+page view
+xdm.web.webInteraction.type
+and (
+xdm.web.webInteraction.name
+or
+xdm.web.webInteraction.url
+)
+considers payload a
+link event
+xdm.web.webInteraction.type
+and (
+xdm.web.webPageDetails.name
+or
+xdm.web.webPageDetails.url
+)
+considers payload a
+link event
+Also sets
+xdm.web.webPageDetails.name
+and
+xdm.web.webPageDetails.URL
+to
+null
+no
+xdm.web.webInteraction.type
+and (no
+xdm.webPageDetails.name
+and no
+xdm.web.webPageDetails.URL
+)
+drops the payload and ignores the data
+In addition to differentiating page views and link clicks, the following logic is in place that determines if certain events are categorized as A4T or are discarded.
+XDM payload contains…
+Adobe Analytics…
+xdm.eventType = display
+or
+xdm.eventType = decisioning.propositionDisplay
+or
+xdm.eventType = personalization.request
+or
+xdm.eventType = decisioning.propositionFetch
+and
+xdm._experience.decisioning
+considers payload an
+A4T
+call.
+xdm.eventType = display
+or
+xdm.eventType = decisioning.propositionDisplay
+or
+xdm.eventType = personalization.request
+or
+xdm.eventType = decisioning.propositionFetch
+and no
+xdm._experience.decisioning
+drops the payload and ignores the data
+xdm.eventType = click
+or
+xdm.eventType = decisioning.propositionInteract
+and
+xdm._experience.decisioning
+and no
+web.webInteraction.type
+considers payload an
+A4T
+call.
+xdm.eventType = click
+or
+xdm.eventType = decisioning.propositionInteract
+and no
+xdm._experience.decisioning
+and no
+web.webInteraction.type
+drops the payload and ignores the data.
+See the
+Adobe Analytics ExperienceEvent Full Extension schema field group
+for more information.
+recommendation-more-help
+b4f6d761-4a8b-4322-b801-c85b9e3be690

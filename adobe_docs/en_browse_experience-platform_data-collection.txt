@@ -1,0 +1,85 @@
+Source URL: https://experienceleague.adobe.com/en/browse/experience-platform/data-collection
+================================================================================
+
+Adobe Data Collection
+Explore resources on how to collect customer data from client-side sources — like web, mobile, and over-the-top (OTT) applications — and enrich, transform, and distribute it to both Adobe and non-Adobe destinations. All with Data Collection technologies in Adobe Experience Platform.
+exl:solution/RGF0YSBDb2xsZWN0aW9u
+Browse Data Collection by topic
+exl:topic/SW50ZWdyYXRpb25z,exl:topic/T3BlcmF0aW9uYWwgUmVhZGluZXNz,exl:topic/UGVyZm9ybWFuY2U=,exl:topic/TG9jYWxpemF0aW9u,exl:topic/Q29udGVudCBNYW5hZ2VtZW50,exl:topic/Q29sbGFib3JhdGlvbg==,exl:topic/QXJjaGl0ZWN0dXJl
+topic/Integrations:Integrations,topic/Operational Readiness:Operational Readiness,topic/Performance:Performance,topic/Localization:Localization,topic/Content Management:Content Management,topic/Collaboration:Collaboration,topic/Architecture:Architecture
+style
+default
+Get started with Data Collection
+Content to help you get started with your solution
+/en/docs/platform-learn/implement-web-sdk/overview#_blank
+/en/docs/platform-learn/data-collection/users-and-permissions
+/en/docs/platform-learn/data-collection/web-sdk/overview
+/en/docs/platform-learn/implement-mobile-sdk/overview
+style
+default
+EVENTS
+Live learning events with your peers and Adobe experts.
+Learn new skills and discover better solutions for your business when you attend upcoming live learning events.
+tertiary
+--spectrum-gray-700
+000000
+white
+View events
+primary
+--spectrum-gray-700
+000000
+white
+style
+default
+Popular tutorials for Data Collection
+The most popular tutorials for Data Collection
+View all tutorials
+tutorial
+exl:solution/RGF0YSBDb2xsZWN0aW9u
+MOST_POPULAR
+style
+default
+Recent tutorials for Data Collection
+The most recent tutorials for Data Collection
+View all tutorials
+tutorial
+exl:solution/RGF0YSBDb2xsZWN0aW9u
+MOST_RECENT
+style
+default
+COMMUNITY
+"Through engagement with the Adobe Community, I have gained a deeper understanding of Adobe's product ecosystem."
+- Arun Patidar, Adobe Experience Manager Architect
+tertiary
+--spectrum-gray-700
+000000
+white
+Join the Community
+primary
+--spectrum-gray-700
+000000
+white
+style
+default
+Upcoming instructor-led trainings for Experience Platform
+Learn more about the upcoming Adobe instructor led trainings
+Visit the catalog
+Experience Platform
+recommended
+style
+default
+Recent Data Collection documentation updates
+Recently added and updated documentation
+View documentation
+documentation
+exl:solution/RGF0YSBDb2xsZWN0aW9u
+MOST_RECENT
+style
+default
+Popular troubleshooting articles for Data Collection
+The most popular troubleshooting articles for Data Collection
+troubleshooting
+exl:solution/RGF0YSBDb2xsZWN0aW9u
+MOST_POPULAR
+style
+default

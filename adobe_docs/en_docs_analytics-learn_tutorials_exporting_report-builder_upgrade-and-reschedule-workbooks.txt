@@ -1,0 +1,20 @@
+Source URL: https://experienceleague.adobe.com/en/docs/analytics-learn/tutorials/exporting/report-builder/upgrade-and-reschedule-workbooks
+================================================================================
+
+Documentation
+Analytics
+Analytics Tutorials
+Upgrade and reschedule Report Builder workbooks
+Last update: Thu Nov 07 2024 00:00:00 GMT+0000 (Coordinated Universal Time)
+Topics:
+Report Builder
+CREATED FOR:
+Beginner
+User
+Learn how to upgrade and reschedule legacy Report Builder workbooks to the latest version of Adobe Analytics Report Builder.
+https://video.tv.adobe.com/v/3434957/?quality=12&learn=on
+For more information on this feature, visit the
+documentation
+.
+recommendation-more-help
+b5d9c99f-be9f-4b96-8809-4e7d6ae353ba

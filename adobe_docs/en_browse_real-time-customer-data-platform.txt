@@ -1,0 +1,105 @@
+Source URL: https://experienceleague.adobe.com/en/browse/real-time-customer-data-platform
+================================================================================
+
+Adobe Real-Time Customer Data Platform
+With Real-Time Customer Data Platform, you can bring all your customer information together, group your audiences instantly, and use data to improve every channel. Learn about how using one platform for all your customer data can help you create personalized experiences, reach more people, and make your marketing stronger for the future.
+exl:solution/UmVhbC1UaW1lIEN1c3RvbWVyIERhdGEgUGxhdGZvcm0=
+Browse Real-Time CDP by topic
+exl:feature/RXhwZXJpZW5jZSBQbGF0Zm9ybQ==/VXNlIENhc2Vz,exl:feature/RXhwZXJpZW5jZSBQbGF0Zm9ybQ==/RGVzdGluYXRpb25z,exl:feature/RXhwZXJpZW5jZSBQbGF0Zm9ybQ==/U2FuZGJveGVz,exl:feature/RXhwZXJpZW5jZSBQbGF0Zm9ybQ==/UHJvZmlsZXM=
+feature/Experience Platform/Use Cases:Use Cases,feature/Experience Platform/Destinations:Destinations,feature/Experience Platform/Sandboxes:Sandboxes,feature/Experience Platform/Profiles:Profiles
+style
+default
+Get started with Real-Time CDP
+Content to help you get started with your solution
+/en/playlists/real-time-customer-data-platform-get-started-with-real-time-cdp-b2b-edition-for-marketers
+/en/playlists/real-time-customer-data-platform-get-started-for-admins
+/en/playlists/audience-manager-understand-real-time-cdp
+/en/docs/platform-learn/tutorials/rtcdp/understanding-the-real-time-customer-data-platform
+style
+default
+Popular tutorials for Real-Time CDP
+The most popular tutorials for Real-Time CDP
+View all tutorials
+tutorial
+exl:solution/UmVhbC1UaW1lIEN1c3RvbWVyIERhdGEgUGxhdGZvcm0=,exl:solution/RXhwZXJpZW5jZSBQbGF0Zm9ybQ==,exl:feature/RXhwZXJpZW5jZSBQbGF0Zm9ybQ==/RGVzdGluYXRpb25z,exl:feature/RXhwZXJpZW5jZSBQbGF0Zm9ybQ==/U2FuZGJveGVz,exl:feature/RXhwZXJpZW5jZSBQbGF0Zm9ybQ==/UHJvZmlsZXM=
+MOST_POPULAR
+style
+default
+Popular playlists for Real-Time CDP
+The most popular playlists for your solution
+View more playlists
+playlist
+exl:solution/UmVhbC1UaW1lIEN1c3RvbWVyIERhdGEgUGxhdGZvcm0=
+MOST_POPULAR
+style
+default
+EVENTS
+Live Real-Time CDP learning events with your peers and Adobe experts.
+Learn new skills and discover better solutions for your business when you attend upcoming live learning events.
+tertiary
+--spectrum-gray-700
+000000
+white
+View events
+primary
+--spectrum-gray-700
+000000
+white
+style
+default
+Real-Time CDP Community conversations
+Get help and learn from your peers with Community conversations
+Connect with the Community
+community
+exl:solution/UmVhbC1UaW1lIEN1c3RvbWVyIERhdGEgUGxhdGZvcm0=
+style
+default
+COMMUNITY
+"Through engagement with the Adobe Community, I have gained a deeper understanding of Adobe's product ecosystem."
+- Arun Patidar, Adobe Experience Manager Architect
+tertiary
+--spectrum-gray-700
+000000
+white
+Join the Community
+primary
+--spectrum-gray-700
+000000
+white
+style
+default
+Upcoming instructor-led trainings for Real-Time CDP
+Learn more about the upcoming Adobe instructor led trainings
+Visit the catalog
+Real-Time CDP
+recommended
+style
+default
+CERTIFICATION
+Go further with an Adobe Real-Time CDP certification.
+Sharpen your Adobe skills and bring value to your company. We offer certification programs that can help you take your career to the next level.
+tertiary
+--spectrum-gray-700
+000000
+white
+Learn more
+primary
+--spectrum-gray-700
+000000
+white
+style
+default
+Recent Real-Time CDP documentation updates
+Recently added and updated documentation
+View documentation
+documentation
+exl:solution/UmVhbC1UaW1lIEN1c3RvbWVyIERhdGEgUGxhdGZvcm0=,exl:solution/RXhwZXJpZW5jZSBQbGF0Zm9ybQ==,exl:feature/RXhwZXJpZW5jZSBQbGF0Zm9ybQ==/RGVzdGluYXRpb25z,exl:feature/RXhwZXJpZW5jZSBQbGF0Zm9ybQ==/UHJvZmlsZXM=,exl:feature/RXhwZXJpZW5jZSBQbGF0Zm9ybQ==/U2FuZGJveGVz,exl:feature/RXhwZXJpZW5jZSBQbGF0Zm9ybQ==/VXNlIENhc2Vz
+style
+default
+Popular troubleshooting articles for Real-Time CDP
+The most popular troubleshooting articles for Real-Time CDP
+troubleshooting
+exl:solution/RXhwZXJpZW5jZSBQbGF0Zm9ybQ==,exl:solution/UmVhbC1UaW1lIEN1c3RvbWVyIERhdGEgUGxhdGZvcm0=
+MOST_POPULAR
+style
+default
