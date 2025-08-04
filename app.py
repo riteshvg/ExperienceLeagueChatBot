@@ -52,7 +52,7 @@ def load_knowledge_base():
         return None
 
 @st.cache_resource
-def setup_qa_chain(_vectorstore, provider="Ollama (Local)"):
+def setup_qa_chain(_vectorstore, provider="Groq (Cloud)"):
     """Setup the QA chain with selected LLM provider"""
     try:
         # Initialize LLM based on provider selection
@@ -87,12 +87,26 @@ def setup_qa_chain(_vectorstore, provider="Ollama (Local)"):
                 st.error(f"❌ Error initializing Groq: {e}")
                 return None
         else:
-            # Initialize Ollama LLM (default)
-            llm = OllamaLLM(
-                model="llama3:8b",  # Using the available model
-                temperature=0.1,
-                base_url="http://localhost:11434"
-            )
+            # Initialize Ollama LLM (fallback)
+            try:
+                llm = OllamaLLM(
+                    model="llama3:8b",  # Using the available model
+                    temperature=0.1,
+                    base_url="http://localhost:11434"
+                )
+                
+                # Test the connection with a simple call
+                try:
+                    test_response = llm.invoke("Hello")
+                    st.success("✅ Ollama connection successful!")
+                except Exception as ollama_error:
+                    st.error("❌ Ollama connection failed. Please ensure Ollama is running with `ollama serve`")
+                    st.info("💡 You can switch to 'Groq (Cloud)' in the sidebar for cloud-based responses.")
+                    return None
+                    
+            except Exception as e:
+                st.error(f"❌ Error initializing Ollama: {e}")
+                return None
         
         # Create prompt template
         prompt_template = """You are a helpful assistant that answers questions about Adobe Experience League solutions based on the provided context.
@@ -251,7 +265,7 @@ def main():
         st.markdown("**🤖 LLM Provider:**")
         llm_provider = st.selectbox(
             "Choose your LLM provider:",
-            ["Ollama (Local)", "Groq (Cloud)"],
+            ["Groq (Cloud)", "Ollama (Local)"],
             key="llm_provider"
         )
         
@@ -349,7 +363,7 @@ def main():
             
             with status_col2:
                 # Show current LLM provider
-                current_provider = st.session_state.get("llm_provider", "Ollama (Local)")
+                current_provider = st.session_state.get("llm_provider", "Groq (Cloud)")
                 st.info(f"🤖 Using: {current_provider}")
             
             with status_col3:
@@ -376,7 +390,7 @@ def main():
                     **💡 Tips:**
                     - Ask questions about Adobe Experience League solutions features, implementation, or best practices
                     - Use the sidebar to quickly access common questions
-                    - Switch between Ollama (local) and Groq (cloud) for different performance
+                    - Groq (cloud) is the default for fast responses, Ollama (local) is available as fallback
                     - Check the "View Sources" expander to see which documents were used
                     - Use reactions (👍👎💡) to provide feedback on responses
                     
@@ -531,42 +545,7 @@ def main():
                 # Send button positioned next to input
                 send_button = st.form_submit_button("Send", help="Send message")
         
-        # Show character count and token estimate OUTSIDE the form
-        if user_input:
-            char_count = len(user_input)
-            # Rough token estimate (1 token ≈ 4 characters for English text)
-            estimated_tokens = char_count // 4
-            
-            # Create a progress bar for visual feedback
-            max_recommended_chars = 500
-            progress_percentage = min(char_count / max_recommended_chars, 1.0)
-            
-            # Display token information with color coding
-            col1, col2 = st.columns([3, 1])
-            with col1:
-                if char_count > 500:
-                    st.warning(f"⚠️ Very long question ({char_count} chars, ~{estimated_tokens} tokens)")
-                elif char_count > 300:
-                    st.error(f"🚨 Long question ({char_count} chars, ~{estimated_tokens} tokens)")
-                elif char_count > 200:
-                    st.info(f"📝 Question length: {char_count} chars (~{estimated_tokens} tokens)")
-                else:
-                    st.success(f"✅ Good length: {char_count} chars (~{estimated_tokens} tokens)")
-            
-            with col2:
-                # Show progress bar
-                if progress_percentage > 0.8:
-                    st.progress(progress_percentage, text="⚠️ Long")
-                elif progress_percentage > 0.6:
-                    st.progress(progress_percentage, text="📝 Medium")
-                else:
-                    st.progress(progress_percentage, text="✅ Good")
-            
-            # Add helpful tips
-            if char_count > 400:
-                st.markdown("💡 **Tip:** Consider breaking your question into smaller, more specific parts for better responses.")
-            elif char_count > 200:
-                st.markdown("💡 **Tip:** Your question is getting long. Consider being more concise for faster responses.")
+
         
         # Handle sending the message (both button click and Enter key)
         if send_button and user_input.strip():

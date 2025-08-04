@@ -1,155 +1,166 @@
-# Adobe Analytics Q&A Assistant
+# Adobe Experience League Documentation Chatbot
 
-A comprehensive question-answering system for Adobe Analytics documentation using LangChain, FAISS vector store, and Ollama LLM.
+A Streamlit-based chatbot that answers questions about Adobe Experience League solutions using local LLMs and a comprehensive knowledge base.
 
-## 🚀 Features
+## 🚀 Quick Deploy Options
 
-- **Web Scraping**: Automatically discovers and scrapes Adobe Analytics documentation
-- **Knowledge Base**: FAISS vector store with 14 documents and 111 chunks
-- **LLM Integration**: Uses Ollama with llama3:8b for intelligent responses
-- **Web Interface**: Beautiful Streamlit web app for easy interaction
-- **Source Attribution**: Shows which documents were used to answer questions
+### Option 1: Streamlit Cloud (Recommended)
+
+1. **Fork this repository** to your GitHub account
+2. **Go to [share.streamlit.io](https://share.streamlit.io)**
+3. **Connect your GitHub account**
+4. **Select this repository**
+5. **Set the main file path**: `app.py`
+6. **Add secrets** in Streamlit Cloud dashboard:
+   ```
+   GROQ_API_KEY = "your_groq_api_key_here"
+   ```
+7. **Deploy!** Your app will be live at `https://your-app-name.streamlit.app`
+
+### Option 2: Heroku
+
+1. **Install Heroku CLI**
+2. **Create `Procfile`**:
+   ```
+   web: streamlit run app.py --server.port=$PORT --server.address=0.0.0.0
+   ```
+3. **Deploy**:
+   ```bash
+   heroku create your-app-name
+   git push heroku main
+   ```
+
+### Option 3: Railway
+
+1. **Connect your GitHub repo** to Railway
+2. **Set environment variables**:
+   - `GROQ_API_KEY`
+3. **Deploy automatically**
+
+## 🔧 Local Setup
+
+### Prerequisites
+
+- Python 3.8+
+- Groq API key (required for default cloud LLM)
+- Ollama (optional, for local LLM fallback)
+
+### Installation
+
+```bash
+# Clone the repository
+git clone <your-repo-url>
+cd ChatBotAdobe
+
+# Create virtual environment
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Set up Groq API key (required)
+# Add your Groq API key to .streamlit/secrets.toml:
+# GROQ_API_KEY = "your_groq_api_key_here"
+
+# Optional: Set up Ollama for local fallback
+curl -fsSL https://ollama.ai/install.sh | sh
+ollama pull llama3:8b
+
+# Scrape documentation
+python scrape.py
+
+# Build knowledge base
+python ingest.py
+
+# Run the application
+streamlit run app.py
+```
 
 ## 📁 Project Structure
 
 ```
 ChatBotAdobe/
-├── scrape.py          # Scrapes Adobe Analytics documentation
-├── url_scraper.py     # Discovers working URLs automatically
-├── ingest.py          # Builds FAISS knowledge base
-├── chatbot.py         # Terminal-based chatbot
-├── app.py             # Streamlit web application
-├── adobe_docs/        # Scraped documentation files
-├── faiss_index/       # FAISS vector store
-└── working_urls.txt   # Verified working URLs
+├── app.py                 # Main Streamlit application
+├── scrape.py             # Adobe docs scraper
+├── ingest.py             # Knowledge base builder
+├── requirements.txt      # Python dependencies
+├── .streamlit/          # Streamlit configuration
+├── adobe_docs/          # Scraped documentation
+├── faiss_index/         # Vector store
+└── README.md           # This file
 ```
 
-## 🛠️ Installation
+## 🔑 Environment Variables
 
-1. **Clone and setup virtual environment:**
+- `GROQ_API_KEY`: Your Groq API key for cloud LLM access
 
-```bash
-python3 -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
+## 🌐 Integration with Your Blog
+
+### Option A: Iframe Embed (Simplest)
+
+Add this to your blog post:
+
+```html
+<iframe
+  src="https://your-app-name.streamlit.app"
+  width="100%"
+  height="800px"
+  frameborder="0"
+>
+</iframe>
 ```
 
-2. **Install Ollama:**
+### Option B: Custom Domain
 
-```bash
-# macOS
-brew install ollama
+1. **Deploy to Streamlit Cloud**
+2. **Add custom domain** in Streamlit Cloud settings
+3. **Point your subdomain** (e.g., `chat.thelearningproject.in`) to the Streamlit app
 
-# Or download from https://ollama.ai
-```
+### Option C: Full Integration
 
-3. **Pull the required model:**
+1. **Deploy backend** to your server
+2. **Create API endpoints** for the chatbot
+3. **Build custom frontend** that matches your blog design
+4. **Integrate via AJAX/JavaScript**
 
-```bash
-ollama pull llama3:8b
-```
+## 🎯 Features
 
-## 🔧 Usage
+- ✅ Local and cloud LLM support (Ollama + Groq)
+- ✅ Comprehensive Adobe documentation knowledge base
+- ✅ Real-time token monitoring
+- ✅ Auto-hide info boxes
+- ✅ Message reactions and feedback
+- ✅ Source document linking
+- ✅ Follow-up question suggestions
+- ✅ Response time tracking
+- ✅ Copy to clipboard functionality
 
-### 1. Build Knowledge Base
+## 🔒 Security Notes
 
-```bash
-# Discover working URLs
-python3 url_scraper.py
+- Keep your API keys secure
+- Use environment variables for sensitive data
+- Consider rate limiting for public deployments
+- Monitor usage and costs
 
-# Scrape documentation
-python3 scrape.py
+## 📊 Performance Tips
 
-# Build knowledge base
-python3 ingest.py
-```
+- Use Groq for faster responses
+- Consider caching for frequently asked questions
+- Monitor memory usage with large knowledge bases
+- Optimize chunk sizes for your use case
 
-### 2. Run the Web App
+## 🆘 Troubleshooting
 
-```bash
-# Start Ollama (in a separate terminal)
-ollama serve
+- **Ollama not connecting**: Ensure `ollama serve` is running
+- **Missing dependencies**: Run `pip install -r requirements.txt`
+- **Knowledge base errors**: Re-run `python ingest.py`
+- **Deployment issues**: Check Streamlit Cloud logs
 
-# Run Streamlit app
-streamlit run app.py
-```
+## 📞 Support
 
-### 3. Use Terminal Chatbot
+For deployment help, check:
 
-```bash
-python3 chatbot.py
-```
-
-## 📊 Knowledge Base Content
-
-The system includes documentation on:
-
-- **Analysis Workspace**: Fundamentals, navigation, collaboration
-- **Administration**: User management, report suites, configuration
-- **Implementation**: Web SDK, mobile SDK, server-side implementation
-- **Components**: Segments, calculated metrics, virtual report suites
-- **Export/Import**: Data feeds, warehouse, FTP/SFTP
-- **Integrations**: Adobe Experience Cloud integrations
-- **Release Notes**: Latest updates and documentation changes
-- **Tech Notes**: Technical articles and troubleshooting
-
-## 🎯 Example Questions
-
-- "How do I implement Adobe Analytics?"
-- "What is Analysis Workspace?"
-- "How do I create segments?"
-- "What are the different implementation methods?"
-- "How do I export data from Adobe Analytics?"
-- "What integrations are available?"
-
-## 🔧 Technical Details
-
-- **Vector Store**: FAISS with all-MiniLM-L6-v2 embeddings
-- **LLM**: Ollama with llama3:8b (4.7GB model)
-- **Chunking**: 1000 characters with 150 character overlap
-- **Retrieval**: Top 3 most relevant chunks per query
-- **Web Framework**: Streamlit for the web interface
-
-## 🚨 Troubleshooting
-
-### Ollama Connection Issues
-
-```bash
-# Check if Ollama is running
-ollama list
-
-# Start Ollama if not running
-ollama serve
-```
-
-### Model Not Found
-
-```bash
-# Pull the required model
-ollama pull llama3:8b
-```
-
-### FAISS Index Issues
-
-```bash
-# Rebuild the knowledge base
-python3 ingest.py
-```
-
-## 📈 Performance
-
-- **Documents**: 14 Adobe Analytics documentation pages
-- **Chunks**: 111 semantic chunks
-- **Response Time**: ~2-5 seconds per query
-- **Accuracy**: High relevance with source attribution
-
-## 🤝 Contributing
-
-1. Add new URLs to `scrape.py`
-2. Run `url_scraper.py` to discover working URLs
-3. Update the knowledge base with `ingest.py`
-4. Test with the web app or chatbot
-
-## 📝 License
-
-This project is for educational purposes. Please respect Adobe's terms of service when scraping their documentation.
+- [Streamlit Cloud Documentation](https://docs.streamlit.io/streamlit-community-cloud)
+- [Heroku Documentation](https://devcenter.heroku.com/)
+- [Railway Documentation](https://docs.railway.app/)
