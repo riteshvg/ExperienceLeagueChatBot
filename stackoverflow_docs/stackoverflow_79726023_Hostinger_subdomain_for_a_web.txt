@@ -1,0 +1,11 @@
+Stack Overflow Question: Hostinger subdomain for a web
+Question ID: 79726023
+Score: 0
+Views: 21
+Answers: 0
+Tags: html, deployment
+URL: https://stackoverflow.com/questions/79726023
+
+QUESTION:
+I am Not able to run my site through a subdomain on hostinger as some secutrity issue it can be or may be DSN and SSL even tried many ways but not able to track it would you mind to help. I have attached the error snapshot as well enter code here as the issue is not related to the code
+

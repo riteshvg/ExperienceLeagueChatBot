@@ -1,0 +1,11 @@
+Stack Overflow Question: Combining multiple unknown queries using Union
+Question ID: 79720046
+Score: 1
+Views: 87
+Answers: 2
+Tags: c#, .net, entity-framework-core
+URL: https://stackoverflow.com/questions/79720046
+
+QUESTION:
+I have an Entity Framework Core statement where I need to create a union of multiple selects. The number of selects is variable. I would like to do something like this, but it is not working: public List<Valuation> GetValuations(List<GetValuationCriteria> valuationCriteriaList) { IQueryable<Valuation> combinedQuery = null; IQueryable<Valuation> lastQuery = null; for (int xx = 0; xx < valuationCriteriaList.Count; xx++) { var valuationCriteria = valuationCriteriaList[xx]; var selectQuery = DbContext.Valuations .Where(w => w.ActivityDate == valuationCriteria.ActivityDate && w.ValuationSourceId == valuationCriteria.ValuationSourceId && w.ActivityTypeId == valuationCriteria.ActivityTypeId && w.CurrencyId == valuationCriteria.CurrencyId && w.OrganizationHierarchyId == valuationCriteria.OrganizationHierarchyId && w.StatusCode == "A"); if (xx == 0) { combinedQuery = selectQuery; lastQuery = combinedQuery; } else { lastQuery.Concat(selectQuery); lastQuery = selectQuery; } } var result = combinedQuery.ToList(); return result; } My goal is to execute the queries all in one trip to the database via the union. Is there a way to do this?
+

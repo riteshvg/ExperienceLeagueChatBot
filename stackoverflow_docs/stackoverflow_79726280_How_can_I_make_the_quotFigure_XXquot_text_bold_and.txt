@@ -1,0 +1,11 @@
+Stack Overflow Question: How can I make the &quot;Figure XX:&quot; text bold and the description text regular font in a bookdown::html_document2?
+Question ID: 79726280
+Score: 1
+Views: 15
+Answers: 1
+Tags: r, r-markdown, bookdown
+URL: https://stackoverflow.com/questions/79726280
+
+QUESTION:
+For the output of the below Rmd I would like the "Figure XX:" part to be bold and the descriptive text to be in regular font. How can I achieve that? --- title: "Figure caption things" output: bookdown::html_document2 --- ```{r setup, include=FALSE} knitr::opts_chunk$set(echo = FALSE) library(ggplot2) library(plotly) plot <- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) + geom_point() ``` ## My first ggplot2 figure TEXT TEXT TEXT ```{r fig-ggplot, fig.cap = "My super caption for this ggplot figure here!"} plot ``` TEXT TEXT TEXT ## My second plotly figure TEXT TEXT TEXT ```{r fig-plotly, fig.cap = "My super caption for this plolty figure here?!"} ggplotly(plot) ``` TEXT TEXT TEXT
+

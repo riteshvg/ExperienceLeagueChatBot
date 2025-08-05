@@ -1,0 +1,11 @@
+Stack Overflow Question: EF Core query hint for SQL
+Question ID: 79725083
+Score: 0
+Views: 104
+Answers: 0
+Tags: c#, sql-server, entity-framework-core, ef-core-8.0
+URL: https://stackoverflow.com/questions/79725083
+
+QUESTION:
+I am writing a user-driven report subsystem using C# and EF Core 8. When it is used there are cases where a query takes too long to be executed. I figured it is due to not optimal plan being used. I started looking further, and realized most of the time the queries are different, so, no need to cache a plan. I tried to switch to raw SQL and use OPTION(OPTIMIZE FOR UNKNOWN) and it seems to perform much better for cases where queries are the same for different users due to the nature of their data being different. My question is: when using linq, how do we add query hints in EF Core? I found a way with interceptors and adding the hint as a text to the end, but it is too generic, and you need a way to tag your query for this. Again, I tried to use a tag that is converted into a comment in the generated SQL, then I looked for the unique string I used for the tag and added the hint to the required queries. Is it the way to go? It seems a bit cumbersome to me: generating an SQL string and then parsing the string for the tag. Edited: I will very likely use OPTION(RECOMPILE), it is not part of the question which hints to use, I want to know how to add any hint to a Linq query. Also, please ignore database generalisation, I know it is going to be SQL Server for the foreseeable future.
+

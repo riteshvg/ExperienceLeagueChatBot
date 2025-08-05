@@ -1,0 +1,11 @@
+Stack Overflow Question: How can I set a primary key that is inside a struct?
+Question ID: 79726072
+Score: 0
+Views: 43
+Answers: 0
+Tags: python, json, neo4j, cypher
+URL: https://stackoverflow.com/questions/79726072
+
+QUESTION:
+I'm trying to get a JSON file into kuzu but am facing some issues. This is what I'm trying: import kuzu def put_into_kuzu(): db = kuzu.Database("rag.kuzu") conn = kuzu.Connection(db) cex = conn.execute cex("LOAD json;") cex("CREATE NODE TABLE Chunks(embedding_dim INT, data STRUCT(__id__ STRING, __created_at__ INT, content STRING, full_doc_id STRING, file_path STRING), PRIMARY KEY (__id__));") cex('COPY Chunks FROM "./rag_storage/vdb_chunks.json"') response = conn.execute( """ RETURN Chunks; """ ) for row in response: print(row) if __name__ == "__main__": put_into_kuzu() JSON file structure: { "embedding_dim": 4096, "data": [ { "__id__": "chunk-ed1b1b28b5cf4df59ca4bf1031e4cc27", "__created_at__": 1753946350, "content": "content of the text document", "full_doc_id": "doc-ed1b1b28b5cf4df59ca4bf1031e4cc27", "file_path": "test.txt" }, { a lot more of this }, ], "matrix" : "bunch of random characters, but they are unneeded" } As can be seen from the code I want __id__ as my primary key, but can't achieve it. I even tried data.`__id__` but that didn't work either.
+

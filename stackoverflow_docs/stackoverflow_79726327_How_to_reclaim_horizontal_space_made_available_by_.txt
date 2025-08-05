@@ -1,0 +1,11 @@
+Stack Overflow Question: How to reclaim horizontal space made available by removing labels and ticks?
+Question ID: 79726327
+Score: 0
+Views: 15
+Answers: 0
+Tags: python, matplotlib, whitespace, subplot
+URL: https://stackoverflow.com/questions/79726327
+
+QUESTION:
+I have a row of subplots which start with a histogram and the rest are some qqplots: I removed the y axis and ticks labels using for ax in axqq[1:]: ax.set_ylabel(None) ax.tick_params(labelleft=False) # does not help ax.yaxis.set_visible(False) ax.sharey(axqq[0]) fig.tight_layout() I would like to remove the horizontal whitespace between the QQ plots. Since my subplots are not homogeneous (the 1st subplot is a histogram), fig.subplots_adjust does not help.
+

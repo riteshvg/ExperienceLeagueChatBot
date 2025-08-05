@@ -1,0 +1,11 @@
+Stack Overflow Question: How can I bump the Python package version using uv?
+Question ID: 79176155
+Score: 10
+Views: 4950
+Answers: 3
+Tags: python, python-packaging, uv
+URL: https://stackoverflow.com/questions/79176155
+
+QUESTION:
+Poetry has the version command to increment a package version. Does the uv package manager have anything similar?
+

@@ -1,0 +1,11 @@
+Stack Overflow Question: How to ignore &quot;unused expression&quot; warning from Pylance when using bit-shift operator to compose relationships in airflow
+Question ID: 78918962
+Score: 1
+Views: 534
+Answers: 2
+Tags: python, visual-studio-code, airflow
+URL: https://stackoverflow.com/questions/78918962
+
+QUESTION:
+I am currently developing Airflow DAGs using Python. I am using: Mypy version: 1.8.0 Python version: 3.11.9 VSCode version: 1.92.2 Pylance version: v2024.8.2 When I use the bit-shift operator to compose the relationships between different Operators, I have this warning in VSCode: Expression value is unused I would like to keep type checking enabled in VSCode, but I don't want to see this warning for valid use cases like composing Airflow DAGs. Is there a way to configure Pylance to suppress this specific warning for the bit-shift operator? I tried to set a mypy.ini in my settings with the code below, it doesnt do anything. [mypy] warn_unused_ignores = False The VSCode mypy extension settings look like: Can anyone help me figure out how to resolve this issue without disabling type checking entirely?
+

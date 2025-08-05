@@ -1,0 +1,11 @@
+Stack Overflow Question: GitHub Copilot Pro active, but VS Code says “monthly chat messages limit reached”
+Question ID: 79682974
+Score: 1
+Views: 1025
+Answers: 1
+Tags: github, github-copilot
+URL: https://stackoverflow.com/questions/79682974
+
+QUESTION:
+I have a GitHub account with an active Copilot Pro subscription — confirmed on my GitHub account page: “GitHub Copilot Pro is active for your account. You currently have an active Copilot Pro subscription.” In VS Code, I am signed in with the same GitHub account (only one account connected), and everything seems fine on the authentication side. However, when I try to use Copilot Chat features in VS Code, I get this message: “You’ve reached your monthly chat messages limit. Upgrade to Copilot Pro (30-day free trial) or wait for your limit to reset.” This is unexpected because my account is already Copilot Pro. What I have tried so far: Signing out and signing back in multiple times in VS Code for both GitHub and GitHub Copilot Chat accounts. Uninstalling and reinstalling the GitHub Copilot extension. Clearing cached data (deleted related globalStorage folders). Confirmed that only one GitHub account is connected. Nothing resolves the issue — the error persists and I cannot use Copilot Pro features. Has anyone encountered this problem or knows how to fix the mismatch between the active subscription and VS Code recognizing it? Thank you!
+

@@ -1,0 +1,11 @@
+Stack Overflow Question: Compile-time manipulation of std::source_location::current()
+Question ID: 79726322
+Score: 1
+Views: 19
+Answers: 0
+Tags: c++, constexpr, consteval, std-source-location
+URL: https://stackoverflow.com/questions/79726322
+
+QUESTION:
+I want to write a function that can obtain caller's function name, or at least its length, at compile time. I think obtaining std::source_location::current() is close to what I want and currently I'm able to do this: consteval auto funcNameLength(const std::source_location &Loc = std::source_location::current()) { const char *Name = Loc.function_name(); std::size_t Length = 0; while (Name[Length] != '\0') ++Length; return Length; } int main() { constexpr auto L = funcNameLength(); // L == 4 } or this (with a constexpr strlen): consteval auto funcNameLength(std::size_t Length = constexpr_strlen( std::source_location::current().function_name())) { return Length; } int main() { constexpr auto L = funcNameLength(); } However, that is not enough for me. I need to use the length as a constant expression to do something before returning to caller, e.g. consteval auto doSomething(std::size_t Length = constexpr_strlen( std::source_location::current().function_name())) { int A[Length]; // Error: Length is not a constant expression. } int main() { doSomething(); } Is this achievable?
+

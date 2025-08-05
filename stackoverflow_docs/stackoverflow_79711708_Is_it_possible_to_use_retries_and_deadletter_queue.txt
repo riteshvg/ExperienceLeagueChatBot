@@ -1,0 +1,11 @@
+Stack Overflow Question: Is it possible to use retries and deadletter queues in Celery?
+Question ID: 79711708
+Score: 0
+Views: 38
+Answers: 0
+Tags: python, rabbitmq, celery
+URL: https://stackoverflow.com/questions/79711708
+
+QUESTION:
+I have successfully got Celery to put failed tasks onto deadletter queues in RabbitMQ, thanks to this answer https://stackoverflow.com/a/46128311/736221 and this article https://medium.com/@hengfeng/how-to-create-a-dead-letter-queue-in-celery-rabbitmq-401b17c72cd3 This doesn't appear to work when using retries in Celery: https://docs.celeryq.dev/en/stable/userguide/tasks.html#retrying The retries happen but when the task finally fails it doesn't appear on the deadletter queue. I tried to detect the number of retries in the task then raise Reject and have added a custom task class and raised Reject in the on_failure handler (https://docs.celeryq.dev/en/stable/userguide/tasks.html#on_failure) but to no avail. Is there a way to get this to work?
+

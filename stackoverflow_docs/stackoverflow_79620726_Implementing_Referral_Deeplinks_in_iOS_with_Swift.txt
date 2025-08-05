@@ -1,0 +1,11 @@
+Stack Overflow Question: Implementing Referral Deeplinks in iOS with Swift
+Question ID: 79620726
+Score: 0
+Views: 88
+Answers: 2
+Tags: ios, swift, deep-linking, dynamic-links
+URL: https://stackoverflow.com/questions/79620726
+
+QUESTION:
+I’m currently working on an iOS app using Swift and looking to implement referral deep linking functionality. I’ve searched around but I’m still a bit unclear on the overall approach, especially when it comes to handling referrals before the app is installed. Currently, I’m using Firebase Dynamic Links to handle this. However, since Firebase has announced that Dynamic Links will be deprecated soon, I’m now looking for an alternative solution, ideally without relying on third-party SDKs. Here’s what I’m trying to achieve: A user shares their referral link with a friend. If the friend doesn’t have the app, the link takes them to the App Store. After installation, when the app is opened for the first time, it should recognize the referral and attribute it correctly to the original user. Are there native iOS APIs that support deferred deep linking? I know about Universal Links and URL schemes, but I don’t think they work post-install unless integrated with a backend or third-party. Any tips or caveats I should be aware of when implementing referral tracking on iOS? Thanks
+

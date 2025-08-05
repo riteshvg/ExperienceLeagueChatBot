@@ -1,0 +1,11 @@
+Stack Overflow Question: How to correctly configure eslint-plugin-import in Next.js 15 with TypeScript and path aliases?
+Question ID: 79726307
+Score: 0
+Views: 12
+Answers: 0
+Tags: typescript, eslint, next.js15
+URL: https://stackoverflow.com/questions/79726307
+
+QUESTION:
+I'm working with a Next.js 15 project using TypeScript, and I'm trying to properly configure eslint-plugin-import to work with path aliases (like @/), as well as import sorting and unresolved path detection. I’ve already done the following: I created a tsconfig.json with this paths setup: { "compilerOptions": { "baseUrl": ".", "paths": { "@/*": ["src/*"] } } } I installed all required packages: npm install --save-dev eslint eslint-plugin-import eslint-import-resolver-typescript import importPlugin from 'eslint-plugin-import'; export default [ { files: ['**/*.{js,ts,jsx,tsx}'], plugins: { import: importPlugin, }, settings: { 'import/resolver': { typescript: { project: './tsconfig.json', }, node: { extensions: ['.js', '.jsx', '.ts', '.tsx'], }, }, }, rules: { 'import/no-unresolved': 'error', 'import/order': [ 'error', { groups: ['builtin', 'external', 'internal'], pathGroups: [ { pattern: '@/**', group: 'internal', position: 'after', }, ], 'newlines-between': 'always', alphabetize: { order: 'asc', caseInsensitive: true }, }, ], }, }, ]; Even after all of this: ESLint does not report unresolved imports when I write something like import x from '@/not-existing-file'. The import/order rule doesn't recognize path groups correctly. Aliases like @/components/Button sometimes trigger import/no-unresolved. I expect import/no-unresolved to correctly validate all imports including aliases. import/order to correctly group and sort imports (especially @/** under "internal"). What are the correct steps to fully configure eslint-plugin-import in a Next.js 15 project using flat config, TypeScript, and path aliases?
+

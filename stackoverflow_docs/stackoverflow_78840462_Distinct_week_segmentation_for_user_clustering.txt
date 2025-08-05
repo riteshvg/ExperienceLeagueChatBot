@@ -1,0 +1,11 @@
+Stack Overflow Question: Distinct week segmentation for user clustering
+Question ID: 78840462
+Score: 0
+Views: 17
+Answers: 0
+Tags: adobe-analytics
+URL: https://stackoverflow.com/questions/78840462
+
+QUESTION:
+I'm trying to build the following segmentation in Adobe for a driver analysis: Cluster 1: In the last 4 weeks, the user was in the app for 1 or 2 different weeks of the past 4 weeks. Cluster 2: In the last 4 weeks, the user was in the app for 3 or 4 different weeks of the past 4 weeks. Important: It doesn't matter whether it was weeks 1 and 4, it only matters that he was a user in the app in 2 weeks. I have already tried the Adobe Analytics cohort analysis with latency. The problem is that I can either select rolling dates: The user who was in the app in the fourth week must also have been in the app in every week before. Without the rolling data, I only see whether the user was in the app 4 weeks ago, but the groups are independent of each other. I have also tried it with a simple segment such as: Count distinct week greater then or equals 1 and less then or equals 2. The problem is that this segment is then calculated for the entire period set in the dashboard and not just for the corresponding week - 4 weeks. This is what I need: Example output Kind regards, Gino
+

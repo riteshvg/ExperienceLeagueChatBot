@@ -1,0 +1,11 @@
+Stack Overflow Question: Required attribute is not working for the body request at the method of API endpoint
+Question ID: 79725814
+Score: 3
+Views: 80
+Answers: 2
+Tags: c#, asp.net-core, asp.net-core-webapi
+URL: https://stackoverflow.com/questions/79725814
+
+QUESTION:
+I have simple API methods. I need to check whether the body request is null. For example: [HttpPost] public ActionResult<Product> CreateProduct([FromBody] Product product) { if (product == null) { return BadRequest("request is empty"); } _someService.Create(product); } But I would like to avoid this repeating piece of code in all my API methods: if (product == null) { return BadRequest("request is empty"); } So I tried to use attribute [Required] and send an empty body in the request: [HttpPost] public ActionResult<Product> CreateProduct([FromBody] [Required] Product product) { // this piece of code should not be run because "product" is null _someService.Create(product); } However, no errors are thrown. Is it possible to use [Required] in API methods as I have shown here?
+

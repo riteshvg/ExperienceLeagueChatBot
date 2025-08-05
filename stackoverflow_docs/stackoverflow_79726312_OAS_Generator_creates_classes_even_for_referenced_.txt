@@ -1,0 +1,11 @@
+Stack Overflow Question: OAS Generator creates classes even for referenced schemas
+Question ID: 79726312
+Score: 0
+Views: 14
+Answers: 0
+Tags: java, yaml, swagger, oas
+URL: https://stackoverflow.com/questions/79726312
+
+QUESTION:
+I have two yml files Common.yml and application.yml Both under same folder I have certain schemas like sortOrder that are defined in common schema And using $ref it is referred in application.yaml Problem is schemas that are referred are generated twice One under common folder and one under application folder E.g. SortOrder.java is generated twice..one under common folder and one under application folder Expected is Only one class should be generated under Common folder What I tried but NO luck: 1.Typemappings and importMappings 2.even checked the order of generation.. first is common followed by application 3.the $ref path is correct Anyway to resolve this duplicate class generation issue
+

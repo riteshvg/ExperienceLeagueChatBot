@@ -1,0 +1,11 @@
+Stack Overflow Question: Adobe Analytics API 2.0: What is the equivalent endpoint for ReportSuite.SaveEvars from v1.4?
+Question ID: 79392777
+Score: 0
+Views: 23
+Answers: 0
+Tags: adobe, adobe-analytics
+URL: https://stackoverflow.com/questions/79392777
+
+QUESTION:
+I'm migrating from Adobe Analytics API v1.4 to v2.0 and need help finding the equivalent endpoint for ReportSuite.SaveEvars. Current Implementation (v1.4): Using ReportSuite.SaveEvars endpoint Part of the Report Suite API Issue: In v2.0's Swagger documentation, I cannot find the Report Suite API. While there is a Report Suite API mentioned in the v2.0 endpoint guide, it only contains GET methods - no PUT, POST, or PATCH endpoints are available. Question: What is the equivalent endpoint in Adobe Analytics API 2.0 for saving eVars that replaces the v1.4 ReportSuite.SaveEvars functionality? What I've Tried: Checked the v2.0 Swagger documentation Reviewed the endpoint guide for Report Suite API in v2.0 Unable to find any equivalent write operations for eVars Documentation References: https://adobedocs.github.io/analytics-1.4-apis/ https://adobedocs.github.io/analytics-2.0-apis/
+

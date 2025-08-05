@@ -1,0 +1,11 @@
+Stack Overflow Question: Implements generic WinRT interfaces use &lt;AllowUnsafeBlocks&gt;True&lt;/AllowUnsafeBlocks&gt;. But where exactly do I place that setting?
+Question ID: 79724516
+Score: 0
+Views: 38
+Answers: 0
+Tags: c#, list, compilation, lint
+URL: https://stackoverflow.com/questions/79724516
+
+QUESTION:
+I have a MAUI project that's giving multiple errors related to my custom classes \Models\Term.cs and \Models\Course.cs. Visual Studio 2022 gives the same recommendation for both: Type System.Collections.Generic.List<TermPlanner.Models.Course> implements generic WinRT interfaces which requires generated code using unsafe for trimming and AOT compatibility if passed across the WinRT ABI. Project needs to be updated with <AllowUnsafeBlocks>true</AllowUnsafeBlocks> I assume I add the AllowUnsafeBlocks flag to TermPlanner.csproj or some other file. Where do I set this? The offending blocks look something like this: /// <summary> /// Returns an IEnumerable of course objects from the "courses" SQLite table. The courses /// are sorted and all occur during the selected term. /// </summary> /// <param name="TermID">(int) The ID of the term to which all desired courses belong. /// </param> public static async Task<IEnumerable<Course>> CourseFullList(int TermID) { // Ensures the database is open and the necessary tables exist. await Open(); // Creates a list of course objects. List<Course> lst_course; // Stores courses from the selected term, sorted by start date, in a list. lst_course = await conn.Table<Course>().Where(x => x.ID == TermID).OrderBy(x => x.StartDate).ToListAsync(); // Returns the list of courses to the caller. return lst_course; }
+

@@ -1,0 +1,11 @@
+Stack Overflow Question: Django multi-app authentication: sharing custom token validation and permissions across separate codebases
+Question ID: 79726187
+Score: 1
+Views: 17
+Answers: 1
+Tags: django, authentication, architecture, microservices
+URL: https://stackoverflow.com/questions/79726187
+
+QUESTION:
+I'm building a multi-platform system where I have one central authentication service (let's call it "Auth") and multiple other Django applications (App1, App2, App3) that need to authenticate users with custom tokens and permissions. Current Setup: Auth service: Handles user registration, login, token management App1, App2, App3: Separate Django projects with their own database and business logic All apps need to validate users authenticated through the Auth service Authentication Flow: User logs in through Auth service → receives token User makes requests to App1/App2/App3 with that token App1/App2/App3 need to validate the token and get user data Authentication Model: class AuthToken(models.Model): token = models.CharField(max_length=48, unique=True) user = models.ForeignKey(User, on_delete=models.CASCADE) platform = models.ForeignKey(Platform, on_delete=models.CASCADE) expires_at = models.DateTimeField(null=True, blank=True) is_revoked = models.BooleanField(default=False) # other fields (ip, device_id, device_name, etc...) Token Configuration: Settings.py # settings.py REST_FRAMEWORK = { 'DEFAULT_AUTHENTICATION_CLASSES': [ 'path.to.authentication.AuthTokenAuthentication', ], 'DEFAULT_PERMISSION_CLASSES': [ 'rest_framework.permissions.IsAuthenticated', ], } Authentication Class # path/to/AuthTokenAuthentication.py class AuthTokenAuthentication(BaseAuthentication): """ Simple, clean AuthToken authentication. """ def authenticate(self, request): # Get Authorization header auth_header = request.META.get('HTTP_AUTHORIZATION') if not auth_header or not auth_header.startswith('Bearer '): return None # No token provided # rest of my code The Problem: App1, App2, App3 need to use the same custom AuthTokenAuthentication and permission classes, but they don't have the AuthToken model or related authentication code.
+

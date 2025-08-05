@@ -1,0 +1,11 @@
+Stack Overflow Question: python gmsh: build 3D mesh from solid-split stl surface for openFOAM
+Question ID: 79726242
+Score: 0
+Views: 18
+Answers: 0
+Tags: python, stl, gmsh
+URL: https://stackoverflow.com/questions/79726242
+
+QUESTION:
+I have a simple task- I have a closed stl-surface, the whole surface is split into solids. I need to use python gmsh pack to build 3D mesh (tetra or hexa) with named-selections (lets call it this way) for BC patches according to solids from STL. I need to use this for openFOAM calculation. I am very new in gmsh. Are there any ways to do this? I tried this: gmsh.initialize() input_file = r"geometry\geom_tut1\geom.stl" gmsh.merge(input_file) gmsh.model.mesh.createGeometry() gmsh.model.geo.removeAllDuplicates() loop = gmsh.model.geo.addSurfaceLoop([e[1] for e in gmsh.model.getEntities(2)]) gmsh.model.geo.addVolume([loop]) gmsh.model.geo.synchronize() gmsh.option.setNumber("Mesh.Algorithm", 5) gmsh.option.setNumber("Mesh.Algorithm3D", 10) gmsh.option.setNumber("Mesh.MeshSizeMin", 0.0001) gmsh.option.setNumber("Mesh.MeshSizeMax", 0.001) gmsh.model.mesh.generate(3) I am not sure about using gmsh.model.mesh.createTopology() because I don't know exactly how it works. But I dont want to use classifySurfaces because it classifies surfaces by angle.
+

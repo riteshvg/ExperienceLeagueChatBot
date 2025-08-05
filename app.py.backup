@@ -15,61 +15,6 @@ from langchain_groq import ChatGroq
 from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
 
-def categorize_sources(sources):
-    """Categorize sources into Adobe docs and Stack Overflow"""
-    adobe_sources = []
-    stackoverflow_sources = []
-    
-    for source in sources:
-        if source.startswith('stackoverflow_'):
-            stackoverflow_sources.append(source)
-        else:
-            adobe_sources.append(source)
-    
-    return adobe_sources, stackoverflow_sources
-
-def has_stackoverflow_sources(sources):
-    """Check if any sources are from Stack Overflow"""
-    return any(source.startswith('stackoverflow_') for source in sources)
-
-
-def generate_adobe_url(source_name):
-    """Generate Adobe Experience League URL based on source name"""
-    # Remove .txt extension if present
-    if source_name.endswith('.txt'):
-        source_name = source_name[:-4]
-    
-    # Remove en_docs_ prefix if present
-    if source_name.startswith('en_docs_'):
-        source_name = source_name[8:]
-    
-    # Base URL for Adobe Experience League
-    base_url = "https://experienceleague.adobe.com/en/docs"
-    
-    # Common patterns for URL generation
-    if source_name.startswith('analytics_'):
-        return f"{base_url}/analytics/{source_name.replace('analytics_', '')}"
-    elif source_name.startswith('customer-journey-analytics'):
-        return f"{base_url}/customer-journey-analytics/{source_name.replace('customer-journey-analytics', '')}"
-    elif source_name.startswith('analytics-platform'):
-        return f"{base_url}/analytics-platform/{source_name.replace('analytics-platform_', '')}"
-    elif source_name.startswith('analytics-learn'):
-        return f"{base_url}/analytics-learn/{source_name.replace('analytics-learn_', '')}"
-    elif source_name.startswith('blueprints-learn'):
-        return f"{base_url}/blueprints-learn/{source_name.replace('blueprints-learn_', '')}"
-    elif source_name.startswith('certification'):
-        return f"{base_url}/certification/{source_name.replace('certification_', '')}"
-    elif source_name.startswith('experience-cloud-kcs'):
-        return f"{base_url}/experience-cloud-kcs/{source_name.replace('experience-cloud-kcs_', '')}"
-    elif source_name.startswith('home-tutorials'):
-        return f"{base_url}/home-tutorials"
-    elif source_name.startswith('release-notes'):
-        return f"{base_url}/release-notes/{source_name.replace('release-notes_', '')}"
-    elif source_name.startswith('browse_'):
-        return f"{base_url}/browse/{source_name.replace('browse_', '')}"
-    else:
-        # Fallback to base analytics URL
-        return "https://experienceleague.adobe.com/en/docs/analytics"
 # Page configuration
 st.set_page_config(page_title="Adobe Experience League Documentation Chatbot", layout="wide", page_icon="🤖")
 
@@ -423,15 +368,7 @@ def main():
             
             with status_col3:
                 # Show knowledge base status
-                # Show knowledge base status
-                adobe_docs_count = len(list(Path("./adobe_docs").glob("*.txt")))
-                stackoverflow_docs_count = len(list(Path("./stackoverflow_docs").glob("*.txt")))
-                total_docs = adobe_docs_count + stackoverflow_docs_count
-                
-                if stackoverflow_docs_count > 0:
-                    st.info(f"📚 Knowledge Base: {adobe_docs_count} Adobe docs, {stackoverflow_docs_count} SO docs")
-                else:
-                    st.info(f"📚 Knowledge Base: {adobe_docs_count} Adobe docs")
+                st.info("📚 Knowledge Base: 84 docs, 764 chunks")
             
             with status_col4:
                 # Close button for the entire info section
@@ -473,32 +410,7 @@ def main():
             if message["role"] == "assistant" and "sources" in message:
                 with st.expander("📚 View Sources", expanded=False):
                     st.write("**The answer was generated based on the following documents:**")
-                    # Categorize sources
-                    adobe_sources, stackoverflow_sources = categorize_sources(message["sources"])
-                    
-                    # Show source summary
-                    if adobe_sources and stackoverflow_sources:
-                        st.success("✅ Answer combines official Adobe documentation and community solutions")
-                        st.info(f"📖 Adobe Docs: {len(adobe_sources)} | 💬 Stack Overflow: {len(stackoverflow_sources)}")
-                    elif stackoverflow_sources:
-                        st.warning("💬 Answer based on community solutions from Stack Overflow")
-                        st.info(f"💬 Stack Overflow: {len(stackoverflow_sources)} sources")
-                    else:
-                        st.success("📖 Answer based on official Adobe documentation")
-                        st.info(f"📖 Adobe Docs: {len(adobe_sources)} sources")
-                    
-                    st.write(f"**Debug: Found {len(message["sources"])} sources")
-                    for idx, src in enumerate(message["sources"]):
-                        st.write(f"  {idx+1}. {src}")
-                    st.write("**Detailed sources:**")
                     for i, source in enumerate(message["sources"], 1):
-                        # Add source type indicator
-                        if source.startswith('stackoverflow_'):
-                            source_icon = "💬"
-                            source_type = "Stack Overflow"
-                        else:
-                            source_icon = "📖"
-                            source_type = "Adobe Docs"
                         source_name = source
                         # Clean up the source name for better display
                         if source_name.endswith('.txt'):
@@ -609,50 +521,39 @@ def main():
                         }
                         
                         # Get the appropriate URL for this source
-                        # Stack Overflow URL handling
-                        if source_name.startswith("stackoverflow_"):
-                            # Extract question ID from filename
-                            parts = source_name.split("_")
-                            if len(parts) >= 2:
-                                try:
-                                    question_id = parts[1]
-                                    doc_url = f"https://stackoverflow.com/questions/{question_id}"
-                                except:
-                                    doc_url = "https://stackoverflow.com/questions"
-                            else:
-                                doc_url = "https://stackoverflow.com/questions"
-                        else:
-                            # Adobe documentation URL handling
-                            # Use the original source name (without .txt extension) for exact matching
-                            source_key = source_name  # This is already cleaned (no .txt extension)
-                            
-                            # Try exact match first in the mapping
-                            doc_url = url_mapping.get(source_key, None)
-                            
-                            # If no exact match, try with en_docs_ prefix
-                            if doc_url is None:
-                                source_key_with_prefix = f"en_docs_{source_key}"
-                                doc_url = url_mapping.get(source_key_with_prefix, None)
-                            
-                            # If still no match, try partial matching
-                            if doc_url is None:
-                                for key, url in url_mapping.items():
-                                    # Remove en_docs_ prefix from key for comparison
-                                    clean_key = key.replace('en_docs_', '') if key.startswith('en_docs_') else key
-                                    if clean_key == source_key or source_key in clean_key or clean_key in source_key:
-                                        doc_url = url
-                                        break
-                            
-                            # If still no match, generate URL dynamically
-                            if doc_url is None:
-                                doc_url = generate_adobe_url(source)  # Use original source name
-
-                            # Fallback to base URL if no match found
-                            if doc_url is None:
-                                doc_url = base_url
-
+                        # Use the original source name (without .txt extension) for exact matching
+                        source_key = source_name  # This is already cleaned (no .txt extension)
+                        
+                        # Try exact match first
+                        doc_url = url_mapping.get(source_key, None)
+                        
+                        # If no exact match, try partial matching
+                        if doc_url is None:
+                            for key, url in url_mapping.items():
+                                if key in source_key or source_key in key:
+                                    doc_url = url
+                                    break
+                        
+                        # Fallback to base URL if no match found
+                        if doc_url is None:
+                            doc_url = base_url
+                        
                         # Create clickable link that opens in new window
-                        st.markdown(f"**{i}.** {source_icon} [{source_name}]({doc_url}) ({source_type})", help=f"Click to open {source_name} in a new window")
+                        st.markdown(f"**{i}.** [{source_name}]({doc_url})", help=f"Click to open {source_name} in a new window")
+                    
+                    # Also extract and display any URLs found in the message content
+                    if "content" in message:
+                        import re
+                        urls = re.findall(r'https?://[^\s<>"]+', message["content"])
+                        if urls:
+                            st.markdown("---")
+                            st.markdown("**🔗 Links in Response:**")
+                            for i, url in enumerate(urls[:3], 1):  # Show up to 3 links
+                                display_name = url.split('/')[-1] if '/' in url else url
+                                display_name = display_name.replace('_', ' ').replace('-', ' ').title()
+                                if len(display_name) > 40:
+                                    display_name = display_name[:37] + "..."
+                                st.markdown(f"**{i}.** [{display_name}]({url})", help=f"Click to open {url}")
     
 
     
@@ -765,15 +666,6 @@ def main():
                             st.session_state.is_processing = False
                             st.rerun()
                         
-                        # Check if response has Stack Overflow sources
-                        has_stackoverflow = False
-                        if "source_documents" in response:
-                            sources = [doc.metadata.get('source', 'Unknown') for doc in response["source_documents"]]
-                            has_stackoverflow = has_stackoverflow_sources(sources)
-                        
-                        # Add source indicator to response
-                        if has_stackoverflow:
-                            st.info("💬 This response includes community solutions from Stack Overflow")
                         # Calculate response time
                         end_time = time.time()
                         response_time = end_time - start_time

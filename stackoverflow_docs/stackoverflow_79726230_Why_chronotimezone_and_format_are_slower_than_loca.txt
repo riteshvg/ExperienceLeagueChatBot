@@ -1,0 +1,11 @@
+Stack Overflow Question: Why chrono::timezone and format are slower than localtime_s and stringstream?
+Question ID: 79726230
+Score: 1
+Views: 36
+Answers: 2
+Tags: c++, performance, c++-chrono, stdformat
+URL: https://stackoverflow.com/questions/79726230
+
+QUESTION:
+I'm generating a string representation of the current time in the local time zone for my logging system. I have an "old" version, and I wanted to see if I could improve its performance. Old version: const auto now = std::chrono::system_clock::now(); const std::time_t t_c = std::chrono::system_clock::to_time_t(now); struct tm loc; localtime_s(&loc, &t_c); std::stringstream ss; ss << std::put_time(&loc, "%F %T."); ss << std::setfill('0') << std::setw(6) << std::chrono::duration_cast<std::chrono::microseconds>(now.time_since_epoch()).count() % 1'000'000; return ss.str(); New version: const auto now = std::chrono::system_clock::now(); auto localNow = std::chrono::current_zone()->to_local(now); return std::format("{0:%F} {0:%R}:{0:%S}", std::chrono::time_point_cast<std::chrono::microseconds>(localNow)); It turns out the new version is ~5 times slower. I'm using Visual Studio 17.12.3 with /O2 and Whole Program Optimization. My CPU is an Intel 12700K. Using the built-in performance profiler (sampling), it looks like both the to_local call and the std::format call are each slower than the entire old version. Why is the new version slower? How to further optimize the old version?
+

@@ -1,0 +1,11 @@
+Stack Overflow Question: GCC switch statements do not simplify on identical handling
+Question ID: 79725647
+Score: 1
+Views: 74
+Answers: 1
+Tags: c++, gcc, switch-statement, g++, compiler-optimization
+URL: https://stackoverflow.com/questions/79725647
+
+QUESTION:
+The switch statements in the following two functions int foo(int value) { switch (value) { case 0: return 0; case 1: return 0; case 2: return 1; } } int bar(int value) { switch (value) { case 0: case 1: return 0; case 2: return 1; } } compile to different assembly in the x86-64 and RISC-V editions of the GNU C Compiler, when not optimizing. Try on godbolt, using GCC 15.1 x86-64 with -O0. (Example by user 463035818_is_not_an_ai) Why? Is there any way to subvert this? I am using consteval lambdas in function templates to programmatically generate the return values of functions like this per output and they have a lot more assembly instructions than if I went in and hand-wrote all of the output handling and made all the identical output handlings into one case-case-case chain.
+

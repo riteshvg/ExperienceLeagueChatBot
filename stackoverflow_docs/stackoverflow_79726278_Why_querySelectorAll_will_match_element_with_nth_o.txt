@@ -1,0 +1,11 @@
+Stack Overflow Question: Why querySelectorAll will match element with :nth-of-type(2) when the elements doesn&#39;t have any siblings?
+Question ID: 79726278
+Score: 1
+Views: 19
+Answers: 2
+Tags: javascript, html, dom
+URL: https://stackoverflow.com/questions/79726278
+
+QUESTION:
+In this example I would expect that elements list is empty. Somehow it matches the span element even though none of the div elements have any siblings except for the .aaa parent element. Why does this work like that? const parent = document.querySelector("div.bbb"); const elements = parent.querySelectorAll("div:nth-of-type(2) span"); console.log(elements.length); div.bbb div:nth-of-type(2) span { border: 1px red solid; } <div class="000"></div> <div class="aaa"> <div class="bbb"> <div class="ccc"> <span>me</span> </div> </div> </div>
+

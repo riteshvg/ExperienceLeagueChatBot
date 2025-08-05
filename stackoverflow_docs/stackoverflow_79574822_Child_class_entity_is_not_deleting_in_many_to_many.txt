@@ -1,0 +1,11 @@
+Stack Overflow Question: Child class entity is not deleting in many to many relationship
+Question ID: 79574822
+Score: 0
+Views: 50
+Answers: 2
+Tags: java, spring-boot, spring-data-jpa
+URL: https://stackoverflow.com/questions/79574822
+
+QUESTION:
+@Entity @Table(name = "product") public class Product implements Serializable { private static final long serialVersionUID = 1L; @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Integer productId; @ManyToMany( cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY ) @JoinTable( name = "product_tag_join_table", joinColumns = @JoinColumn(name = "productId"), inverseJoinColumns = @JoinColumn(name = "tagId") ) private List<SearchTags> tags; } @Table(name = "product_tags") @Entity public class SearchTags { @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Integer tagId; @ManyToMany( cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.EAGER, mappedBy = "tags" ) private List<Product> products; } searchTagRepository.deleteById(oldTag.getTagId()); This above line is not deleting the tag objects, at the time of debugging the code is executed but the deletion is not taking place and neither it is present in logs, what is the issue here?
+

@@ -1,0 +1,11 @@
+Stack Overflow Question: How can I replicate this specific animated gradient (blue to purple) in HTML/CSS, React, or Flutter?
+Question ID: 79726270
+Score: 0
+Views: 26
+Answers: 0
+Tags: html, css, reactjs, flutter, next.js
+URL: https://stackoverflow.com/questions/79726270
+
+QUESTION:
+I’m trying to replicate a specific animated gradient background similar to this image, but I can’t get the colors, direction, or animation quite right. I’ve tried using ChatGPT and Claude and experimenting with different gradients, but I still can’t match the look — my current version is only around 60% similar visually. Here’s my closest attempt using plain HTML/CSS: * { margin: 0; padding: 0; box-sizing: border-box; } body, html { height: 100%; overflow: hidden; } .gradient-container { width: 100vw; height: 100vh; background: linear-gradient(135deg, #1a237e 0%, #3f51b5 25%, #673ab7 50%, #9c27b0 75%, #e91e63 100%); background-size: 200% 200%; animation: gradientShift 8s ease-in-out infinite; } @keyframes gradientShift { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } } <div class="gradient-container"></div> I’d appreciate: Feedback on how to make the gradient match the image more closely Alternative implementations in React or Flutter if that’s easier Any tips on achieving smoother or more vibrant transitions
+

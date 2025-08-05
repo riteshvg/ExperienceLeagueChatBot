@@ -1,0 +1,11 @@
+Stack Overflow Question: Is it possible to select the first row in a table with CSS?
+Question ID: 79726277
+Score: 1
+Views: 23
+Answers: 1
+Tags: html, css, css-selectors
+URL: https://stackoverflow.com/questions/79726277
+
+QUESTION:
+Given: <table> <thead> <caption>Table Title</caption> <tr>...</tr> </thead> <tbody> <tr>...</tr> </tbody> </table> Is there a css-way to select (in the meaning of: targeting with a css selector) only the first existing tr, knowing that: thead might exist, so it should be the tr inside the thead, if that exist caption might not exist thead might not exist or it might not contain any trs, so it should be the first tr inside the tbody in that case.
+

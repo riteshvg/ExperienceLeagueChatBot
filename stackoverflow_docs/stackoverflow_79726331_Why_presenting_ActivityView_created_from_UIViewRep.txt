@@ -1,0 +1,11 @@
+Stack Overflow Question: Why presenting ActivityView created from UIViewRepresentable is not loaded for the very first time?
+Question ID: 79726331
+Score: 0
+Views: 5
+Answers: 0
+Tags: swiftui, screenshot, uiviewrepresentable
+URL: https://stackoverflow.com/questions/79726331
+
+QUESTION:
+I am using the following library to create screenshot of my View: https://github.com/RickeyBoy/ScreenshotableView In code it is presented like this: struct TreasureView: View { @State var activityItemsForShare: [Any]? @State var isActivityViewPresented = false @State var shot = false var body: some View { VStack { ScreenshotableView(shotting: $shot) { image in activityItemsForShare = [image] isActivityViewPresented = true } content: { style in homeView // view for screenshot, it might be anything. } .overlay(alignment: .bottomLeading) { Button { shot.toggle() } label: { Text("share") } } } .sheet(isPresented: $isActivityViewPresented) { if let activityItemsForShare = activityItemsForShare { ActivityView(activityItems: activityItemsForShare) } } } } And my ActivityView is very simple: struct ActivityView: UIViewControllerRepresentable { var activityItems: [Any] var completion: (() -> Void)? = nil func makeUIViewController(context: UIViewControllerRepresentableContext<ActivityView>) -> UIActivityViewController { let controller = UIActivityViewController(activityItems: activityItems, applicationActivities: nil) controller.completionWithItemsHandler = { _, isDone, _, _ in if isDone { completion?() } } return controller } func updateUIViewController(_ uiViewController: UIActivityViewController, context: UIViewControllerRepresentableContext<ActivityView>) {} } And for the very first tap when view is loaded, without any logs or errors (totally empty view without anything): and the second time, everything is fine (correct UIActivityViewController): What to do to make it working for the first time?
+
