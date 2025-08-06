@@ -1,0 +1,59 @@
+{
+  "refresh_schedule": {
+    "adobe_docs": "daily",
+    "stackoverflow": "daily",
+    "full_rebuild": "weekly"
+  },
+  "adobe_urls": [
+    "https://experienceleague.adobe.com/docs/analytics.html",
+    "https://experienceleague.adobe.com/docs/analytics/admin/home",
+    "https://experienceleague.adobe.com/docs/analytics/analyze/home",
+    "https://experienceleague.adobe.com/docs/analytics/components/home",
+    "https://experienceleague.adobe.com/docs/analytics/implementation/home",
+    "https://experienceleague.adobe.com/docs/analytics/export/home",
+    "https://experienceleague.adobe.com/docs/analytics/integration/home",
+    "https://experienceleague.adobe.com/docs/analytics/release-notes/latest",
+    "https://experienceleague.adobe.com/docs/analytics/technotes/home",
+    "https://experienceleague.adobe.com/docs/analytics-platform/using/cja-overview/cja-b2c-overview/data-analysis-ai",
+    "https://experienceleague.adobe.com/docs/analytics-platform/using/cja-workspace/attribution/overview",
+    "https://experienceleague.adobe.com/docs/customer-journey-analytics",
+    "https://experienceleague.adobe.com/en/docs/analytics-learn/tutorials/overview",
+    "https://experienceleague.adobe.com/en/docs/analytics/admin/admin-tools/manage-report-suites/edit-report-suite/report-suite-general/processing-rules/pr-interface",
+    "https://experienceleague.adobe.com/en/docs/analytics/implementation/aep-edge/hit-types",
+    "https://experienceleague.adobe.com/en/docs/blueprints-learn/architecture/architecture-overview/experience-cloud",
+    "https://experienceleague.adobe.com/en/docs/certification/program/technical-certifications/aa/aa-overview",
+    "https://experienceleague.adobe.com/en/docs/experience-cloud-kcs/kbarticles/ka-25262",
+    "https://experienceleague.adobe.com/en/docs/home-tutorials",
+    "https://experienceleague.adobe.com/en/docs/release-notes/experience-cloud/current"
+  ],
+  "stackoverflow_tags": [
+    "adobe-analytics",
+    "adobe-analytics-api",
+    "adobe-analytics-implementation",
+    "adobe-analytics-segmentation",
+    "adobe-analytics-calculated-metrics",
+    "adobe-analytics-workspace",
+    "adobe-analytics-reporting",
+    "adobe-analytics-tracking",
+    "adobe-analytics-evar",
+    "adobe-analytics-prop",
+    "adobe-analytics-events",
+    "adobe-analytics-sites",
+    "adobe-analytics-omniture",
+    "adobe-analytics-dtm",
+    "adobe-analytics-launch"
+  ],
+  "max_new_docs_per_refresh": 50,
+  "auto_restart_app": false,
+  "backup_before_refresh": true,
+  "notification_settings": {
+    "email_notifications": false,
+    "slack_notifications": false,
+    "log_level": "INFO"
+  },
+  "performance_settings": {
+    "max_concurrent_scrapes": 3,
+    "request_delay": 1,
+    "timeout_seconds": 30
+  }
+}
