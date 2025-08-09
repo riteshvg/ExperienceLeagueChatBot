@@ -7,6 +7,7 @@ A Streamlit web application that answers questions about Adobe Experience League
 import streamlit as st
 import os
 import time
+import re
 from pathlib import Path
 from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
@@ -32,6 +33,33 @@ def has_stackoverflow_sources(sources):
     """Check if any sources are from Stack Overflow"""
     return any(source.startswith('stackoverflow_') for source in sources)
 
+def detect_create_action(query):
+    """Simple function to detect if query contains 'create' and extract the action object"""
+    query_lower = query.lower()
+    
+    # Check if query contains 'create'
+    if 'create' not in query_lower:
+        return None, None
+    
+    # Define supported action objects
+    action_keywords = {
+        'dashboard': ['dashboard', 'dashboards'],
+        'segment': ['segment', 'segments', 'segmentation'],
+        'calculated metrics': ['calculated metrics', 'calculated metric', 'metric', 'metrics'],
+        'workspace': ['workspace', 'analysis workspace', 'project'],
+        'report': ['report', 'reports'],
+        'alert': ['alert', 'alerts'],
+        'filter': ['filter', 'filters'],
+        'visualization': ['visualization', 'chart', 'charts']
+    }
+    
+    # Find which action object is mentioned
+    for action_type, keywords in action_keywords.items():
+        for keyword in keywords:
+            if keyword in query_lower:
+                return action_type, keyword
+    
+    return None, None
 
 def generate_adobe_url(source_name):
     """Generate Adobe Experience League URL based on source name"""
@@ -469,6 +497,13 @@ def main():
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
             
+            # Display create action button for user messages if detected
+            if message["role"] == "user" and "create_action" in message:
+                action_info = message["create_action"]
+                action_type = action_info["type"]
+                if st.button(f"📋 Help Create {action_type.title()}", key=f"create_{action_type}_{len(st.session_state.messages)}"):
+                    st.success(f"🎉 Let's create a {action_type}! This feature is coming soon.")
+            
             # Display sources for assistant messages if available
             if message["role"] == "assistant" and "sources" in message:
                 with st.expander("📚 View Sources", expanded=False):
@@ -719,8 +754,14 @@ def main():
             st.session_state.input_text = ""  # Clear the input
             st.session_state.is_processing = True  # Set processing state
             
+            # Check for create actions and store in message
+            action_type, keyword = detect_create_action(prompt)
+            
             # Add user message to chat history
-            st.session_state.messages.append({"role": "user", "content": prompt})
+            user_message = {"role": "user", "content": prompt}
+            if action_type:
+                user_message["create_action"] = {"type": action_type, "keyword": keyword}
+            st.session_state.messages.append(user_message)
             
             # Update usage statistics
             st.session_state.usage_stats["total_questions"] += 1
