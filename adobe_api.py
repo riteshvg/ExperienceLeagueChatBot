@@ -207,33 +207,57 @@ def get_company_id() -> Optional[str]:
     return company_id
 
 
-def validate_secrets() -> bool:
+def validate_oauth_secrets() -> bool:
     """
-    Validate that all required Adobe API secrets are present.
+    Validate that all required OAuth secrets are present for token generation.
     
     Returns:
-        bool: True if all secrets are present, False otherwise
+        bool: True if all OAuth secrets are present, False otherwise
     """
-    required_secrets = [
+    oauth_secrets = [
         "ADOBE_CLIENT_ID",
         "ADOBE_CLIENT_SECRET", 
         "ADOBE_ORG_ID",
-        "ADOBE_TECH_ID",
-        "ADOBE_COMPANY_ID"
+        "ADOBE_TECH_ID"
     ]
     
     missing_secrets = []
-    for secret in required_secrets:
+    for secret in oauth_secrets:
         if not st.secrets.get(secret):
             missing_secrets.append(secret)
     
     if missing_secrets:
-        st.error(f"Missing required secrets: {', '.join(missing_secrets)}")
+        st.error(f"Missing required OAuth secrets: {', '.join(missing_secrets)}")
         return False
     
-    # Additional validation for company ID format
+    return True
+
+
+def validate_api_secrets() -> bool:
+    """
+    Validate that all required secrets are present for API calls.
+    
+    Returns:
+        bool: True if all API secrets are present, False otherwise
+    """
+    # First validate OAuth secrets
+    if not validate_oauth_secrets():
+        return False
+    
+    # Then validate company ID for API calls
     company_id = st.secrets.get("ADOBE_COMPANY_ID")
-    if company_id and len(company_id) < 10:
+    if not company_id:
+        st.error("❌ Missing ADOBE_COMPANY_ID secret for API calls")
+        st.info("""
+        **Company ID is required for:**
+        - Creating segments
+        - Making Analytics API calls
+        - But NOT for getting OAuth tokens
+        """)
+        return False
+    
+    # Validate company ID format
+    if len(company_id) < 10:
         st.error("❌ Invalid Company ID format. Must be at least 10 characters long.")
         st.info("""
         **How to find your Company ID:**
@@ -247,21 +271,42 @@ def validate_secrets() -> bool:
     return True
 
 
+def validate_secrets() -> bool:
+    """
+    Validate that all required Adobe API secrets are present.
+    This is a legacy function that now calls validate_api_secrets().
+    
+    Returns:
+        bool: True if all secrets are present, False otherwise
+    """
+    return validate_api_secrets()
+
+
 # Example usage and testing functions
 def test_api_connection() -> bool:
     """
     Test the Adobe API connection by attempting to get an access token.
+    This only requires OAuth secrets, not the company ID.
     
     Returns:
         bool: True if connection successful, False otherwise
     """
     try:
-        if not validate_secrets():
+        if not validate_oauth_secrets():
             return False
             
         access_token = get_adobe_access_token()
         if access_token:
             st.success("✅ Successfully connected to Adobe API")
+            st.info("""
+            **OAuth Authentication Successful!**
+            
+            You can now:
+            - ✅ Get access tokens
+            - ✅ Make authenticated requests
+            
+            **Next step:** Configure your Company ID to make Analytics API calls
+            """)
             return True
         else:
             st.error("❌ Failed to connect to Adobe API")
@@ -274,11 +319,17 @@ def test_api_connection() -> bool:
 def create_sample_segment() -> bool:
     """
     Create a sample segment for testing purposes.
+    This requires both OAuth secrets AND company ID.
     
     Returns:
         bool: True if segment created successfully, False otherwise
     """
     try:
+        # First validate that we have all required secrets for API calls
+        if not validate_api_secrets():
+            st.error("❌ Cannot create segment - missing required secrets")
+            return False
+        
         # Sample segment definition using Adobe Analytics 2.0 API format
         # This creates a simple segment for page views > 1
         sample_definition = {
@@ -331,15 +382,20 @@ if __name__ == "__main__":
         create_sample_segment()
     
     # Display current secrets status (without revealing values)
-    st.subheader("Secrets Status")
-    secrets_status = {}
-    for secret in ["ADOBE_CLIENT_ID", "ADOBE_CLIENT_SECRET", "ADOBE_ORG_ID", "ADOBE_TECH_ID", "ADOBE_COMPANY_ID"]:
-        secrets_status[secret] = "✅ Present" if st.secrets.get(secret) else "❌ Missing"
+    st.subheader("🔑 Secrets Status")
     
-    for secret, status in secrets_status.items():
+    # OAuth Secrets (required for token generation)
+    st.subheader("🔐 OAuth Secrets (Required for API Connection)")
+    oauth_secrets = ["ADOBE_CLIENT_ID", "ADOBE_CLIENT_SECRET", "ADOBE_ORG_ID", "ADOBE_TECH_ID"]
+    oauth_status = {}
+    for secret in oauth_secrets:
+        oauth_status[secret] = "✅ Present" if st.secrets.get(secret) else "❌ Missing"
+    
+    for secret, status in oauth_status.items():
         st.write(f"{secret}: {status}")
     
-    # Company ID validation and help
+    # Company ID (required for Analytics API calls)
+    st.subheader("🏢 Company ID (Required for Analytics API Calls)")
     company_id = st.secrets.get("ADOBE_COMPANY_ID")
     if company_id:
         if len(company_id) < 10:
@@ -359,4 +415,31 @@ if __name__ == "__main__":
         else:
             st.success(f"✅ Company ID format looks correct ({len(company_id)} characters)")
     else:
-        st.error("❌ Company ID is missing!")
+        st.warning("⚠️ Company ID is missing - needed for Analytics API calls")
+        st.info("""
+        **Company ID is only required for:**
+        - Creating segments
+        - Making Analytics API calls
+        - **NOT for getting OAuth tokens**
+        """)
+    
+    # Validation Summary
+    st.subheader("📋 Validation Summary")
+    oauth_valid = validate_oauth_secrets()
+    api_valid = validate_api_secrets()
+    
+    if oauth_valid:
+        st.success("✅ OAuth Secrets: Valid (can get access tokens)")
+    else:
+        st.error("❌ OAuth Secrets: Invalid (cannot get access tokens)")
+    
+    if api_valid:
+        st.success("✅ API Secrets: Valid (can make Analytics API calls)")
+    else:
+        st.warning("⚠️ API Secrets: Incomplete (cannot make Analytics API calls)")
+    
+    if oauth_valid and not api_valid:
+        st.info("""
+        **Current Status:** You can authenticate but cannot make Analytics API calls.
+        **Next Step:** Configure your Company ID to enable full functionality.
+        """)
