@@ -124,22 +124,36 @@ def create_analytics_segment(name: str, description: str, definition_json: Dict[
             st.error("Missing ADOBE_CLIENT_ID secret")
             return None
         
-        # Construct API endpoint URL
+        # Construct API endpoint URL with proper company ID format
+        # Adobe company IDs are typically 32-character hex strings
+        if len(company_id) < 10:  # If it's a short ID like "adober1f"
+            st.warning(f"Company ID '{company_id}' appears to be invalid. Adobe company IDs are typically 32-character hex strings.")
+            st.info("Please check your Adobe Analytics Admin Console for the correct Company ID")
+            return None
+        
         api_endpoint = f"https://analytics.adobe.io/api/{company_id}/segments"
         
-        # Prepare request headers
+        # Prepare request headers with all required Adobe Analytics headers
         headers = {
             'Authorization': f'Bearer {access_token}',
             'x-api-key': client_id,
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
         }
         
         # Prepare request body
+        # Adobe Analytics 2.0 API expects the definition in the root level
         request_body = {
             'name': name,
-            'description': description,
-            'definition': definition_json
+            'description': description
         }
+        
+        # Merge the definition JSON into the request body
+        if isinstance(definition_json, dict):
+            request_body.update(definition_json)
+        else:
+            st.error("Invalid definition format. Expected dictionary.")
+            return None
         
         # Make POST request to create segment
         response = requests.post(
@@ -176,7 +190,21 @@ def get_company_id() -> Optional[str]:
     Returns:
         str: Company ID if found, None if missing
     """
-    return st.secrets.get("ADOBE_COMPANY_ID")
+    company_id = st.secrets.get("ADOBE_COMPANY_ID")
+    
+    if company_id and len(company_id) < 10:
+        st.warning(f"⚠️ Company ID '{company_id}' appears to be invalid.")
+        st.info("""
+        **Adobe Company ID Format:**
+        - Should be a 32-character hexadecimal string
+        - Example: `1234567890abcdef1234567890abcdef`
+        - Find it in Adobe Analytics Admin Console → Company Settings
+        
+        **Current value:** `{company_id}` (too short)
+        """.format(company_id=company_id))
+        return None
+    
+    return company_id
 
 
 def validate_secrets() -> bool:
@@ -201,6 +229,19 @@ def validate_secrets() -> bool:
     
     if missing_secrets:
         st.error(f"Missing required secrets: {', '.join(missing_secrets)}")
+        return False
+    
+    # Additional validation for company ID format
+    company_id = st.secrets.get("ADOBE_COMPANY_ID")
+    if company_id and len(company_id) < 10:
+        st.error("❌ Invalid Company ID format. Must be at least 10 characters long.")
+        st.info("""
+        **How to find your Company ID:**
+        1. Go to [Adobe Analytics](https://analytics.adobe.com)
+        2. Navigate to **Admin** → **Company Settings**
+        3. Look for **Company Information** section
+        4. Copy the **Company ID** (32-character hex string)
+        """)
         return False
     
     return True
@@ -238,19 +279,23 @@ def create_sample_segment() -> bool:
         bool: True if segment created successfully, False otherwise
     """
     try:
-        # Sample segment definition for page views > 10
+        # Sample segment definition using Adobe Analytics 2.0 API format
+        # This creates a simple segment for page views > 1
         sample_definition = {
-            "container": {
-                "func": "container",
-                "pred": {
-                    "func": "pred",
-                    "expr": {
-                        "func": "expr",
-                        "func_name": "gt",
-                        "args": [
-                            {"func": "attr", "name": "page_views"},
-                            {"func": "const", "val": 10}
-                        ]
+            "definition": {
+                "container": {
+                    "func": "container",
+                    "context": "visitors",
+                    "pred": {
+                        "func": "pred",
+                        "expr": {
+                            "func": "expr",
+                            "func_name": "gt",
+                            "args": [
+                                {"func": "attr", "name": "page_views"},
+                                {"func": "const", "val": 1}
+                            ]
+                        }
                     }
                 }
             }
@@ -293,3 +338,25 @@ if __name__ == "__main__":
     
     for secret, status in secrets_status.items():
         st.write(f"{secret}: {status}")
+    
+    # Company ID validation and help
+    company_id = st.secrets.get("ADOBE_COMPANY_ID")
+    if company_id:
+        if len(company_id) < 10:
+            st.error(f"❌ Company ID '{company_id}' is invalid!")
+            st.info("""
+            **Your Company ID is too short!**
+            
+            Adobe Company IDs are typically 32-character hexadecimal strings.
+            Current length: **{length}** characters (needs at least 10)
+            
+            **How to fix:**
+            1. Go to [Adobe Analytics Admin Console](https://analytics.adobe.com/#/admin/company)
+            2. Navigate to **Company Settings** → **Company Information**
+            3. Copy the full **Company ID** (should look like: `1234567890abcdef1234567890abcdef`)
+            4. Update your `.streamlit/secrets.toml` file
+            """.format(length=len(company_id)))
+        else:
+            st.success(f"✅ Company ID format looks correct ({len(company_id)} characters)")
+    else:
+        st.error("❌ Company ID is missing!")
