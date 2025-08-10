@@ -36,18 +36,21 @@ def get_adobe_access_token() -> Optional[str]:
             
             raise ValueError(f"Missing required secrets: {', '.join(missing_secrets)}")
         
-        # Adobe Identity Management System endpoint
-        ims_endpoint = "https://ims-na1.adobelogin.com/ims/exchange/jwt/"
+        # Adobe Identity Management System endpoint for client credentials
+        ims_endpoint = "https://ims-na1.adobelogin.com/ims/token"
         
-        # Prepare multipart form data
+        # Prepare form data for Adobe IMS
         payload = {
             'client_id': client_id,
             'client_secret': client_secret,
             'grant_type': 'client_credentials',
-            'scope': 'AdobeID,openid,read_organizations'
+            'scope': 'AdobeID,openid'
         }
         
         # Make POST request to get access token
+        st.info(f"Making request to: {ims_endpoint}")
+        st.info(f"Payload: {payload}")
+        
         response = requests.post(
             ims_endpoint,
             data=payload,
@@ -55,8 +58,17 @@ def get_adobe_access_token() -> Optional[str]:
             timeout=30
         )
         
+        st.info(f"Response status: {response.status_code}")
+        st.info(f"Response headers: {dict(response.headers)}")
+        
         # Check if request was successful
-        response.raise_for_status()
+        if response.status_code != 200:
+            try:
+                error_data = response.json()
+                st.error(f"IMS Error: {error_data}")
+            except:
+                st.error(f"IMS Error: {response.text}")
+            response.raise_for_status()
         
         # Parse JSON response
         token_data = response.json()
