@@ -2,9 +2,9 @@ Source URL: https://experienceleague.adobe.com/en/docs/experience-cloud-kcs/kbar
 ================================================================================
 
 Documentation
-Mobile Device Model Tracking for iPhone in Adobe Analytics and CJA
+Mobile Device Model Tracking for iPhone in Adobe and CJA
 Last update: Mon Jul 21 2025 00:00:00 GMT+0000 (Coordinated Universal Time)
-Adobe utilizes a lookup from 3rd Party DeviceAtlas to gather device information from user data. In Adobe Analytics, the lookup data populates in the
+Adobe utilizes a lookup from 3rd Party DeviceAtlas to gather device information from user data. In Adobe, the lookup data populates in the
 Mobile Device
 Dimension, while in CJA, the lookup data populates in the
 Mobile Device Name
@@ -23,7 +23,7 @@ xdm:modelNumber
 Description
 description
 Environment
-Adobe Analytics
+Adobe
 Adobe Customer Journey Analytics (CJA)
 Symptoms
 a.DeviceName

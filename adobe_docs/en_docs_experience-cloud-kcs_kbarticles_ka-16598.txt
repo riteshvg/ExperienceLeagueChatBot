@@ -6,7 +6,7 @@ Intermittent 503 and 409 errors in the Live Stream APIs
 Last update: Tue Jul 23 2024 00:00:00 GMT+0000 (Coordinated Universal Time)
 The
 Live Stream Application Programming Interface (APIs)
-in Adobe Analytics may sometimes encounter 503 and/or 409 errors. This usually happens when you connect and disconnect repeatedly. To avoid this, you should establish a connection and continue reading from the stream without disconnecting. For more details, please refer to the article.
+in Adobe may sometimes encounter 503 and/or 409 errors. This usually happens when you connect and disconnect repeatedly. To avoid this, you should establish a connection and continue reading from the stream without disconnecting. For more details, please refer to the article.
 Description
 description
 Environment

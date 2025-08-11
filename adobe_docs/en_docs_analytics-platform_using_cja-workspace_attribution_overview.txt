@@ -14,10 +14,10 @@ Admin
 Attribution gives analysts the ability to customize how dimension items get credit for success events. For example:
 A visitor to your site clicks a paid search link to one of your product pages. They add the product to the cart, but do not purchase it.
 The next day, they see a social media post from one of their friends, click the link, then complete the purchase.
-In some reports, you might want the order attributed to Paid search. In other reports, you might want the order attributed to Social. Attribution lets you control this aspect of reporting. It is available to all organizations on Adobe Analytics Ultimate, Prime, Select and Foundation. If you are not sure which type of contract you have with Adobe, contact your organization’s Adobe Account Team.
+In some reports, you might want the order attributed to Paid search. In other reports, you might want the order attributed to Social. Attribution lets you control this aspect of reporting. It is available to all organizations on Adobe Ultimate, Prime, Select and Foundation. If you are not sure which type of contract you have with Adobe, contact your organization’s Adobe Account Team.
 Value of attribution
 A given customer journey isn’t linear and often unpredictable. Each customer proceeds at their own pace; often they double back, stall, restart, or engage in other non-linear behavior. These organic actions make it difficult to know the impact of marketing efforts across the customer journey. It also hampers efforts to tie multiple channels of data together.
-Adobe Analytics enhances attribution by letting you:
+Adobe enhances attribution by letting you:
 Define attribution beyond paid media: Any dimension, metric, channel or event can be applied to models (for example, internal search), not just marketing campaigns.
 Use unlimited attribution model comparison: dynamically compare as many models as you want.
 Avoid implementation changes: With report time processing and context-aware sessions, customer journey context can be built in and applied at run time.

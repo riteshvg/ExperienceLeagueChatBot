@@ -4,14 +4,14 @@ Source URL: https://experienceleague.adobe.com/en/docs/analytics/release-notes/d
 Documentation
 Analytics
 Release Notes
-Technical documentation updates for Adobe Analytics
+Technical documentation updates for Adobe
 Last update: Fri Jul 18 2025 00:00:00 GMT+0000 (Coordinated Universal Time)
 Topics:
 Release Notes
 CREATED FOR:
 User
 Admin
-Content updates for the Adobe Analytics documentation set since January, 2019.
+Content updates for the Adobe documentation set since January, 2019.
 For information on Customer Journey Analytics, go
 here
 .
@@ -40,11 +40,11 @@ up and down in a project.
 March 2025
 Analytics inventory
 Analytics Inventory
-provides a comprehensive overview of your Adobe Analytics environment, including the number of projects and components, report suites, users, and more.
+provides a comprehensive overview of your Adobe environment, including the number of projects and components, report suites, users, and more.
 Customer Journey Analytics upgrade guide
 Lets you generate a
 step-by-step guide
-for upgrading from Adobe Analytics to Customer Journey Analytics.
+for upgrading from Adobe to Customer Journey Analytics.
 Clarified date formatting in Data Warehouse exports
 Time-based dimension values in Data Warehouse exports have non-standard date formatting. Added information explaining how to interpret date values from Data Warehouse exports.
 See
@@ -147,7 +147,7 @@ common error messages
 June 2024
 Updated product name that refers to streaming media features
 Replaced instances of “Media Analytics” and “Streaming Media” with the name “Streaming Media Collection Add-on” and “Streaming Media Collection” when referring to the set of streaming media features that collect streaming media data and surface it in Analysis Workspace.
-These updates are available throughout the Adobe Analytics documentation as well as the
+These updates are available throughout the Adobe documentation as well as the
 Streaming Media Collection documentation
 .
 Improved alerts documentation
@@ -189,11 +189,11 @@ Explicit map XDM object variables to context data variables
 Documented the capability to
 explicitly set context data variables using XDM object variable mapping
 .
-New documentation for upgrading from Adobe Analytics to Customer Journey Analytics
-For organizations upgrading from Adobe Analytics to Customer Journey Analytics, there are multiple upgrade options and many considerations to keep in mind based on an organization’s current Adobe Analytics implementation and long-term goals.
+New documentation for upgrading from Adobe to Customer Journey Analytics
+For organizations upgrading from Adobe to Customer Journey Analytics, there are multiple upgrade options and many considerations to keep in mind based on an organization’s current Adobe implementation and long-term goals.
 New documentation resources are now available to help you better understand:
 The various upgrade paths that exist
-Which upgrade paths are available based on an organization’s current Adobe Analytics implementation
+Which upgrade paths are available based on an organization’s current Adobe implementation
 The advantages and disadvantages of each upgrade path
 Step-by-step guidance for each upgrade path
 Considerations for handling historical data
@@ -345,7 +345,7 @@ Updated
 the definition of Start & End dates
 to clarify that when processing data feeds for historical data, you can set the start date to any date in the past when data is being collected.
 Adobe Experience Platform Edge Network data handling
-Added content around how Adobe Analytics
+Added content around how Adobe
 handles data from the Edge Network
 .
 Media Playback Time Spent panel
@@ -396,9 +396,9 @@ Tracking
 and added redirects for changed URLs in this section.
 July 2023
 Adobe Experience Platform Edge Network API
-Added more comprehensive documentation on when and how to implement data collection with Adobe Analytics using the
+Added more comprehensive documentation on when and how to implement data collection with Adobe using the
 Adobe Experience Platform Edge Network API
-. For example, implementing data collection with Adobe Analytics in desktop applications, IoT devices, set top boxes.
+. For example, implementing data collection with Adobe in desktop applications, IoT devices, set top boxes.
 Global company ID
 Documented
 how to find the global company ID
@@ -432,7 +432,7 @@ Automated import
 : Automatically import classification data from cloud storage destinations.
 Learn more
 Calculated metrics updates
-Updates were made to various articles related to calculated metrics, including updating screen shots and steps in procedures. These changes were made to bring documentation inline with current Adobe Analytics functionality.
+Updates were made to various articles related to calculated metrics, including updating screen shots and steps in procedures. These changes were made to bring documentation inline with current Adobe functionality.
 Secure destinations for data feed export
 Data feeds can now be sent to the following cloud storage destinations:
 Amazon S3
@@ -494,7 +494,7 @@ Transfer user assets and set account expirations
 Added information about how to
 transfer user assets and set account expirations
 .
-2 new endpoint guides for the Adobe Analytics 2.0 API
+2 new endpoint guides for the Adobe 2.0 API
 Analytics Dimensions API
 Analytics Metrics API
 Project segments (Ad hoc and quick segments)
@@ -508,7 +508,7 @@ is added. Previously, Information only existed for mobile attributes, which is o
 March 2023
 Web SDK support for Activity Map
 Updated
-Implement Adobe Analytics
+Implement Adobe
 .
 Traffic variables (props) overview
 Added sections and step-by-step procedures to clarify and improve article content. Merged content from an article titled, “Enable traffic variable reports” and removed that article. See
@@ -552,7 +552,7 @@ Preferences
 February 2023
 Implementation
 Updated content on how to
-implement Adobe Analytics for web and mobile
+implement Adobe for web and mobile
 .
 Workspace calendars and date ranges
 Updated content to describe relative date ranges, formula calculation updates, and calendar UI changes. See
@@ -564,7 +564,7 @@ Show comparison date ranges
 in Customer Journey Analytics.
 1.4 API
 The
-Adobe Analytics 1.4 API
+Adobe 1.4 API
 received a full rewrite, and is now published on Adobe Developer.
 Tracking across implementation types
 Updated the use case
@@ -660,7 +660,7 @@ Merchandising variables in XDM for Edge Collection
 Documentation on
 support for Merchandising variables in XDM for Edge Collection
 Experience Platform Edge documentation
-New articles on Adobe Analytics implementation via
+New articles on Adobe implementation via
 Web SDK
 ,
 Mobile SDK
@@ -680,7 +680,7 @@ Mobile Lifecycle data sent to the Edge Network now appears in Analytics reportin
 Analytics variable mapping
 for details on which XDM fields map to existing mobile Lifecycle reporting.
 April 2022
-Adobe Analytics landing page updates
+Adobe landing page updates
 Updates to the joint
 Workspace/Reports & Analytics landing page
 that improves usability and ease of navigation.
@@ -694,7 +694,7 @@ Supported HTTPS encryption algorithms for customers with cipher security level s
 New documentation on Annotations in Workspace
 Annotations in Workspace
 enable you to effectively communicate contextual data nuances and insights to your organization.
-Adobe Analytics landing page updates
+Adobe landing page updates
 Updates
 to the joint Workspace/Reports & Analytics landing page that improves usability and ease of navigation.
 Next item or Previous item Workspace panel
@@ -764,7 +764,7 @@ New in-depth discussion of
 Merchandising eVars
 July 15, 2021
 Added new documentation on the new
-Adobe Analytics landing page
+Adobe landing page
 June 2021
 June 15, 2021
 Updated
@@ -785,7 +785,7 @@ Data Warehouse API requests
 . They now support “Hours”.
 March 2021
 March, April 2021
-Updates to Adobe Analytics dashboards
+Updates to Adobe dashboards
 Executive guide
 and
 Curator guide
@@ -846,7 +846,7 @@ Visualizations overview
 page.
 November 12, 2020
 New page on
-Inherited Adobe Analytics Implementation
+Inherited Adobe Implementation
 .
 November 2, 2020
 Updated document on
@@ -864,7 +864,7 @@ The Workspace
 Performance Help page
 shows the different factors that impact project performance and links to tips for optimization.
 October 23, 2020
-Added enhancements to Adobe Analytics dashboads documentation. In the mobile scorecard in Workspace, the styling of the scorecard now matches the app.
+Added enhancements to Adobe dashboads documentation. In the mobile scorecard in Workspace, the styling of the scorecard now matches the app.
 September 2020
 September 17, 2020
 Download 50K items for a single dimension
@@ -931,7 +931,7 @@ New documentation on
 Bulk Data Insertion API
 May 21, 2020
 New documentation for
-Adobe Analytics dashboards
+Adobe dashboards
 May 21, 2020
 New documentation on
 accessibility improvements
@@ -959,7 +959,7 @@ Learn more…
 February 2020
 February 27, 2020
 Added documentation for
-Adobe Analytics Labs
+Adobe Labs
 .
 February 25, 2020
 Added
@@ -1039,11 +1039,11 @@ Manual static row ordering
 : You can manually order static rows so that the table rows are displayed exactly as you need them. Previously, static rows could be sorted only by a metric column or alphabetically.
 January 13, 2020
 Added
-Adobe Analytics and browser cookies
+Adobe and browser cookies
 .
 January 13, 2020
 Modified the
-Which Adobe Analytics Tool should I use
+Which Adobe Tool should I use
 page.
 2019
 year2019
@@ -1067,7 +1067,7 @@ Audience Analytics Workflow FAQ
 to indicate availability in LiveStream.
 October 25, 2019
 Updated
-Adobe Analytics Key Concepts
+Adobe Key Concepts
 page.
 October 10, 2019
 Update to Freeform table totals: they now include two totals, a
@@ -1151,7 +1151,7 @@ June 13, 2019
 Added new out-of-the-box filters to the left rail search in Workspace. Beyond what you see today (Dimensions, Metrics, Approved, etc.), new filters such as Calculated Metrics, Customer Attributes, eVars, Props, Video, etc. were added to make it easier to find the components you need.
 June 4, 2019
 New guide authored, titled
-Transitioning from a third-party analytics platform to Adobe Analytics
+Transitioning from a third-party analytics platform to Adobe
 .
 May 30, 2019
 Overhaul to the

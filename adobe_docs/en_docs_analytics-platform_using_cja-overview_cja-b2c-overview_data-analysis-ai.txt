@@ -100,7 +100,7 @@ Flag
 Manage access to Data Insights Agent
 The following parameters govern access to Data Insights Agent in Customer Journey Analytics:
 Solution access
-: Data Insights Agent is available for all Customer Journey Analytics customers as part of a limited access program until November 30, 2025. It is not available in Adobe Analytics.
+: Data Insights Agent is available for all Customer Journey Analytics customers as part of a limited access program until November 30, 2025. It is not available in Adobe.
 Contractual access
 : If you are not able to use Data Insights Agent in the AI Assistant, please contact your organization’s administrator or Adobe account team. Before your organization can use Data Insights Agent, you must agree to certain legal terms related to generative AI.
 Permissions
@@ -299,7 +299,7 @@ Below are best practices for your Customer Journey Analytics configuration (data
 Balance what components you need
 . Do not add all the fields of your datasets as metrics or dimension components to your data view. Especially, those you most certainly will not use in your analysis. On the other hand, do not strictly limit yourself only to the fields you anticipate you require for your analysis. A too limited data view restricts the flexibility in your analysis and the Data Insights Agent functionality.
 Always use friendly display names
-. Ensure that all fields you define in your data view, either as a metric or dimension component, have a friendly component name. The process of renaming fields with a friendly name is especially relevant for fields from Adobe Analytics source connector datasets. These fields often have non-friendly unidentifiable names, like
+. Ensure that all fields you define in your data view, either as a metric or dimension component, have a friendly component name. The process of renaming fields with a friendly name is especially relevant for fields from Adobe source connector datasets. These fields often have non-friendly unidentifiable names, like
 eVar41
 or
 prop25

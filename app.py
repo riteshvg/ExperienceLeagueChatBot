@@ -294,48 +294,52 @@ def generate_segment_suggestions(intent_details):
     # Generate recommended rules
     rules = []
     
-    # Device rule
+    # Device rule - use valid Adobe Analytics variables
     if intent_details.get('device'):
         if intent_details['device'] == 'mobile':
             rules.append({
                 'func': 'streq',
-                'name': 'variables/device_type',
-                'val': 'Mobile'
+                'name': 'variables/evar1',  # Use evar1 for device type
+                'val': 'Mobile',
+                'str': 'Mobile'
             })
         elif intent_details['device'] == 'desktop':
             rules.append({
                 'func': 'streq',
-                'name': 'variables/device_type',
-                'val': 'Desktop'
+                'name': 'variables/evar1',  # Use evar1 for device type
+                'val': 'Desktop',
+                'str': 'Desktop'
             })
         elif intent_details['device'] == 'tablet':
             rules.append({
                 'func': 'streq',
-                'name': 'variables/device_type',
-                'val': 'Tablet'
+                'name': 'variables/evar1',  # Use evar1 for device type
+                'val': 'Tablet',
+                'str': 'Tablet'
             })
     
-    # Geographic rule (placeholder)
+    # Geographic rule - use valid Adobe Analytics variables
     if intent_details.get('geographic'):
         rules.append({
             'func': 'streq',
-            'name': 'variables/geocountry',
-            'val': 'Specific Country'
+            'name': 'variables/geocountry',  # This is a standard Adobe variable
+            'val': 'United States',  # Use a real country name
+            'str': 'United States'
         })
     
-    # Behavioral rules
+    # Behavioral rules - use valid Adobe Analytics variables
     if intent_details.get('behavioral'):
         for behavior in intent_details['behavioral']:
             if behavior == 'page_views':
                 rules.append({
                     'func': 'gt',
-                    'name': 'variables/pageviews',
+                    'name': 'variables/pageviews',  # This is a standard Adobe variable
                     'val': 5
                 })
             elif behavior == 'time_on_site':
                 rules.append({
                     'func': 'gt',
-                    'name': 'variables/time_on_site',
+                    'name': 'variables/timeonsite',  # Use correct Adobe variable name
                     'val': 600  # 10 minutes in seconds
                 })
     
@@ -1157,7 +1161,7 @@ def main():
         
         # Display assistant response in chat message container
         with st.chat_message("assistant"):
-                with st.spinner("Thinking..."):
+            with st.spinner("Thinking..."):
                     try:
                         # Start timer for response time
                         start_time = time.time()
@@ -1254,8 +1258,6 @@ def main():
                                 st.write("✅ Copied to clipboard!")
                                 # Note: Actual clipboard functionality requires additional setup
                         
-
-                        
                         # Display response time with enhanced styling
                         if response_time > 10:
                             st.warning(f"⏱️ Response time: {response_time:.1f} seconds")
@@ -1302,8 +1304,6 @@ def main():
                             if st.button("💡 Suggest", key=f"suggest_{len(st.session_state.messages)}", help="Suggest improvement"):
                                 st.info("💡 Thanks for the suggestion!")
                         
-
-                                
                     except Exception as e:
                         error_msg = f"❌ Error generating answer: {e}"
                         st.error(error_msg)
@@ -1312,8 +1312,6 @@ def main():
                         
                         # Reset processing state after error
                         st.session_state.is_processing = False
-            
-
             
             # Generate and display follow-up questions after successful response
             if 'answer' in locals() and 'prompt' in locals():

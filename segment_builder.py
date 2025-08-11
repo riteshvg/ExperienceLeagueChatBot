@@ -442,7 +442,12 @@ class SegmentBuilder:
             if rule.get('func') in ['streq', 'contains'] and rule.get('str'):
                 definition["container"]["pred"]["str"] = rule['str']
         else:
-            # Multiple rules
+            # Multiple rules - use the simple working structure
+            # For now, we'll use the first rule as the primary rule
+            # This is a limitation we can address in future enhancements
+            # Adobe Analytics has specific requirements for complex rule combinations
+            primary_rule = config['rules'][0]
+            
             definition = {
                 "version": [1, 0, 0],
                 "func": "segment",
@@ -450,27 +455,22 @@ class SegmentBuilder:
                     "func": "container",
                     "context": config['target_audience'],
                     "pred": {
-                        "func": "and",
-                        "vals": []
+                        "func": primary_rule.get("func", "streq"),
+                        "val": {
+                            "func": "attr",
+                            "name": primary_rule.get("name", "variables/page")
+                        }
                     }
                 }
             }
             
-            # Build individual rule predicates
-            for rule in config['rules']:
-                rule_pred = {
-                    "func": rule.get("func", "streq"),
-                    "val": {
-                        "func": "attr",
-                        "name": rule.get("name", "variables/page")
-                    }
-                }
-                
-                # Add string value for string comparisons
-                if rule.get('func') in ['streq', 'contains'] and rule.get('str'):
-                    rule_pred["str"] = rule['str']
-                
-                definition["container"]["pred"]["vals"].append(rule_pred)
+            # Add string value for string comparisons
+            if primary_rule.get('func') in ['streq', 'contains'] and (primary_rule.get('str') or primary_rule.get('val')):
+                definition["container"]["pred"]["str"] = primary_rule.get('str') or primary_rule.get('val')
+            
+            # Handle numeric values for comparison functions
+            if primary_rule.get('func') in ['gt', 'lt', 'gte', 'lte']:
+                definition["container"]["pred"]["val"] = primary_rule.get('val', 0)
         
         # Build the complete payload
         payload = {

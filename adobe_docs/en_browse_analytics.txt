@@ -1,8 +1,8 @@
 Source URL: https://experienceleague.adobe.com/en/browse/analytics
 ================================================================================
 
-Adobe Analytics
-Discover important customer insights with Adobe Analytics by seeing how customers use different channels, tracking real-time activity on websites and mobile apps, and using AI to make smart decisions based on data. Browse for topics that help you improve user experiences, get more from your marketing, and help your business grow with clear, useful data.
+Adobe
+Discover important customer insights with Adobe by seeing how customers use different channels, tracking real-time activity on websites and mobile apps, and using AI to make smart decisions based on data. Browse for topics that help you improve user experiences, get more from your marketing, and help your business grow with clear, useful data.
 exl:solution/QW5hbHl0aWNz
 Browse Analytics by topic
 exl:feature/QW5hbHl0aWNz/V29ya3NwYWNlIEJhc2ljcw==,exl:feature/QW5hbHl0aWNz/VmlzdWFsaXphdGlvbnM=,exl:feature/QW5hbHl0aWNz/VXNlIENhc2Vz,exl:feature/QW5hbHl0aWNz/UmVwb3J0cyAmIEFuYWx5dGljcyBCYXNpY3M=,exl:feature/QW5hbHl0aWNz/UmVwb3J0IEJ1aWxkZXI=,exl:feature/QW5hbHl0aWNz/TW9iaWxlIFNESw==,exl:feature/QW5hbHl0aWNz/SW1wbGVtZW50YXRpb24gQmFzaWNz,exl:feature/QW5hbHl0aWNz/RGF0YSBXb3JrYmVuY2g=,exl:feature/QW5hbHl0aWNz/RGF0YSBTY2llbmNl,exl:solution/RGF0YSBDb2xsZWN0aW9u,exl:topic
@@ -83,7 +83,7 @@ recommended
 style
 default
 CERTIFICATIONS
-Go further with an Adobe Analytics certification.
+Go further with an Adobe certification.
 Sharpen your Adobe skills and bring value to your company. We offer certification programs that can help you take your career to the next level.
 tertiary
 --spectrum-gray-700

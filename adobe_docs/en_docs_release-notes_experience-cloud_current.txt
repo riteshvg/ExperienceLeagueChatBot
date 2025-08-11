@@ -19,7 +19,7 @@ Adobe System Status
 Adobe Experience Cloud - central interface and administration
 Adobe Experience Platform
 Adobe Real-Time CDP
-Adobe Analytics
+Adobe
 Adobe Customer Journey Analytics
 Adobe Streaming Media Analytics
 Adobe Experience Manager
@@ -68,7 +68,7 @@ RCS for Business: Unlock the next era of conversation
 Register
 Adobe Workfront
 |
-Designing Simplicity: How Kohler Reimagined Creative Briefs
+Designing Simplicity: How Company B Reimagined Creative Briefs
 | Case study on creative brief process innovation in Workfront. | August 7, 2025 |
 Register
 And more!
@@ -244,7 +244,7 @@ Product documentation:
 Real-Time Customer Data Platform
 Analytics
 analytics
-Find the latest release information for Adobe Analytics and AppMeasurement. View new tutorials and Support articles.
+Find the latest release information for Adobe and AppMeasurement. View new tutorials and Support articles.
 Release notes and new tutorials
 Analytics release date:
 July 16, 2025

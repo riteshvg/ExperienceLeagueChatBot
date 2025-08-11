@@ -14,7 +14,7 @@ How to track campaigns
 How to understand page performance
 How to create visualizations in Workspace
 All about segments and calculated metrics
-Top 5 tips in Adobe Analytics (ex: how to create drop-downs)
+Top 5 tips in Adobe (ex: how to create drop-downs)
 How to use Attribution IQ
 You can then easily point users to these instead of writing lengthy emails or having yet another meeting. For more tips and tricks on training users, check out
 Adobe Champion Thomas Edward Buckley’s article

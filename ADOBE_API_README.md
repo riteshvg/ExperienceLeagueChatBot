@@ -13,6 +13,7 @@ This directory contains Python scripts for securely interacting with the Adobe A
 ### 1. Install Dependencies
 
 The required dependencies are already included in `requirements.txt`:
+
 ```bash
 pip install -r requirements.txt
 ```
@@ -43,6 +44,7 @@ streamlit run test_adobe_api.py
 ### Authentication
 
 #### `get_adobe_access_token()`
+
 - **Purpose**: Obtains a JWT access token from Adobe Identity Management System
 - **Returns**: Access token string or `None` if failed
 - **Security**: Uses `st.secrets` for credential storage
@@ -51,10 +53,11 @@ streamlit run test_adobe_api.py
 ### Segment Creation
 
 #### `create_analytics_segment(name, description, definition_json)`
+
 - **Purpose**: Creates a new Adobe Analytics segment via API
 - **Parameters**:
   - `name` (str): Segment name
-  - `description` (str): Segment description  
+  - `description` (str): Segment description
   - `definition_json` (dict): Segment definition in Adobe's JSON format
 - **Returns**: API response JSON or `None` if failed
 - **Headers**: Automatically includes required Authorization and x-api-key headers
@@ -62,10 +65,12 @@ streamlit run test_adobe_api.py
 ### Utility Functions
 
 #### `validate_secrets()`
+
 - **Purpose**: Checks if all required secrets are configured
 - **Returns**: `True` if all secrets present, `False` otherwise
 
 #### `get_company_id()`
+
 - **Purpose**: Retrieves the configured Adobe Analytics company ID
 - **Returns**: Company ID string or `None` if missing
 
@@ -118,15 +123,15 @@ def create_segment_ui():
     if not validate_secrets():
         st.error("Adobe API credentials not configured")
         return
-    
+
     with st.form("create_segment"):
         name = st.text_input("Segment Name")
         description = st.text_area("Description")
-        
+
         if st.form_submit_button("Create Segment"):
             # Your segment definition logic here
             definition = {"container": {...}}  # Your JSON definition
-            
+
             result = create_analytics_segment(name, description, definition)
             if result:
                 st.success("Segment created successfully!")
@@ -138,17 +143,20 @@ def create_segment_ui():
 ## 🔒 Security Features
 
 ### Credential Management
+
 - **Streamlit Secrets**: All API credentials stored in `st.secrets`
 - **No Hardcoding**: No credentials in source code
 - **Environment Variables**: Support for production deployment
 
 ### API Security
+
 - **JWT Authentication**: Secure token-based authentication
 - **Fresh Tokens**: Access tokens obtained for each request
 - **Secure Headers**: Proper Authorization and x-api-key headers
 - **Timeout Protection**: Request timeouts to prevent hanging
 
 ### Error Handling
+
 - **No Sensitive Data Logging**: Credentials never logged or displayed
 - **User-Friendly Errors**: Clear error messages without exposing internals
 - **Graceful Degradation**: App continues to function even if API fails
@@ -156,12 +164,14 @@ def create_segment_ui():
 ## 🧪 Testing
 
 ### Test Suite Features
+
 - **Connection Testing**: Verify API credentials work
 - **Segment Creation**: Test segment creation with sample data
 - **Secrets Validation**: Check if all required credentials are present
 - **Interactive UI**: Streamlit-based test interface
 
 ### Running Tests
+
 ```bash
 # Run the full test suite
 streamlit run test_adobe_api.py
@@ -177,11 +187,13 @@ print(f'API connection: {test_api_connection()}')
 ## 📚 Adobe API Resources
 
 ### Official Documentation
+
 - [Adobe Analytics 2.0 API Reference](https://developer.adobe.com/analytics-apis/docs/2.0/)
 - [Adobe IMS Authentication](https://developer.adobe.com/authentication/auth-overview/)
 - [Segment Builder API](https://developer.adobe.com/analytics-apis/docs/2.0/guides/endpoints/segments/)
 
 ### Segment Definition Examples
+
 - [Adobe Analytics Segment Builder](https://experienceleague.adobe.com/docs/analytics/components/segmentation/segmentation-workflow/seg-build.html)
 - [Segment Definition Reference](https://experienceleague.adobe.com/docs/analytics/components/segmentation/segmentation-workflow/seg-build.html#segment-definition)
 
@@ -190,25 +202,33 @@ print(f'API connection: {test_api_connection()}')
 ### Common Issues
 
 #### Missing Secrets
+
 ```
 ❌ Missing required secrets: ADOBE_CLIENT_ID, ADOBE_CLIENT_SECRET
 ```
+
 **Solution**: Configure all required secrets in `.streamlit/secrets.toml`
 
 #### Authentication Failed
+
 ```
 ❌ Failed to connect to Adobe API
 ```
+
 **Solution**: Verify your credentials and ensure your Adobe account has API access
 
 #### Company ID Issues
+
 ```
 ❌ Missing ADOBE_COMPANY_ID secret
 ```
+
 **Solution**: Find your company ID in Adobe Analytics Admin Console
 
 ### Debug Mode
+
 Enable detailed logging by setting environment variable:
+
 ```bash
 export STREAMLIT_LOG_LEVEL=debug
 streamlit run test_adobe_api.py
@@ -217,13 +237,16 @@ streamlit run test_adobe_api.py
 ## 🔄 Updates and Maintenance
 
 ### Version Compatibility
+
 - **Adobe Analytics API**: 2.0+
 - **Python**: 3.8+
 - **Streamlit**: 1.28.0+
 - **Requests**: 2.31.0+
 
 ### Contributing
+
 When updating the API integration:
+
 1. Test with `test_adobe_api.py`
 2. Verify error handling works
 3. Update this documentation
@@ -232,10 +255,11 @@ When updating the API integration:
 ## 📞 Support
 
 For issues with:
+
 - **Adobe API**: Contact Adobe Developer Support
 - **This Integration**: Check the test suite and error messages
 - **Streamlit**: Refer to [Streamlit Documentation](https://docs.streamlit.io/)
 
 ---
 
-**⚠️ Important**: Never commit your `.streamlit/secrets.toml` file to version control. Add it to `.gitignore` to prevent accidental exposure of credentials. 
+**⚠️ Important**: Never commit your `.streamlit/secrets.toml` file to version control. Add it to `.gitignore` to prevent accidental exposure of credentials.

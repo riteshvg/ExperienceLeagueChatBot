@@ -33,7 +33,7 @@ tab.
 Click on the 3 dots and select
 Export users list to CSV
 .
-Unlink Adobe Analytics user accounts with Experience Cloud Admin Console accounts.
+Unlink Adobe user accounts with Experience Cloud Admin Console accounts.
 This can be done by simply deleting the user account from the Experience Cloud Admin Console.
 Go to the Experience Cloud Admin Console
 >

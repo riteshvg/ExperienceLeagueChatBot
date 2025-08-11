@@ -11,7 +11,7 @@ Attribution
 CREATED FOR:
 User
 Admin
-The concept of attribution in Adobe Analytics involves three components:
+The concept of attribution in Adobe involves three components:
 Attribution model:
 The
 model

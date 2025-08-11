@@ -2,15 +2,15 @@ Source URL: https://experienceleague.adobe.com/en/docs/experience-cloud-kcs/kbar
 ================================================================================
 
 Documentation
-Resolving Entry/Exit prop identification issues in Adobe Analytics
+Resolving Entry/Exit prop identification issues in Adobe
 Last update: Fri Aug 01 2025 00:00:00 GMT+0000 (Coordinated Universal Time)
-Entry and exit prop values in Adobe Analytics data feeds aren’t labeled explicitly, which can make visit-level analysis more complex. If you’re trying to understand how to extract these dimensions from raw data, this article provides a clear method for deriving them using visit identifiers and timestamps. By isolating the first and last values of a given
+Entry and exit prop values in Adobe data feeds aren’t labeled explicitly, which can make visit-level analysis more complex. If you’re trying to understand how to extract these dimensions from raw data, this article provides a clear method for deriving them using visit identifiers and timestamps. By isolating the first and last values of a given
 post_propX
 , you can reconstruct entry and exit dimensions for more accurate reporting.
 Description
 description
 Environment
-Adobe Analytics
+Adobe
 Issue/Symptoms
 Entry and Exit prop dimensions are not explicitly labeled as
 Entry
@@ -21,7 +21,7 @@ post_propX
 column. To determine which prop fired on entry and which on exit, isolate the first (Entry) and last (Exit) values of the prop for each visit. This requires processing the raw data using visit and hit-level information.
 Resolution
 resolution
-Since entry and exit prop values are not directly labeled in Adobe Analytics data feeds, you need to derive them by processing the raw data. This involves grouping hits by visit, sorting them chronologically, and identifying the first and last non-empty values of the relevant
+Since entry and exit prop values are not directly labeled in Adobe data feeds, you need to derive them by processing the raw data. This involves grouping hits by visit, sorting them chronologically, and identifying the first and last non-empty values of the relevant
 post_propX
 column. The steps below outline how to approach this using SQL or similar tools.
 Key columns for visit identification:
@@ -114,6 +114,6 @@ xxxx
 x
 startpage
 escalation_request
-By following this approach, you should be able to derive entry and exit dimensions from props in an Adobe Analytics data feed.
+By following this approach, you should be able to derive entry and exit dimensions from props in an Adobe data feed.
 recommendation-more-help
 3d58f420-19b5-47a0-a122-5c9dab55ec7f

@@ -20,32 +20,32 @@ Analytics dashboards
 Analytics dashboards and their mobile scorecards allow executive users to view a broad rendering of important summary data quickly and easily on their own mobile devices. Curators add visualizations to mobile scorecard projects and share them with executives.
 Scorecards provide a way to target and measure KPIs and provide a clear indication of how well organizations are working to achieve their targets.
 Activity Map
-Activity Map is an Adobe Analytics application that is designed to rank link activity using visual overlays and provide a dashboard of real-time analytics to monitor audience engagement of your web pages.
+Activity Map is an Adobe application that is designed to rank link activity using visual overlays and provide a dashboard of real-time analytics to monitor audience engagement of your web pages.
 Activity Map lets you set up different views to visually identify the acceleration of customer activity, quantify marketing initiatives, and act on audience needs and behaviors."
 Report Builder
-The new Report Builder add-in for Microsoft Excel is supported on Mac, Windows, and web browsers. Report Builder lets you build customized requests from Adobe Analytics data that are inserted into your Excel worksheets. Requests can dynamically reference cells within your worksheet, and you can update and customize how Report Builder presents the data.
+The new Report Builder add-in for Microsoft Excel is supported on Mac, Windows, and web browsers. Report Builder lets you build customized requests from Adobe data that are inserted into your Excel worksheets. Requests can dynamically reference cells within your worksheet, and you can update and customize how Report Builder presents the data.
 Legacy Report Builder
-Legacy Report Builder is an add-in for Microsoft Excel, supported on Microsoft Windows only. Report Builder lets you build customized requests from Adobe Analytics data that are inserted into your Excel worksheets. Requests can dynamically reference cells within your worksheet, and you can update and customize how Report Builder presents the data.
+Legacy Report Builder is an add-in for Microsoft Excel, supported on Microsoft Windows only. Report Builder lets you build customized requests from Adobe data that are inserted into your Excel worksheets. Requests can dynamically reference cells within your worksheet, and you can update and customize how Report Builder presents the data.
 Analytics APIs
-Analytics APIs allow you to directly call Adobe’s servers to perform almost any action that you can perform in the user interface. You can create reports to explore, get insights, or answer important questions about your data. You can also manage components of Adobe Analytics, such as the creation of segments or calculated metrics.
-To learn about Adobe Analytics basics, check out the
-Intro to Adobe Analytics - Skill Builder Webinar
-video below. The video walks you through the basics of how data is captured, how data is sent to Adobe Analytics, and what visualization capabilities you can use within Adobe Analytics. The video provides a foundation for you to build, deploy, collect, and interpret data…allowing you to provide actionable insights and recommendations based on the collected data.
+Analytics APIs allow you to directly call Adobe’s servers to perform almost any action that you can perform in the user interface. You can create reports to explore, get insights, or answer important questions about your data. You can also manage components of Adobe, such as the creation of segments or calculated metrics.
+To learn about Adobe basics, check out the
+Intro to Adobe - Skill Builder Webinar
+video below. The video walks you through the basics of how data is captured, how data is sent to Adobe, and what visualization capabilities you can use within Adobe. The video provides a foundation for you to build, deploy, collect, and interpret data…allowing you to provide actionable insights and recommendations based on the collected data.
 recommendation-more-help
 See
-Intro to Adobe Analytics - Skill Builder Webinar
+Intro to Adobe - Skill Builder Webinar
 for the webinar.
 style
 shade-box
 For questions about which tool to use, see
-Which Adobe Analytics tool should I use?
+Which Adobe tool should I use?
 .
 Analytics user guides
-For detailed information about Adobe Analytics features and how to use them, see
+For detailed information about Adobe features and how to use them, see
 Analytics User Guides
 Key Analytics resources
 Contact Customer Care
-Adobe Analytics Community on Experience League
-Adobe Analytics Resources
+Adobe Community on Experience League
+Adobe Resources
 Experience League
 a83f8947-1ec6-4156-b2fc-94b5551b3efc

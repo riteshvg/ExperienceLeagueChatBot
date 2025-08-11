@@ -6,7 +6,7 @@ h1
 style
 article-header-section
 Revolutionize your data strategy and empower your team to create a solid solution design reference (SDR) document. Eliminate measurement gaps and foster a collaborative data culture through step-by-step methodologies.
-It’s finally time. You put together a solid Solution Design Reference (SDR). This is the guide that you use to implement your metrics and dimensions, what they’re called, when they fire, and your devs loved it. You went through the entire process of deployment, writing acceptance criteria, going through your sprints, QAing the entire thing, and it’s done! It was a lot of work, and now it’s done. Your instance of Adobe Analytics should be getting marketing and product jumping up and down as they dig into the data, get new revelations about your customers, and find all the areas of success and, well, areas of less success. But you’re not hearing the accolades that you were expecting.
+It’s finally time. You put together a solid Solution Design Reference (SDR). This is the guide that you use to implement your metrics and dimensions, what they’re called, when they fire, and your devs loved it. You went through the entire process of deployment, writing acceptance criteria, going through your sprints, QAing the entire thing, and it’s done! It was a lot of work, and now it’s done. Your instance of Adobe should be getting marketing and product jumping up and down as they dig into the data, get new revelations about your customers, and find all the areas of success and, well, areas of less success. But you’re not hearing the accolades that you were expecting.
 From one camp, you hear complaints.
 “Why can’t I figure out the conversion rate on this funnel?”
 “Why isn’t there a metric for this?”
@@ -15,7 +15,7 @@ But it’s the other camp that’s an even bigger cause of concern. From them, y
 What went wrong? Why are there gaps in measurement? Why aren’t your team members embracing this?
 I’ll start by letting you off the hook a little bit. There’s
 always
-going to be some revision. If your site or app is complex enough to need an enterprise analytics solution, it’s basically guaranteed that you’ll miss something. But not enough to explain the measurement gaps I’m talking about here. What went wrong is a lot harder to put into a spreadsheet. You missed out on your first chances to build a collaborative data culture at the same time you built your SDR. I want to walk you through a method that I and my colleagues have developed to both build a better SDR with fewer gaps, and to get end users invested and even occasionally excited about their new instance of Adobe Analytics. Let’s go over the hows and the whys.
+going to be some revision. If your site or app is complex enough to need an enterprise analytics solution, it’s basically guaranteed that you’ll miss something. But not enough to explain the measurement gaps I’m talking about here. What went wrong is a lot harder to put into a spreadsheet. You missed out on your first chances to build a collaborative data culture at the same time you built your SDR. I want to walk you through a method that I and my colleagues have developed to both build a better SDR with fewer gaps, and to get end users invested and even occasionally excited about their new instance of Adobe. Let’s go over the hows and the whys.
 The How
 The Measurement Conference:
 Get your stakeholders together, either in person or virtually with the goal of finding out what to measure. This should include some execs.
@@ -64,7 +64,7 @@ data and it’s the process that made it theirs.
 Making the Data Easier to Understand
 You’ve also shown them how they’ll use it and what it will look like through the preview dashboards. Any new solution is
 hard
-. There’s so much to learn and given the tremendous customizability of Adobe Analytics, the learning curve can be quite steep. You’ve removed 80% of that though. Even before the first line of code has been written, your stakeholders know what their dashboards will look like. They’ll know how to read them and get meaning from them. They’ll know what success literally looks like because they’ve told you what metrics and dimensions define success, and you’ve told them how that will be visualized for them. The delivery of the actual dashboards is a refresher, not a scary new learning task.
+. There’s so much to learn and given the tremendous customizability of Adobe, the learning curve can be quite steep. You’ve removed 80% of that though. Even before the first line of code has been written, your stakeholders know what their dashboards will look like. They’ll know how to read them and get meaning from them. They’ll know what success literally looks like because they’ve told you what metrics and dimensions define success, and you’ve told them how that will be visualized for them. The delivery of the actual dashboards is a refresher, not a scary new learning task.
 This isn’t the quickest way of getting an SDR together. It’s a lot of work and requires a lot of coordination of schedules, especially since it’s vital you have some execs in the mix. In the end though, an enterprise analytics solution is a huge investment of time and money, and you want to make sure adoption and satisfaction are high. This method goes a long way toward making that happen.
 linkedin,twitter,facebook
 style

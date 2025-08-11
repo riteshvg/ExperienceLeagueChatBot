@@ -1,7 +1,7 @@
 Source URL: https://experienceleague.adobe.com/en/playlists/analytics-build-freeform-tables
 ================================================================================
 
-Build Freeform Tables in Adobe Analytics
+Build Freeform Tables in Adobe
 Learn to create and format Freeform Tables, which are the foundation of analysis and the source of data for visualizations.
 https://video.tv.adobe.com/v/334093?learn=on&enablevpops
 Understand your data--Freeform Tables

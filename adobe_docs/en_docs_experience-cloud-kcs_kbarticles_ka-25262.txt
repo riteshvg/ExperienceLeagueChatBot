@@ -4,13 +4,13 @@ Source URL: https://experienceleague.adobe.com/en/docs/experience-cloud-kcs/kbar
 Documentation
 Too many ‘Contains’ operators cause segments to work incorrectly
 Last update: Wed Jun 18 2025 00:00:00 GMT+0000 (Coordinated Universal Time)
-This article provides a workaround to the Adobe Analytics issue where too many
+This article provides a workaround to the Adobe issue where too many
 Contains
 operators cause segments to work incorrectly.
 Description
 description
 Environment
-Adobe Analytics
+Adobe
 Issue/Symptoms
 The
 Contains

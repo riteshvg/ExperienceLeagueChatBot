@@ -14,7 +14,7 @@ Admin
 Leader
 Welcome to the Customer Journey Analytics tutorials Site. Using these tutorials along with the
 documentation
-will give you a better understanding how to use Adobe Analytics to gain multi-channel customer insights faster than ever. To get started,
+will give you a better understanding how to use Adobe to gain multi-channel customer insights faster than ever. To get started,
 See the
 “What’s New”
 section below for the latest goodies

@@ -11,7 +11,7 @@ Report Builder
 CREATED FOR:
 Beginner
 User
-Learn how to upgrade and reschedule legacy Report Builder workbooks to the latest version of Adobe Analytics Report Builder.
+Learn how to upgrade and reschedule legacy Report Builder workbooks to the latest version of Adobe Report Builder.
 https://video.tv.adobe.com/v/3434957/?quality=12&learn=on
 For more information on this feature, visit the
 documentation

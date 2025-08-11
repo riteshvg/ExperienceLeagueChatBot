@@ -4,7 +4,7 @@ Source URL: https://experienceleague.adobe.com/en/docs/experience-cloud-kcs/kbar
 Documentation
 Analytics shared audience keeps showing “Collecting data” on Audience Library
 Last update: Wed Jun 18 2025 00:00:00 GMT+0000 (Coordinated Universal Time)
-This article addresses the Adobe Analytics issue when using
+This article addresses the Adobe issue when using
 未指定
 (Unspecified) as the value of the segment condition, Analytics
 shared audience
@@ -16,7 +16,7 @@ to return all the hits that have data collected.
 Description
 description
 Environment
-Adobe Analytics
+Adobe
 Issue/Symptoms
 When data is not collected for a custom variable (Ex, eVar1), the value will be shown as “未指定” in the Analysis Workspace freeform table. If a segment uses this value to exclude all the hits that don’t have data and is published to Experience Cloud Audience, the audience size will be shown as
 Collecting Data

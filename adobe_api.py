@@ -517,7 +517,7 @@ def create_analytics_segment_from_json(segment_payload: Dict[str, Any]) -> Dict[
         )
         
         # 6. Handle the response
-        if response.status_code == 201:
+        if response.status_code in [200, 201]:  # Adobe Analytics returns 200 for successful creation
             response_data = response.json()
             return {'status': 'success', 'data': response_data}
         else:
@@ -641,7 +641,7 @@ def create_analytics_segment_enhanced(name: str, description: str, rsid: str, co
         )
         
         # 5. Handle the response
-        if response.status_code == 201:
+        if response.status_code in [200, 201]:  # Adobe Analytics returns 200 for successful creation
             response_data = response.json()
             return {'status': 'success', 'data': response_data}
         else:

@@ -19,10 +19,10 @@ lets you upload server call data in batches of files instead of using client-sid
 Data Insertion API
 : Send data directly to Adobe’s data collection through an API.
 Adobe Exchange Marketplace
-: Find current integrations available to enrich your Adobe Analytics report suite.
+: Find current integrations available to enrich your Adobe report suite.
 recommendation-more-help
 See
-Adobe Analytics overview
+Adobe overview
 for a demo video.
 style
 shade-box
@@ -30,7 +30,7 @@ More Analytics user guides
 Analytics User Guides
 Key Analytics resources
 Contact Customer Care
-Adobe Analytics Community on Experience League
-Adobe Analytics Resources
+Adobe Community on Experience League
+Adobe Resources
 Experience League
 e2513902-7735-497e-87fd-cfcbf5b5e56f

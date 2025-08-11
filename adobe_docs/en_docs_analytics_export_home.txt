@@ -13,7 +13,7 @@ Data Warehouse
 CREATED FOR:
 User
 Admin
-This guide outlines ways to get data out of Adobe Analytics. It includes:
+This guide outlines ways to get data out of Adobe. It includes:
 Data feeds:
 Receive an hourly or daily export of raw data. Every row is an individual hit, and every column is a variable. Data feeds are typically sent to
 cloud destinations
@@ -25,7 +25,7 @@ FTP and SFTP:
 FTP and SFTP are supported, but are no longer recommended. Instead, export data to cloud destinations.
 recommendation-more-help
 See
-Adobe Analytics overview
+Adobe overview
 for a demo video.
 style
 shade-box
@@ -37,7 +37,7 @@ More Analytics user guides
 Analytics User Guides
 Key Analytics resources
 Contact Customer Care
-Adobe Analytics Community on Experience League
-Adobe Analytics Resources
+Adobe Community on Experience League
+Adobe Resources
 Experience League
 6b7d49d5-f5fe-4b7f-91ae-5b0745755ed2

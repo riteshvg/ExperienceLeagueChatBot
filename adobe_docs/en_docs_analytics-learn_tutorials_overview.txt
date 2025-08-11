@@ -14,7 +14,7 @@ User
 Developer
 Admin
 Leader
-Get the most out of Adobe Analytics. Use these tutorials to learn the features of Analytics and reap the benefits for your business. This content is suitable for administrators, data analysts, marketers, developers, and architects.
+Get the most out of Adobe. Use these tutorials to learn the features of Analytics and reap the benefits for your business. This content is suitable for administrators, data analysts, marketers, developers, and architects.
 To get started,
 See the
 “What’s New”
@@ -44,6 +44,6 @@ The Analysis Workspace Training Tutorial walks users through common terminology 
 Analysis Workspace Overview
 High-level overview of Analysis Workspace.
 Additional resources
-Adobe Analytics documentation
+Adobe documentation
 recommendation-more-help
 b5d9c99f-be9f-4b96-8809-4e7d6ae353ba

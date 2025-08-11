@@ -10,38 +10,38 @@ Topics:
 Admin Tools
 CREATED FOR:
 Admin
-This help is intended for administrators of Adobe Analytics. It includes help on user and product management in the Admin Console, setting up report suites, variables, classifications, and data collection.
+This help is intended for administrators of Adobe. It includes help on user and product management in the Admin Console, setting up report suites, variables, classifications, and data collection.
 recommendation-more-help
 See
-Adobe Analytics introduction
-for a introduction video on Adobe Analytics.
+Adobe introduction
+for a introduction video on Adobe.
 style
 shade-box
-Adobe Analytics currently has two areas for administrators:
+Adobe currently has two areas for administrators:
 Adobe Admin Console: Use this area for provisioning Experience Cloud tools, and managing user permissions. It is located at
 adminconsole.adobe.com
 .
-Analytics Admin Tools: Use this area for report suite and variable management. It can be accessed by clicking Admin in the top header of Adobe Analytics.
+Analytics Admin Tools: Use this area for report suite and variable management. It can be accessed by clicking Admin in the top header of Adobe.
 This guide covers:
 All tasks that are done in Analytics Admin Tools. This area includes setting up report suites, variables, classifications, or data governance. See
 Admin Tools
 for a list of report suite and company settings available.
 All Analytics-specific tasks that are done in the Adobe Admin Console. This area includes product provisioning and user permission management. See
-Adobe Analytics in the Adobe Admin Console
+Adobe in the Adobe Admin Console
 for a list of actions that can be done in the Adobe Admin Console.
 This guide does not cover many of the generic capabilities that the Adobe Admin Console offers. Instead, see
 Admin Console
 in the Enterprise user guide.
 Key articles
 Analytics First Admin Starter Guide
-: If your organization is brand new to Adobe Analytics, follow this guide to start getting value out of Adobe Analytics.
+: If your organization is brand new to Adobe, follow this guide to start getting value out of Adobe.
 Report Suite Manager
 : The most commonly accessed admin tool in Analytics. The Report Suite Manager contains settings for variable management classification management, time zones, and more.
 More Analytics user guides
 Analytics User Guides
 Key Analytics resources
 Contact Customer Care
-Adobe Analytics Community on Experience League
-Adobe Analytics Resources
+Adobe Community on Experience League
+Adobe Resources
 Experience League
 2969e653-1f9b-4947-8b90-367efb66d529

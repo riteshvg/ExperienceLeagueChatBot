@@ -3,7 +3,7 @@ Source URL: https://experienceleague.adobe.com/en/docs/certification/program/tec
 
 Certification
 Certification at Adobe
-Adobe Analytics Certification Overview
+Adobe Certification Overview
 Last update: Tue Jul 08 2025 00:00:00 GMT+0000 (Coordinated Universal Time)
 CREATED FOR:
 Experienced

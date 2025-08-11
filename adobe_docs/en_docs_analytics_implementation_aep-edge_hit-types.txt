@@ -4,14 +4,14 @@ Source URL: https://experienceleague.adobe.com/en/docs/analytics/implementation/
 Documentation
 Analytics
 Implementation Guide
-Edge Network event types in Adobe Analytics
+Edge Network event types in Adobe
 Last update: Thu Jul 31 2025 00:00:00 GMT+0000 (Coordinated Universal Time)
 Topics:
 Implementation Basics
 CREATED FOR:
 Admin
 Developer
-Adobe Analytics treats hits differently depending on what functions you call in AppMeasurement. For example,
+Adobe treats hits differently depending on what functions you call in AppMeasurement. For example,
 s.t
 and
 s.tl
@@ -19,10 +19,10 @@ include or omit certain dimensions and increment page views differently. Adobe E
 sendEvent
 command. Specific properties within the
 xdm
-payload determine how that data is interpreted in Adobe Analytics.
-The Edge Network uses the following logic to determine Adobe Analytics page views and link events:
+payload determine how that data is interpreted in Adobe.
+The Edge Network uses the following logic to determine Adobe page views and link events:
 XDM payload contains…
-Adobe Analytics…
+Adobe…
 xdm.web.webPageDetails.name
 or
 xdm.web.webPageDetails.URL
@@ -65,7 +65,7 @@ xdm.web.webPageDetails.URL
 drops the payload and ignores the data
 In addition to differentiating page views and link clicks, the following logic is in place that determines if certain events are categorized as A4T or are discarded.
 XDM payload contains…
-Adobe Analytics…
+Adobe…
 xdm.eventType = display
 or
 xdm.eventType = decisioning.propositionDisplay
@@ -107,7 +107,7 @@ and no
 web.webInteraction.type
 drops the payload and ignores the data.
 See the
-Adobe Analytics ExperienceEvent Full Extension schema field group
+Adobe ExperienceEvent Full Extension schema field group
 for more information.
 recommendation-more-help
 b4f6d761-4a8b-4322-b801-c85b9e3be690
