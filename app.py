@@ -796,15 +796,27 @@ def render_segment_creation_workflow():
                 # Import the Adobe API function
                 from adobe_api import create_analytics_segment_from_json
                 
-                # Build the payload
-                from segment_builder import SegmentBuilder
-                builder = SegmentBuilder()
-                builder.session_state.segment_builder_state['segment_config'] = segment_config
+                # Transform rules to proper Adobe Analytics format
+                adobe_definition = transform_rules_to_adobe_format(
+                    segment_config['rules'], 
+                    segment_config['target_audience']
+                )
                 
-                payload = builder.build_segment_payload()
+                # Build the proper Adobe Analytics payload
+                adobe_payload = {
+                    "name": segment_config['name'],
+                    "description": segment_config['description'],
+                    "rsid": segment_config['rsid'],
+                    "definition": adobe_definition
+                }
+                
+                # Display the Adobe Analytics format
+                st.subheader("🔍 Adobe Analytics Segment Format")
+                st.info("This is the exact format that will be sent to Adobe Analytics:")
+                st.json(adobe_payload)
                 
                 # Create the segment
-                result = create_analytics_segment_from_json(payload)
+                result = create_analytics_segment_from_json(adobe_payload)
                 
                 if result.get('status') == 'success':
                     st.success("🎉 Segment created successfully!")
@@ -859,7 +871,6 @@ def render_segment_creation_workflow():
                     
                     with col3:
                         if st.button("📋 View Segment Details", type="secondary", key="view_details", use_container_width=True):
-                            # Stay in current view but expand details
                             st.session_state.show_segment_details = True
                             st.rerun()
                     
@@ -872,28 +883,146 @@ def render_segment_creation_workflow():
                                 st.rerun()
                 
                 else:
-                    st.error(f"❌ Failed to create segment: {result.get('message', 'Unknown error')}")
+                    st.error("❌ Failed to create segment")
+                    st.error(f"Error: {result.get('message', 'Unknown error')}")
                     
-                    # Show error details
-                    with st.expander("🔍 Error Details"):
-                        st.json(result)
+                    # Show the payload that was sent for debugging
+                    st.subheader("🔍 Debug: Payload Sent")
+                    st.json(adobe_payload)
                     
-                    # Retry button
-                    if st.button("🔄 Try Again", type="secondary"):
-                        st.rerun()
-            
             except Exception as e:
-                st.error(f"❌ Error creating segment: {str(e)}")
+                st.error("❌ Error during segment creation")
+                st.error(f"Exception: {type(e).__name__}")
+                st.error(f"Message: {str(e)}")
                 
-                # Show error details
-                with st.expander("🔍 Error Details"):
-                    st.error(f"Exception: {type(e).__name__}")
-                    st.error(f"Message: {str(e)}")
+                # Show the payload that was attempted for debugging
+                st.subheader("🔍 Debug: Payload Attempted")
+                try:
+                    adobe_definition = transform_rules_to_adobe_format(
+                        segment_config['rules'], 
+                        segment_config['target_audience']
+                    )
+                    adobe_payload = {
+                        "name": segment_config['name'],
+                        "description": segment_config['description'],
+                        "rsid": segment_config['rsid'],
+                        "definition": adobe_definition
+                    }
+                    st.json(adobe_payload)
+                except:
+                    st.error("Could not generate payload for debugging")
                 
                 # Back to segment builder button
                 if st.button("← Back to Segment Builder", type="secondary"):
                     st.session_state.current_workflow = 'segment_builder'
                     st.rerun()
+
+def transform_rules_to_adobe_format(rules, target_audience):
+    """
+    Transform simplified rules into proper Adobe Analytics segment format
+    
+    Args:
+        rules: List of simplified rule objects
+        target_audience: Target audience context (visitors, visits, hits)
+    
+    Returns:
+        dict: Adobe Analytics compatible segment definition
+    """
+    if not rules:
+        return None
+    
+    # If only one rule, create simple structure
+    if len(rules) == 1:
+        rule = rules[0]
+        return {
+            "version": [1, 0, 0],
+            "func": "segment",
+            "container": {
+                "func": "container",
+                "context": target_audience,
+                "pred": {
+                    "func": rule.get('func', 'streq'),
+                    "val": {
+                        "func": "attr",
+                        "name": rule.get('name', 'variables/geocountry')
+                    },
+                    "str": rule.get('str', rule.get('val', ''))
+                }
+            }
+        }
+    
+    # If multiple rules, create container with AND logic
+    pred_conditions = []
+    
+    for rule in rules:
+        if rule.get('func') == 'streq':
+            pred_conditions.append({
+                "func": "streq",
+                "val": {
+                    "func": "attr",
+                    "name": rule.get('name', 'variables/geocountry')
+                },
+                "str": rule.get('str', rule.get('val', ''))
+            })
+        elif rule.get('func') == 'gt':
+            pred_conditions.append({
+                "func": "gt",
+                "val": {
+                    "func": "attr",
+                    "name": rule.get('name', 'variables/pageviews')
+                },
+                "num": rule.get('val', 0)
+            })
+        elif rule.get('func') == 'event-exists':
+            pred_conditions.append({
+                "func": "event-exists",
+                "evt": {
+                    "func": "event",
+                    "name": rule.get('evt', {}).get('name', 'metrics/purchase')
+                }
+            })
+        elif rule.get('func') == 'streq-in':
+            pred_conditions.append({
+                "func": "streq-in",
+                "val": {
+                    "func": "attr",
+                    "name": rule.get('name', 'variables/dayofweek')
+                },
+                "list": rule.get('list', [])
+            })
+    
+    # If we have multiple conditions, combine them with AND logic
+    if len(pred_conditions) > 1:
+        return {
+            "version": [1, 0, 0],
+            "func": "segment",
+            "container": {
+                "func": "container",
+                "context": target_audience,
+                "pred": {
+                    "func": "and",
+                    "preds": pred_conditions
+                }
+            }
+        }
+    else:
+        # Fallback to single rule format
+        return {
+            "version": [1, 0, 0],
+            "func": "segment",
+            "container": {
+                "func": "container",
+                "context": target_audience,
+                "pred": pred_conditions[0] if pred_conditions else {
+                    "func": "streq",
+                    "val": {
+                        "func": "attr",
+                        "name": "variables/geocountry"
+                    },
+                    "str": "United States"
+                }
+            }
+        }
 
 def render_segment_builder_workflow():
     """Render the segment builder workflow within the main app."""
@@ -1261,26 +1390,61 @@ def render_segment_builder_workflow():
                         if rule.get('func') == 'streq-in':
                             st.write(f"**Values:** {', '.join(rule.get('list', []))}")
                             st.write(f"**Variable:** {rule.get('name', 'Unknown')}")
-                
-                # Show the raw rule structure in a collapsible section
-                with st.expander("📋 Raw Rule Structure", expanded=False):
-                    st.json(rule)
-        
-        # Summary of all rules
-        st.success(f"✅ **{len(configured_rules)} rules configured successfully!**")
-        
-        # Show what the segment will target
-        st.write("**🎯 This segment will target:**")
-        targeting_summary = []
-        for rule in configured_rules:
-            targeting_summary.append(rule.get('description', 'Custom rule'))
-        
-        for summary in targeting_summary:
-            st.write(f"• {summary}")
+                    
+                    # Show the raw rule structure in a collapsible section
+                    with st.expander("📋 Raw Rule Structure", expanded=False):
+                        st.json(rule)
             
-    else:
-        st.warning("⚠️ **No rules configured yet.** Please fill in the fields above to see live updates.")
-        st.info("💡 **Tip:** As you fill in the fields above, the configured rules will appear here automatically!")
+            # Summary of all rules
+            st.success(f"✅ **{len(configured_rules)} rules configured successfully!**")
+            
+            # Show what the segment will target
+            st.write("**🎯 This segment will target:**")
+            targeting_summary = []
+            for rule in configured_rules:
+                targeting_summary.append(rule.get('description', 'Custom rule'))
+            
+            for summary in targeting_summary:
+                st.write(f"• {summary}")
+            
+            # Preview Adobe Analytics format
+            st.subheader("🔍 Adobe Analytics Format Preview")
+            st.info("This is how your segment will be structured when sent to Adobe Analytics:")
+            
+            try:
+                adobe_definition = transform_rules_to_adobe_format(configured_rules, target_audience)
+                adobe_payload = {
+                    "name": segment_name,
+                    "description": segment_description,
+                    "rsid": rsid,
+                    "definition": adobe_definition
+                }
+                
+                # Show the Adobe Analytics format
+                st.json(adobe_payload)
+                
+                # Explain the structure
+                with st.expander("📚 Understanding Adobe Analytics Format", expanded=False):
+                    st.write("""
+                    **Adobe Analytics Segment Structure:**
+                    
+                    - **version**: Segment definition version
+                    - **func**: Function type (always 'segment')
+                    - **container**: Contains the segment logic
+                    - **context**: Target audience (visitors, visits, hits)
+                    - **pred**: Predicate defining the segment conditions
+                    - **func**: Comparison function (streq, gt, event-exists, etc.)
+                    - **val**: Value object with attribute function
+                    - **name**: Variable name (e.g., variables/geocountry)
+                    - **str**: String value for comparison
+                    """)
+                    
+            except Exception as e:
+                st.error(f"Could not generate Adobe Analytics format preview: {str(e)}")
+                
+        else:
+            st.warning("⚠️ **No rules configured yet.** Please fill in the fields above to see live updates.")
+            st.info("💡 **Tip:** As you fill in the fields above, the configured rules will appear here automatically!")
     
     # Create segment button (outside of form for real-time updates)
     if configured_rules:
