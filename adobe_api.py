@@ -442,6 +442,273 @@ def create_sample_segment() -> bool:
         return False
 
 
+def create_analytics_segment_from_json(segment_payload: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    Create Adobe Analytics segment using a complete JSON payload.
+    
+    This function takes a complete segment definition JSON and sends it directly to the API.
+    It's designed for integration with the main app where users provide complete segment definitions.
+    
+    Args:
+        segment_payload (dict): Complete segment definition JSON object
+        
+    Returns:
+        dict: Response dictionary with status and data/error information
+        
+    Example payload structure:
+        {
+            "name": "Segment Name",
+            "description": "Segment Description",
+            "rsid": "your_rsid",
+            "definition": {
+                "version": [1, 0, 0],
+                "func": "segment",
+                "container": {
+                    "func": "container",
+                    "context": "visitors",
+                    "pred": {
+                        "func": "streq",
+                        "val": {
+                            "func": "attr",
+                            "name": "variables/page"
+                        },
+                        "str": "Homepage"
+                    }
+                }
+            }
+        }
+    """
+    try:
+        # 1. Authentication and Setup - Get access token, client ID, and company ID
+        access_token = get_adobe_access_token()
+        if not access_token:
+            return {'status': 'error', 'message': 'Failed to authenticate with Adobe.'}
+        
+        # Read credentials from Streamlit secrets
+        client_id = st.secrets.get("ADOBE_CLIENT_ID")
+        company_id = st.secrets.get("ADOBE_COMPANY_ID")
+        
+        if not client_id or not company_id:
+            return {'status': 'error', 'message': 'Missing required credentials (ADOBE_CLIENT_ID or ADOBE_COMPANY_ID)'}
+        
+        # 2. Validate the input payload
+        required_fields = ['name', 'description', 'rsid', 'definition']
+        for field in required_fields:
+            if field not in segment_payload:
+                return {'status': 'error', 'message': f'Missing required field: {field}'}
+        
+        # 3. Use the provided payload directly
+        body = segment_payload.copy()
+        
+        # 4. Construct URL and headers
+        url = f"https://analytics.adobe.io/api/{company_id}/segments"
+        headers = {
+            'Authorization': f"Bearer {access_token}",
+            'x-api-key': client_id,
+            'Content-Type': 'application/json'
+        }
+        
+        # 5. Make the API POST request
+        response = requests.post(
+            url,
+            headers=headers,
+            data=json.dumps(body),
+            timeout=30
+        )
+        
+        # 6. Handle the response
+        if response.status_code == 201:
+            response_data = response.json()
+            return {'status': 'success', 'data': response_data}
+        else:
+            # Try to parse error response as JSON
+            try:
+                error_json = response.json()
+                return {'status': 'error', 'code': response.status_code, 'message': str(error_json)}
+            except:
+                return {'status': 'error', 'code': response.status_code, 'message': response.text}
+            
+    except requests.exceptions.RequestException as e:
+        return {'status': 'error', 'message': f'Request failed: {str(e)}'}
+    except Exception as e:
+        return {'status': 'error', 'message': f'Unexpected error: {str(e)}'}
+
+
+def create_analytics_segment_enhanced(name: str, description: str, rsid: str, container_context: str, rules: list) -> Dict[str, Any]:
+    """
+    Enhanced segment creation function that builds the segment definition from parameters.
+    
+    This function provides a more user-friendly interface for creating segments by accepting
+    simple parameters and building the complex Adobe Analytics segment definition structure.
+    
+    Args:
+        name (str): Name of the segment
+        description (str): Description of the segment
+        rsid (str): Report Suite ID
+        container_context (str): The context for the container (e.g., "visitors", "visits", "hits")
+        rules (list): List of rule dictionaries for the segment
+        
+    Returns:
+        dict: Response dictionary with status and data/error information
+        
+    Example rules structure:
+        rules = [
+            {'func': 'streq', 'name': 'variables/geocountry', 'val': 'United States'},
+            {'func': 'gt', 'name': 'variables/pageviews', 'val': 10}
+        ]
+    """
+    try:
+        # 1. Authentication and Setup
+        access_token = get_adobe_access_token()
+        if not access_token:
+            return {'status': 'error', 'message': 'Failed to authenticate with Adobe.'}
+        
+        # Read credentials
+        client_id = st.secrets.get("ADOBE_CLIENT_ID")
+        company_id = st.secrets.get("ADOBE_COMPANY_ID")
+        
+        if not client_id or not company_id:
+            return {'status': 'error', 'message': 'Missing required credentials (ADOBE_CLIENT_ID or ADOBE_COMPANY_ID)'}
+        
+        # 2. Build the segment definition structure
+        if len(rules) == 1:
+            # Single rule - use the exact structure from working examples
+            rule = rules[0]
+            definition = {
+                "version": [1, 0, 0],
+                "func": "segment",
+                "container": {
+                    "func": "container",
+                    "context": container_context,
+                    "pred": {
+                        "func": rule.get("func", "streq"),
+                        "val": {
+                            "func": "attr",
+                            "name": rule.get("name", "variables/page")
+                        },
+                        "str": rule.get("val", "Homepage")
+                    }
+                }
+            }
+        else:
+            # Multiple rules - extend the structure for multiple conditions
+            definition = {
+                "version": [1, 0, 0],
+                "func": "segment",
+                "container": {
+                    "func": "container",
+                    "context": container_context,
+                    "pred": {
+                        "func": "and",
+                        "vals": []
+                    }
+                }
+            }
+            
+            # Build individual rule predicates
+            for rule in rules:
+                rule_pred = {
+                    "func": rule.get("func", "streq"),
+                    "val": {
+                        "func": "attr",
+                        "name": rule.get("name", "variables/page")
+                    },
+                    "str": rule.get("val", "Homepage")
+                }
+                definition["container"]["pred"]["vals"].append(rule_pred)
+        
+        # 3. Construct the final payload
+        body = {
+            "name": name,
+            "description": description,
+            "rsid": rsid,
+            "definition": definition
+        }
+        
+        # 4. Make the API request
+        url = f"https://analytics.adobe.io/api/{company_id}/segments"
+        headers = {
+            'Authorization': f"Bearer {access_token}",
+            'x-api-key': client_id,
+            'Content-Type': 'application/json'
+        }
+        
+        response = requests.post(
+            url,
+            headers=headers,
+            data=json.dumps(body),
+            timeout=30
+        )
+        
+        # 5. Handle the response
+        if response.status_code == 201:
+            response_data = response.json()
+            return {'status': 'success', 'data': response_data}
+        else:
+            try:
+                error_json = response.json()
+                return {'status': 'error', 'code': response.status_code, 'message': str(error_json)}
+            except:
+                return {'status': 'error', 'code': response.status_code, 'message': response.text}
+            
+    except requests.exceptions.RequestException as e:
+        return {'status': 'error', 'message': f'Request failed: {str(e)}'}
+    except Exception as e:
+        return {'status': 'error', 'message': f'Unexpected error: {str(e)}'}
+
+
+def get_adobe_segments(access_token: str, client_id: str, company_id: str) -> Dict[str, Any]:
+    """
+    Get Adobe Analytics segments using the access token.
+    
+    Args:
+        access_token (str): Valid access token
+        client_id (str): Adobe client ID
+        company_id (str): Adobe company ID
+        
+    Returns:
+        dict: Response dictionary with status and data/error information
+    """
+    try:
+        # Construct API endpoint URL
+        segments_endpoint = f"https://analytics.adobe.io/api/{company_id}/segments"
+        
+        # Request headers
+        headers = {
+            'Authorization': f'Bearer {access_token}',
+            'x-api-key': client_id,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        }
+        
+        # Make GET request
+        response = requests.get(
+            segments_endpoint,
+            headers=headers,
+            timeout=30
+        )
+        
+        # Check if request was successful
+        if response.status_code == 200:
+            try:
+                segments_data = response.json()
+                return {'status': 'success', 'data': segments_data}
+            except json.JSONDecodeError as e:
+                return {'status': 'error', 'message': f'Failed to parse JSON response: {e}'}
+        else:
+            # Try to get error details
+            try:
+                error_data = response.json()
+                return {'status': 'error', 'code': response.status_code, 'message': str(error_data)}
+            except:
+                return {'status': 'error', 'code': response.status_code, 'message': response.text}
+            
+    except requests.exceptions.RequestException as e:
+        return {'status': 'error', 'message': f'Request failed: {str(e)}'}
+    except Exception as e:
+        return {'status': 'error', 'message': f'Unexpected error: {str(e)}'}
+
+
 if __name__ == "__main__":
     # This section runs when the script is executed directly
     st.title("Adobe Analytics 2.0 API Test")
