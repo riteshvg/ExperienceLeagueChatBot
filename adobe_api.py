@@ -37,14 +37,14 @@ def get_adobe_access_token() -> Optional[str]:
             raise ValueError(f"Missing required secrets: {', '.join(missing_secrets)}")
         
         # Adobe Identity Management System endpoint for client credentials
-        ims_endpoint = "https://ims-na1.adobelogin.com/ims/token"
+        ims_endpoint = "https://ims-na1.adobelogin.com/ims/token/v3"
         
         # Prepare form data for Adobe IMS
         payload = {
             'client_id': client_id,
             'client_secret': client_secret,
             'grant_type': 'client_credentials',
-            'scope': 'AdobeID,openid'
+            'scope': 'openid, AdobeID, additional_info.projectedProductContext'
         }
         
         # Make POST request to get access token
@@ -124,14 +124,27 @@ def create_analytics_segment(name: str, description: str, definition_json: Dict[
             st.error("Missing ADOBE_CLIENT_ID secret")
             return None
         
-        # Construct API endpoint URL with proper company ID format
-        # Adobe company IDs are typically 32-character hex strings
-        if len(company_id) < 10:  # If it's a short ID like "adober1f"
-            st.warning(f"Company ID '{company_id}' appears to be invalid. Adobe company IDs are typically 32-character hex strings.")
-            st.info("Please check your Adobe Analytics Admin Console for the correct Company ID")
+        # Construct API endpoint URL
+        # Adobe company IDs can vary in length - validate format instead of length
+        if not company_id or not company_id.strip():
+            st.error("Company ID cannot be empty")
             return None
         
-        api_endpoint = f"https://analytics.adobe.io/api/{company_id}/segments"
+        # Check if company ID contains only valid characters (alphanumeric and hyphens)
+        if not company_id.replace('-', '').replace('_', '').isalnum():
+            st.warning(f"Company ID '{company_id}' contains invalid characters. Adobe company IDs should contain only letters, numbers, hyphens, and underscores.")
+            return None
+        
+        # Try multiple possible endpoints for Adobe Analytics API
+        # Some companies might have different endpoint structures
+        possible_endpoints = [
+            f"https://analytics.adobe.io/api/{company_id}/segments",
+            f"https://analytics.adobe.io/api/{company_id}/segments/",
+            f"https://analytics.adobe.io/api/{company_id}/segments/create",
+            f"https://analytics.adobe.io/api/{company_id}/segments/create/"
+        ]
+        
+        api_endpoint = possible_endpoints[0]  # Start with the first one
         
         # Prepare request headers with all required Adobe Analytics headers
         headers = {
@@ -142,29 +155,82 @@ def create_analytics_segment(name: str, description: str, definition_json: Dict[
         }
         
         # Prepare request body
-        # Adobe Analytics 2.0 API expects the definition in the root level
+        # Adobe Analytics 2.0 API expects the definition at root level
         request_body = {
             'name': name,
             'description': description
         }
         
-        # Merge the definition JSON into the request body
+        # For Adobe Analytics 2.0 API, the definition should be at root level
+        # Extract the inner definition if it's nested under 'definition' key
         if isinstance(definition_json, dict):
-            request_body.update(definition_json)
+            if 'definition' in definition_json:
+                # If definition_json has a nested 'definition', extract it
+                inner_definition = definition_json['definition']
+                request_body.update(inner_definition)
+                st.info(f"🔧 Extracted nested definition: {inner_definition}")
+            else:
+                # Otherwise, merge the entire definition_json
+                request_body.update(definition_json)
+                st.info(f"🔧 Merged definition directly: {definition_json}")
         else:
             st.error("Invalid definition format. Expected dictionary.")
             return None
         
-        # Make POST request to create segment
-        response = requests.post(
-            api_endpoint,
-            headers=headers,
-            json=request_body,
-            timeout=60
-        )
+        st.info(f"🎯 Final request body: {request_body}")
         
-        # Check if request was successful
-        response.raise_for_status()
+        # Try multiple endpoints if one fails
+        for endpoint in possible_endpoints:
+            st.info(f"🔍 Trying endpoint: {endpoint}")
+            st.info(f"📤 Request body: {request_body}")
+            st.info(f"🔑 Headers: {dict(headers)}")
+            
+            try:
+                response = requests.post(
+                    endpoint,
+                    headers=headers,
+                    json=request_body,
+                    timeout=60
+                )
+                
+                st.info(f"📥 Response status: {response.status_code}")
+                st.info(f"📥 Response headers: {dict(response.headers)}")
+                
+                # If successful, break out of the loop
+                if response.status_code < 400:
+                    st.success(f"✅ Success with endpoint: {endpoint}")
+                    st.info(f"📥 Response body: {response.text}")
+                    break
+                    
+                # If it's a 403025 error, try the next endpoint
+                if response.status_code == 403:
+                    try:
+                        error_detail = response.json()
+                        if error_detail.get('error_code') == '403025':
+                            st.warning(f"⚠️ Endpoint {endpoint} returned 403025 - trying next endpoint...")
+                            st.info(f"📥 Error details: {error_detail}")
+                            continue
+                    except:
+                        st.warning(f"⚠️ Endpoint {endpoint} returned 403 but couldn't parse error details")
+                        st.info(f"📥 Response text: {response.text}")
+                        continue
+                
+                # For other errors, show details
+                st.error(f"❌ Endpoint {endpoint} failed with status {response.status_code}")
+                try:
+                    error_detail = response.json()
+                    st.error(f"📥 Error details: {error_detail}")
+                except:
+                    st.error(f"📥 Response text: {response.text}")
+                    
+            except Exception as e:
+                st.error(f"❌ Request to {endpoint} failed: {str(e)}")
+                continue
+        else:
+            # If we've tried all endpoints and none worked
+            st.error("❌ All endpoints failed. Please check your Adobe Analytics permissions.")
+            st.info("💡 Check the detailed error messages above to understand what went wrong")
+            return None
         
         # Return the JSON response
         return response.json()
@@ -192,15 +258,20 @@ def get_company_id() -> Optional[str]:
     """
     company_id = st.secrets.get("ADOBE_COMPANY_ID")
     
-    if company_id and len(company_id) < 10:
-        st.warning(f"⚠️ Company ID '{company_id}' appears to be invalid.")
+    if not company_id or not company_id.strip():
+        st.warning("⚠️ Company ID is missing or empty")
+        return None
+    
+    # Check if company ID contains only valid characters
+    if not company_id.replace('-', '').replace('_', '').isalnum():
+        st.warning(f"⚠️ Company ID '{company_id}' contains invalid characters")
         st.info("""
         **Adobe Company ID Format:**
-        - Should be a 32-character hexadecimal string
-        - Example: `1234567890abcdef1234567890abcdef`
-        - Find it in Adobe Analytics Admin Console → Company Settings
+        - Should contain only letters, numbers, hyphens, and underscores
+        - Length can vary (not always 32 characters)
+        - Example: `adober1f`, `company-123`, `analytics_456`
         
-        **Current value:** `{company_id}` (too short)
+        **Current value:** `{company_id}` (contains invalid characters)
         """.format(company_id=company_id))
         return None
     
@@ -257,15 +328,16 @@ def validate_api_secrets() -> bool:
         return False
     
     # Validate company ID format
-    if len(company_id) < 10:
-        st.error("❌ Invalid Company ID format. Must be at least 10 characters long.")
+    if not company_id.replace('-', '').replace('_', '').isalnum():
+        st.error("❌ Invalid Company ID format. Contains invalid characters.")
         st.info("""
-        **How to find your Company ID:**
-        1. Go to [Adobe Analytics](https://analytics.adobe.com)
-        2. Navigate to **Admin** → **Company Settings**
-        3. Look for **Company Information** section
-        4. Copy the **Company ID** (32-character hex string)
-        """)
+        **Adobe Company ID Format:**
+        - Should contain only letters, numbers, hyphens, and underscores
+        - Length can vary (not always 32 characters)
+        - Examples: `adober1f`, `company-123`, `analytics_456`
+        
+        **Current value:** `{company_id}` (contains invalid characters)
+        """.format(company_id=company_id))
         return False
     
     return True
@@ -332,21 +404,20 @@ def create_sample_segment() -> bool:
         
         # Sample segment definition using Adobe Analytics 2.0 API format
         # This creates a simple segment for page views > 1
+        # The API expects the definition at root level, not nested under 'definition'
         sample_definition = {
-            "definition": {
-                "container": {
-                    "func": "container",
-                    "context": "visitors",
-                    "pred": {
-                        "func": "pred",
-                        "expr": {
-                            "func": "expr",
-                            "func_name": "gt",
-                            "args": [
-                                {"func": "attr", "name": "page_views"},
-                                {"func": "const", "val": 1}
-                            ]
-                        }
+            "container": {
+                "func": "container",
+                "context": "visitors",
+                "pred": {
+                    "func": "pred",
+                    "expr": {
+                        "func": "expr",
+                        "func_name": "gt",
+                        "args": [
+                            {"func": "attr", "name": "page_views"},
+                            {"func": "const", "val": 1}
+                        ]
                     }
                 }
             }
@@ -398,22 +469,20 @@ if __name__ == "__main__":
     st.subheader("🏢 Company ID (Required for Analytics API Calls)")
     company_id = st.secrets.get("ADOBE_COMPANY_ID")
     if company_id:
-        if len(company_id) < 10:
-            st.error(f"❌ Company ID '{company_id}' is invalid!")
-            st.info("""
-            **Your Company ID is too short!**
-            
-            Adobe Company IDs are typically 32-character hexadecimal strings.
-            Current length: **{length}** characters (needs at least 10)
-            
-            **How to fix:**
-            1. Go to [Adobe Analytics Admin Console](https://analytics.adobe.com/#/admin/company)
-            2. Navigate to **Company Settings** → **Company Information**
-            3. Copy the full **Company ID** (should look like: `1234567890abcdef1234567890abcdef`)
-            4. Update your `.streamlit/secrets.toml` file
-            """.format(length=len(company_id)))
+        # Check if company ID contains only valid characters
+        if company_id.replace('-', '').replace('_', '').isalnum():
+            st.success(f"✅ Company ID '{company_id}' format looks correct")
+            st.info(f"**Length:** {len(company_id)} characters")
         else:
-            st.success(f"✅ Company ID format looks correct ({len(company_id)} characters)")
+            st.error(f"❌ Company ID '{company_id}' contains invalid characters!")
+            st.info("""
+            **Adobe Company ID Format:**
+            - Should contain only letters, numbers, hyphens, and underscores
+            - Length can vary (not always 32 characters)
+            - Examples: `adober1f`, `company-123`, `analytics_456`
+            
+            **Current value:** `{company_id}` (contains invalid characters)
+            """.format(company_id=company_id))
     else:
         st.warning("⚠️ Company ID is missing - needed for Analytics API calls")
         st.info("""
