@@ -907,17 +907,23 @@ def main():
     if 'current_workflow' not in st.session_state:
         st.session_state.current_workflow = 'chat'
     
+    # Debug: Show current workflow state
+    if st.session_state.current_workflow != 'chat':
+        st.sidebar.info(f"🔧 Current Workflow: {st.session_state.current_workflow}")
+    
     # Header
     st.title("🤖 Adobe Experience League Documentation Chatbot")
     st.caption("This chatbot is powered by local open-source models and Adobe's official documentation.")
     
     # Check if we're in segment builder workflow
     if st.session_state.current_workflow == 'segment_builder':
+        st.info("🔧 Entering Segment Builder Workflow")
         render_segment_builder_workflow()
         return
     
     # Check if we're in segment creation workflow
     if st.session_state.current_workflow == 'segment_creation':
+        st.info("🚀 Entering Segment Creation Workflow")
         render_segment_creation_workflow()
         return
     
@@ -1351,31 +1357,31 @@ def main():
             st.session_state.input_text = ""  # Clear the input
             st.session_state.is_processing = True  # Set processing state
             
-                    # Check for create actions and store in message
-        action_type, action_details = detect_create_action(prompt)
-        
-        # Add user message to chat history
-        user_message = {"role": "user", "content": prompt}
-        if action_type:
-            user_message["create_action"] = {"type": action_type, "details": action_details}
-        st.session_state.messages.append(user_message)
-        
-        # Update usage statistics
-        st.session_state.usage_stats["total_questions"] += 1
-        st.session_state.usage_stats["last_question_time"] = time.time()
-        
-        # Display user message in chat message container
-        with st.chat_message("user"):
-            st.markdown(prompt)
-        
-        # Handle segment creation workflow
-        if action_type == 'segment':
-            handle_segment_creation_workflow(prompt, action_details)
-            return  # Skip the regular QA flow for segment creation
-        
-        # Display assistant response in chat message container
-        with st.chat_message("assistant"):
-            with st.spinner("Thinking..."):
+            # Check for create actions and store in message
+            action_type, action_details = detect_create_action(prompt)
+            
+            # Add user message to chat history
+            user_message = {"role": "user", "content": prompt}
+            if action_type:
+                user_message["create_action"] = {"type": action_type, "details": action_details}
+            st.session_state.messages.append(user_message)
+            
+            # Update usage statistics
+            st.session_state.usage_stats["total_questions"] += 1
+            st.session_state.usage_stats["last_question_time"] = time.time()
+            
+            # Display user message in chat message container
+            with st.chat_message("user"):
+                st.markdown(prompt)
+            
+            # Handle segment creation workflow
+            if action_type == 'segment':
+                handle_segment_creation_workflow(prompt, action_details)
+                return  # Skip the regular QA flow for segment creation
+            
+            # Display assistant response in chat message container
+            with st.chat_message("assistant"):
+                with st.spinner("Thinking..."):
                     try:
                         # Start timer for response time
                         start_time = time.time()
@@ -1417,6 +1423,7 @@ def main():
                         # Add source indicator to response
                         if has_stackoverflow:
                             st.info("💬 This response includes community solutions from Stack Overflow")
+                        
                         # Calculate response time
                         end_time = time.time()
                         response_time = end_time - start_time
