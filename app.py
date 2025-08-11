@@ -765,19 +765,58 @@ def render_segment_creation_workflow():
                     if 'id' in segment_data:
                         st.info(f"**Segment ID:** {segment_data['id']}")
                     
-                    # Success message
+                    # Success message with prominent redirect
                     st.success("Your segment has been created in Adobe Analytics and is ready to use!")
                     
-                    # Back to main chat button
-                    if st.button("🏠 Back to Main Chat", type="primary"):
-                        # Clear workflow state
-                        if 'current_workflow' in st.session_state:
-                            del st.session_state.current_workflow
-                        if 'segment_intent' in st.session_state:
-                            del st.session_state.segment_intent
-                        if 'segment_config' in st.session_state:
-                            del st.session_state.segment_config
-                        st.rerun()
+                    # Store success state
+                    st.session_state.segment_created_successfully = True
+                    st.session_state.created_segment_data = segment_data
+                    
+                    # Success completion message
+                    st.balloons()  # Celebrate the success!
+                    
+                    # Prominent redirect section
+                    st.markdown("---")
+                    st.subheader("🎯 What would you like to do next?")
+                    
+                    # Action buttons in columns
+                    col1, col2, col3 = st.columns([1, 1, 1])
+                    
+                    with col1:
+                        if st.button("🏠 Return to Main Chat", type="primary", key="redirect_main", use_container_width=True):
+                            # Clear all workflow state and redirect
+                            st.session_state.current_workflow = 'chat'
+                            if 'segment_intent' in st.session_state:
+                                del st.session_state.segment_intent
+                            if 'segment_config' in st.session_state:
+                                del st.session_state.segment_config
+                            if 'segment_created_successfully' in st.session_state:
+                                del st.session_state.segment_created_successfully
+                            if 'created_segment_data' in st.session_state:
+                                del st.session_state.created_segment_data
+                            st.rerun()
+                    
+                    with col2:
+                        if st.button("📊 Create Another Segment", type="secondary", key="create_another", use_container_width=True):
+                            # Go back to segment builder to create another segment
+                            st.session_state.current_workflow = 'segment_builder'
+                            if 'segment_config' in st.session_state:
+                                del st.session_state.segment_config
+                            st.rerun()
+                    
+                    with col3:
+                        if st.button("📋 View Segment Details", type="secondary", key="view_details", use_container_width=True):
+                            # Stay in current view but expand details
+                            st.session_state.show_segment_details = True
+                            st.rerun()
+                    
+                    # Show segment details if requested
+                    if st.session_state.get('show_segment_details', False):
+                        with st.expander("📋 Segment Details", expanded=True):
+                            st.json(segment_data)
+                            if st.button("Close Details", key="close_details"):
+                                st.session_state.show_segment_details = False
+                                st.rerun()
                 
                 else:
                     st.error(f"❌ Failed to create segment: {result.get('message', 'Unknown error')}")
