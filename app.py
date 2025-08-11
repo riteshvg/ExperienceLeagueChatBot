@@ -956,290 +956,338 @@ def render_segment_builder_workflow():
                     "pred_func": example.get('pred_func')
                 }, indent=2), language="json")
     
-    # Segment configuration form
+    # Segment configuration
     st.subheader("⚙️ Segment Configuration")
     
-    with st.form("segment_config_form"):
-        # Basic information
-        segment_name = st.text_input(
-            "Segment Name",
-            value=intent_data['suggestions']['segment_name'],
-            help="Enter a descriptive name for your segment"
-        )
-        
-        segment_description = st.text_area(
-            "Description",
-            value=intent_data['suggestions']['segment_description'],
-            help="Describe what this segment targets"
-        )
-        
-        rsid = st.text_input(
-            "Report Suite ID (RSID)",
-            value="argupaepdemo",
-            help="Enter your Adobe Analytics Report Suite ID"
-        )
-        
-        target_audience = st.selectbox(
-            "Target Audience",
-            options=["visitors", "visits", "hits"],
-            index=0,
-            help="Select the context for your segment"
-        )
-        
-        # Rules configuration
-        st.subheader("📋 Segment Rules")
-        st.info("Configure the rules that define your segment")
-        
-        # Dynamic rule configuration based on detected intent
-        intent_details = intent_data['action_details']
-        configured_rules = []
-        
-        # Geographic rule configuration
-        if intent_details.get('geographic'):
-            st.write("**🌍 Geographic Targeting**")
-            if intent_details['geographic'] == 'country':
-                country_input = st.text_input(
-                    "Target Country",
-                    value="New Zealand",
-                    help="Enter the target country (e.g., New Zealand, United States, Australia)"
-                )
-                if country_input:
-                    configured_rules.append({
-                        'func': 'streq',
-                        'name': 'variables/geocountry',
-                        'val': country_input,
-                        'str': country_input,
-                        'type': 'geographic',
-                        'description': f'Users from {country_input}'
-                    })
-            
-            elif intent_details['geographic'] == 'city':
-                city_input = st.text_input(
-                    "Target City",
-                    help="Enter the target city"
-                )
-                if city_input:
-                    configured_rules.append({
-                        'func': 'streq',
-                        'name': 'variables/geocity',
-                        'val': city_input,
-                        'str': city_input,
-                        'type': 'geographic',
-                        'description': f'Users from {city_input}'
-                    })
-            
-            elif intent_details['geographic'] == 'state':
-                state_input = st.text_input(
-                    "Target State/Province",
-                    help="Enter the target state or province"
-                )
-                if state_input:
-                    configured_rules.append({
-                        'func': 'streq',
-                        'name': 'variables/georegion',
-                        'val': state_input,
-                        'str': state_input,
-                        'type': 'geographic',
-                        'description': f'Users from {state_input}'
-                    })
-        
-        # Device rule configuration
-        if intent_details.get('device'):
-            st.write("**📱 Device Targeting**")
-            device_options = ["Mobile", "Desktop", "Tablet"]
-            device_input = st.selectbox(
-                "Target Device Type",
-                options=device_options,
-                index=device_options.index(intent_details['device'].title()) if intent_details['device'].title() in device_options else 0,
-                help="Select the target device type"
+    # Basic information
+    segment_name = st.text_input(
+        "Segment Name",
+        value=intent_data['suggestions']['segment_name'],
+        help="Enter a descriptive name for your segment"
+    )
+    
+    segment_description = st.text_area(
+        "Description",
+        value=intent_data['suggestions']['segment_description'],
+        help="Describe what this segment targets"
+    )
+    
+    rsid = st.text_input(
+        "Report Suite ID (RSID)",
+        value="argupaepdemo",
+        help="Enter your Adobe Analytics Report Suite ID"
+    )
+    
+    target_audience = st.selectbox(
+        "Target Audience",
+        options=["visitors", "visits", "hits"],
+        index=0,
+        help="Select the context for your segment"
+    )
+    
+    # Rules configuration
+    st.subheader("📋 Segment Rules")
+    st.info("Configure the rules that define your segment")
+    
+    # Dynamic rule configuration based on detected intent
+    intent_details = intent_data['action_details']
+    configured_rules = []
+    
+    # Geographic rule configuration
+    if intent_details.get('geographic'):
+        st.write("**🌍 Geographic Targeting**")
+        if intent_details['geographic'] == 'country':
+            country_input = st.text_input(
+                "Target Country",
+                value="New Zealand",
+                help="Enter the target country (e.g., New Zealand, United States, Australia)",
+                key="country_input"
             )
-            
-            # Allow users to specify which eVar to use for device type
-            device_evar = st.text_input(
-                "Device Type eVar (e.g., evar1, evar2)",
-                value="evar1",
-                help="Enter the eVar that stores device type information"
-            )
-            
-            if device_input and device_evar:
+            if country_input:
                 configured_rules.append({
                     'func': 'streq',
-                    'name': f'variables/{device_evar}',
-                    'val': device_input,
-                    'str': device_input,
-                    'type': 'device',
-                    'description': f'Users on {device_input} devices'
+                    'name': 'variables/geocountry',
+                    'val': country_input,
+                    'str': country_input,
+                    'type': 'geographic',
+                    'description': f'Users from {country_input}'
                 })
         
-        # Behavioral rule configuration
-        if intent_details.get('behavioral'):
-            st.write("**📊 Behavioral Targeting**")
-            
-            for behavior in intent_details['behavioral']:
-                if behavior == 'page_views':
-                    page_views_threshold = st.number_input(
-                        "Minimum Page Views",
-                        min_value=1,
-                        value=5,
-                        help="Enter the minimum number of page views required"
-                    )
-                    
-                    if page_views_threshold:
-                        configured_rules.append({
-                            'func': 'gt',
-                            'name': 'variables/pageviews',
-                            'val': page_views_threshold,
-                            'type': 'behavioral',
-                            'description': f'Users with more than {page_views_threshold} page views'
-                        })
-                
-                elif behavior == 'time_on_site':
-                    time_threshold = st.number_input(
-                        "Minimum Session Duration (seconds)",
-                        min_value=1,
-                        value=600,
-                        help="Enter the minimum session duration in seconds"
-                    )
-                    
-                    if time_threshold:
-                        configured_rules.append({
-                            'func': 'gt',
-                            'name': 'variables/timeonsite',
-                            'val': time_threshold,
-                            'type': 'behavioral',
-                            'description': f'Users with session duration > {time_threshold} seconds'
-                        })
-                
-                elif behavior == 'conversion':
-                    conversion_event = st.text_input(
-                        "Conversion Event Name",
-                        value="purchase",
-                        help="Enter the name of the conversion event (e.g., purchase, signup)"
-                    )
-                    
-                    if conversion_event:
-                        configured_rules.append({
-                            'func': 'event-exists',
-                            'evt': {
-                                'func': 'event',
-                                'name': f'metrics/{conversion_event}'
-                            },
-                            'type': 'behavioral',
-                            'description': f'Users who completed {conversion_event}'
-                        })
-                
-                elif behavior == 'cart':
-                    cart_event = st.text_input(
-                        "Cart Event Name",
-                        value="add_to_cart",
-                        help="Enter the name of the cart event"
-                    )
-                    
-                    if cart_event:
-                        configured_rules.append({
-                            'func': 'event-exists',
-                            'evt': {
-                                'func': 'event',
-                                'name': f'metrics/{cart_event}'
-                            },
-                            'type': 'behavioral',
-                            'description': f'Users who added items to cart'
-                        })
+        elif intent_details['geographic'] == 'city':
+            city_input = st.text_input(
+                "Target City",
+                help="Enter the target city",
+                key="city_input"
+            )
+            if city_input:
+                configured_rules.append({
+                    'func': 'streq',
+                    'name': 'variables/geocity',
+                    'val': city_input,
+                    'str': city_input,
+                    'type': 'geographic',
+                    'description': f'Users from {city_input}'
+                })
         
-        # Custom eVar configuration
-        if intent_details.get('custom_variables'):
-            st.write("**🔧 Custom Variable Targeting**")
-            
-            for i, custom_var in enumerate(intent_details['custom_variables']):
-                st.write(f"**Custom Variable {i+1}**")
-                
-                evar_name = st.text_input(
-                    f"eVar Name (e.g., evar1, evar2)",
-                    key=f"evar_name_{i}",
-                    help="Enter the eVar name"
-                )
-                
-                evar_value = st.text_input(
-                    f"eVar Value",
-                    key=f"evar_value_{i}",
-                    help="Enter the value to match"
-                )
-                
-                if evar_name and evar_value:
-                    configured_rules.append({
-                        'func': 'streq',
-                        'name': f'variables/{evar_name}',
-                        'val': evar_value,
-                        'str': evar_value,
-                        'type': 'custom',
-                        'description': f'Users with {evar_name} = {evar_value}'
-                    })
+        elif intent_details['geographic'] == 'state':
+            state_input = st.text_input(
+                "Target State/Province",
+                help="Enter the target state or province",
+                key="state_input"
+            )
+            if state_input:
+                configured_rules.append({
+                    'func': 'streq',
+                    'name': 'variables/georegion',
+                    'val': state_input,
+                    'str': state_input,
+                    'type': 'geographic',
+                    'description': f'Users from {state_input}'
+                })
+    
+    # Device rule configuration
+    if intent_details.get('device'):
+        st.write("**📱 Device Targeting**")
+        device_options = ["Mobile", "Desktop", "Tablet"]
+        device_input = st.selectbox(
+            "Target Device Type",
+            options=device_options,
+            index=device_options.index(intent_details['device'].title()) if intent_details['device'].title() in device_options else 0,
+            help="Select the target device type",
+            key="device_input"
+        )
         
-        # Time-based rule configuration
-        if intent_details.get('time_based'):
-            st.write("**⏰ Time-based Targeting**")
-            
-            if intent_details['time_based'] == 'day_of_week':
-                days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
-                selected_days = st.multiselect(
-                    "Select Days of Week",
-                    options=days,
-                    default=["Saturday", "Sunday"],
-                    help="Select the days of the week to target"
+        # Allow users to specify which eVar to use for device type
+        device_evar = st.text_input(
+            "Device Type eVar (e.g., evar1, evar2)",
+            value="evar1",
+            help="Enter the eVar that stores device type information",
+            key="device_evar_input"
+        )
+        
+        if device_input and device_evar:
+            configured_rules.append({
+                'func': 'streq',
+                'name': f'variables/{device_evar}',
+                'val': device_input,
+                'str': device_input,
+                'type': 'device',
+                'description': f'Users on {device_input} devices'
+            })
+    
+    # Behavioral rule configuration
+    if intent_details.get('behavioral'):
+        st.write("**📊 Behavioral Targeting**")
+        
+        for i, behavior in enumerate(intent_details['behavioral']):
+            if behavior == 'page_views':
+                page_views_threshold = st.number_input(
+                    "Minimum Page Views",
+                    min_value=1,
+                    value=5,
+                    help="Enter the minimum number of page views required",
+                    key=f"page_views_{i}"
                 )
                 
-                if selected_days:
+                if page_views_threshold:
                     configured_rules.append({
-                        'func': 'streq-in',
-                        'name': 'variables/dayofweek',
-                        'list': selected_days,
-                        'type': 'time_based',
-                        'description': f'Users visiting on {", ".join(selected_days)}'
+                        'func': 'gt',
+                        'name': 'variables/pageviews',
+                        'val': page_views_threshold,
+                        'type': 'behavioral',
+                        'description': f'Users with more than {page_views_threshold} page views'
                     })
             
-            elif intent_details['time_based'] == 'time_of_day':
-                time_ranges = [
-                    "Early Morning (6AM-9AM)",
-                    "Morning (9AM-12PM)", 
-                    "Afternoon (12PM-5PM)",
-                    "Evening (5PM-9PM)",
-                    "Night (9PM-6AM)"
-                ]
-                selected_times = st.multiselect(
-                    "Select Time Ranges",
-                    options=time_ranges,
-                    help="Select the time ranges to target"
+            elif behavior == 'time_on_site':
+                time_threshold = st.number_input(
+                    "Minimum Session Duration (seconds)",
+                    min_value=1,
+                    value=600,
+                    help="Enter the minimum session duration in seconds",
+                    key=f"time_threshold_{i}"
                 )
                 
-                if selected_times:
+                if time_threshold:
                     configured_rules.append({
-                        'func': 'streq-in',
-                        'name': 'variables/hourofday',
-                        'list': selected_times,
-                        'type': 'time_based',
-                        'description': f'Users visiting during {", ".join(selected_times)}'
+                        'func': 'gt',
+                        'name': 'variables/timeonsite',
+                        'val': time_threshold,
+                        'type': 'behavioral',
+                        'description': f'Users with session duration > {time_threshold} seconds'
                     })
+            
+            elif behavior == 'conversion':
+                conversion_event = st.text_input(
+                    "Conversion Event Name",
+                    value="purchase",
+                    help="Enter the name of the conversion event (e.g., purchase, signup)",
+                    key=f"conversion_event_{i}"
+                )
+                
+                if conversion_event:
+                    configured_rules.append({
+                        'func': 'event-exists',
+                        'evt': {
+                            'func': 'event',
+                            'name': f'metrics/{conversion_event}'
+                        },
+                        'type': 'behavioral',
+                        'description': f'Users who completed {conversion_event}'
+                    })
+            
+            elif behavior == 'cart':
+                cart_event = st.text_input(
+                    "Cart Event Name",
+                    value="add_to_cart",
+                    help="Enter the name of the cart event",
+                    key=f"cart_event_{i}"
+                )
+                
+                if cart_event:
+                    configured_rules.append({
+                        'func': 'event-exists',
+                        'evt': {
+                            'func': 'event',
+                            'name': f'metrics/{cart_event}'
+                        },
+                        'type': 'behavioral',
+                        'description': f'Users who added items to cart'
+                    })
+    
+    # Custom eVar configuration
+    if intent_details.get('custom_variables'):
+        st.write("**🔧 Custom Variable Targeting**")
         
-        # Display configured rules
-        if configured_rules:
-            st.write("**✅ Configured Rules:**")
-            for i, rule in enumerate(configured_rules):
-                with st.expander(f"Rule {i+1}: {rule.get('description', 'Custom Rule')}", expanded=True):
+        for i, custom_var in enumerate(intent_details['custom_variables']):
+            st.write(f"**Custom Variable {i+1}**")
+            
+            evar_name = st.text_input(
+                f"eVar Name (e.g., evar1, evar2)",
+                key=f"evar_name_{i}",
+                help="Enter the eVar name"
+            )
+            
+            evar_value = st.text_input(
+                f"eVar Value",
+                key=f"evar_value_{i}",
+                help="Enter the value to match"
+            )
+            
+            if evar_name and evar_value:
+                configured_rules.append({
+                    'func': 'streq',
+                    'name': f'variables/{evar_name}',
+                    'val': evar_value,
+                    'str': evar_value,
+                    'type': 'custom',
+                    'description': f'Users with {evar_name} = {evar_value}'
+                })
+    
+    # Time-based rule configuration
+    if intent_details.get('time_based'):
+        st.write("**⏰ Time-based Targeting**")
+        
+        if intent_details['time_based'] == 'day_of_week':
+            days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+            selected_days = st.multiselect(
+                "Select Days of Week",
+                options=days,
+                default=["Saturday", "Sunday"],
+                help="Select the days of the week to target",
+                key="days_of_week"
+            )
+            
+            if selected_days:
+                configured_rules.append({
+                    'func': 'streq-in',
+                    'name': 'variables/dayofweek',
+                    'list': selected_days,
+                    'type': 'time_based',
+                    'description': f'Users visiting on {", ".join(selected_days)}'
+                })
+        
+        elif intent_details['time_based'] == 'time_of_day':
+            time_ranges = [
+                "Early Morning (6AM-9AM)",
+                "Morning (9AM-12PM)", 
+                "Afternoon (12PM-5PM)",
+                "Evening (5PM-9PM)",
+                "Night (9PM-6AM)"
+            ]
+            selected_times = st.multiselect(
+                "Select Time Ranges",
+                options=time_ranges,
+                help="Select the time ranges to target",
+                key="time_ranges"
+            )
+            
+            if selected_times:
+                configured_rules.append({
+                    'func': 'streq-in',
+                    'name': 'variables/hourofday',
+                    'list': selected_times,
+                    'type': 'time_based',
+                    'description': f'Users visiting during {", ".join(selected_times)}'
+                })
+    
+    # Live preview of configured rules
+    st.write("**🔍 Live Preview of Configured Rules**")
+    
+    if configured_rules:
+        # Show rules in a nice format with live updates
+        for i, rule in enumerate(configured_rules):
+            with st.expander(f"Rule {i+1}: {rule.get('description', 'Custom Rule')}", expanded=True):
+                # Create a more readable display
+                col1, col2 = st.columns([1, 2])
+                
+                with col1:
+                    st.write(f"**Type:** {rule.get('type', 'Unknown').title()}")
+                    st.write(f"**Function:** {rule.get('func', 'Unknown')}")
+                
+                with col2:
+                    if rule.get('type') == 'geographic':
+                        st.write(f"**Target:** {rule.get('val', 'Unknown')}")
+                        st.write(f"**Variable:** {rule.get('name', 'Unknown')}")
+                    elif rule.get('type') == 'device':
+                        st.write(f"**Device:** {rule.get('val', 'Unknown')}")
+                        st.write(f"**eVar:** {rule.get('name', 'Unknown')}")
+                    elif rule.get('type') == 'behavioral':
+                        if rule.get('func') == 'gt':
+                            st.write(f"**Threshold:** {rule.get('val', 'Unknown')}")
+                            st.write(f"**Metric:** {rule.get('name', 'Unknown')}")
+                        elif rule.get('func') == 'event-exists':
+                            st.write(f"**Event:** {rule.get('evt', {}).get('name', 'Unknown')}")
+                    elif rule.get('type') == 'time_based':
+                        if rule.get('func') == 'streq-in':
+                            st.write(f"**Values:** {', '.join(rule.get('list', []))}")
+                            st.write(f"**Variable:** {rule.get('name', 'Unknown')}")
+                
+                # Show the raw rule structure in a collapsible section
+                with st.expander("📋 Raw Rule Structure", expanded=False):
                     st.json(rule)
-        else:
-            st.warning("⚠️ No rules configured. Please fill in the fields above.")
         
-        # Submit button
-        submitted = st.form_submit_button("🚀 Create Segment", type="primary")
+        # Summary of all rules
+        st.success(f"✅ **{len(configured_rules)} rules configured successfully!**")
         
-        if submitted:
+        # Show what the segment will target
+        st.write("**🎯 This segment will target:**")
+        targeting_summary = []
+        for rule in configured_rules:
+            targeting_summary.append(rule.get('description', 'Custom rule'))
+        
+        for summary in targeting_summary:
+            st.write(f"• {summary}")
+            
+    else:
+        st.warning("⚠️ **No rules configured yet.** Please fill in the fields above to see live updates.")
+        st.info("💡 **Tip:** As you fill in the fields above, the configured rules will appear here automatically!")
+    
+    # Create segment button (outside of form for real-time updates)
+    if configured_rules:
+        if st.button("🚀 Create Segment", type="primary", use_container_width=True):
             # Validate inputs
             if not segment_name or not segment_description or not rsid:
                 st.error("❌ Please fill in all required fields.")
-                return
-            
-            if not configured_rules:
-                st.error("❌ Please configure at least one rule.")
                 return
             
             # Create segment configuration
@@ -1255,6 +1303,8 @@ def render_segment_builder_workflow():
             st.session_state.segment_config = segment_config
             st.session_state.current_workflow = 'segment_creation'
             st.rerun()
+    else:
+        st.info("ℹ️ **Complete the configuration above to enable segment creation.**")
 
 def main():
     """Main Streamlit app"""
