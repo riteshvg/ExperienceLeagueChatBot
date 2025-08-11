@@ -34,32 +34,346 @@ def has_stackoverflow_sources(sources):
     return any(source.startswith('stackoverflow_') for source in sources)
 
 def detect_create_action(query):
-    """Simple function to detect if query contains 'create' and extract the action object"""
+    """
+    Enhanced function to detect create actions and extract detailed information.
+    
+    This function now provides more sophisticated detection for segment creation,
+    including target audience, conditions, and intent extraction.
+    """
     query_lower = query.lower()
     
-    # Check if query contains 'create'
-    if 'create' not in query_lower:
+    # Check if query contains 'create' or similar action words
+    action_words = ['create', 'build', 'make', 'set up', 'establish', 'generate']
+    has_action = any(word in query_lower for word in action_words)
+    
+    if not has_action:
         return None, None
     
-    # Define supported action objects
+    # Define supported action objects with enhanced detection
     action_keywords = {
-        'dashboard': ['dashboard', 'dashboards'],
-        'segment': ['segment', 'segments', 'segmentation'],
-        'calculated metrics': ['calculated metrics', 'calculated metric', 'metric', 'metrics'],
-        'workspace': ['workspace', 'analysis workspace', 'project'],
-        'report': ['report', 'reports'],
-        'alert': ['alert', 'alerts'],
-        'filter': ['filter', 'filters'],
-        'visualization': ['visualization', 'chart', 'charts']
+        'dashboard': ['dashboard', 'dashboards', 'board'],
+        'segment': ['segment', 'segments', 'segmentation', 'audience', 'cohort'],
+        'calculated metrics': ['calculated metrics', 'calculated metric', 'metric', 'metrics', 'kpi'],
+        'workspace': ['workspace', 'analysis workspace', 'project', 'analysis'],
+        'report': ['report', 'reports', 'reporting'],
+        'alert': ['alert', 'alerts', 'notification'],
+        'filter': ['filter', 'filters', 'filtering'],
+        'visualization': ['visualization', 'chart', 'charts', 'graph', 'plot']
     }
     
     # Find which action object is mentioned
+    detected_action = None
+    detected_keyword = None
+    
     for action_type, keywords in action_keywords.items():
         for keyword in keywords:
             if keyword in query_lower:
-                return action_type, keyword
+                detected_action = action_type
+                detected_keyword = keyword
+                break
+        if detected_action:
+            break
     
-    return None, None
+    if not detected_action:
+        return None, None
+    
+    # Enhanced detection for segments
+    if detected_action == 'segment':
+        return detect_segment_creation_intent(query, query_lower)
+    
+    return detected_action, detected_keyword
+
+
+def detect_segment_creation_intent(query, query_lower):
+    """
+    Detect detailed segment creation intent from user query.
+    
+    Args:
+        query (str): Original user query
+        query_lower (str): Lowercase version of query
+        
+    Returns:
+        tuple: (action_type, intent_details) where intent_details is a dict
+    """
+    intent_details = {
+        'action_type': 'segment',
+        'target_audience': None,
+        'conditions': [],
+        'geographic': None,
+        'behavioral': [],
+        'device': None,
+        'time_based': None,
+        'custom_variables': [],
+        'intent_confidence': 'medium'
+    }
+    
+    # Detect target audience
+    audience_patterns = {
+        'visitors': ['visitors', 'users', 'people', 'audience', 'customers'],
+        'visits': ['visits', 'sessions', 'trips'],
+        'hits': ['hits', 'page views', 'clicks', 'interactions']
+    }
+    
+    for audience_type, patterns in audience_patterns.items():
+        if any(pattern in query_lower for pattern in patterns):
+            intent_details['target_audience'] = audience_type
+            break
+    
+    # Default to visitors if no specific audience mentioned
+    if not intent_details['target_audience']:
+        intent_details['target_audience'] = 'visitors'
+    
+    # Detect geographic targeting
+    geo_patterns = {
+        'country': ['country', 'nation', 'usa', 'united states', 'us', 'canada', 'uk', 'germany'],
+        'city': ['city', 'town', 'new york', 'london', 'toronto', 'berlin'],
+        'state': ['state', 'province', 'california', 'texas', 'ontario'],
+        'zip': ['zip', 'postal', 'postcode', 'area code']
+    }
+    
+    for geo_type, patterns in geo_patterns.items():
+        if any(pattern in query_lower for pattern in patterns):
+            intent_details['geographic'] = geo_type
+            break
+    
+    # Detect device targeting
+    device_patterns = {
+        'mobile': ['mobile', 'phone', 'smartphone', 'ios', 'android'],
+        'desktop': ['desktop', 'computer', 'pc', 'mac', 'laptop'],
+        'tablet': ['tablet', 'ipad', 'android tablet']
+    }
+    
+    for device_type, patterns in device_patterns.items():
+        if any(pattern in query_lower for pattern in patterns):
+            intent_details['device'] = device_type
+            break
+    
+    # Detect behavioral conditions
+    behavioral_patterns = {
+        'page_views': ['page views', 'pages', 'pageviews', 'page count'],
+        'time_on_site': ['time on site', 'session duration', 'visit length', 'dwell time'],
+        'bounce_rate': ['bounce', 'bounce rate', 'single page'],
+        'conversion': ['conversion', 'purchase', 'goal', 'objective', 'target'],
+        'cart': ['cart', 'shopping cart', 'basket', 'add to cart'],
+        'checkout': ['checkout', 'payment', 'purchase funnel']
+    }
+    
+    for behavior_type, patterns in behavioral_patterns.items():
+        if any(pattern in query_lower for pattern in patterns):
+            intent_details['behavioral'].append(behavior_type)
+    
+    # Detect time-based targeting
+    time_patterns = {
+        'day_of_week': ['weekday', 'weekend', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'],
+        'time_of_day': ['morning', 'afternoon', 'evening', 'night', 'business hours'],
+        'seasonal': ['seasonal', 'holiday', 'christmas', 'black friday', 'summer', 'winter']
+    }
+    
+    for time_type, patterns in time_patterns.items():
+        if any(pattern in query_lower for pattern in patterns):
+            intent_details['time_based'] = time_type
+            break
+    
+    # Detect custom variables (eVar, prop, etc.)
+    custom_var_patterns = ['evar', 'prop', 'variable', 'custom', 'attribute']
+    if any(pattern in query_lower for pattern in custom_var_patterns):
+        intent_details['custom_variables'].append('custom_variable')
+    
+    # Set confidence level based on detected information
+    detected_count = sum([
+        1 if intent_details['geographic'] else 0,
+        1 if intent_details['device'] else 0,
+        len(intent_details['behavioral']),
+        1 if intent_details['time_based'] else 0,
+        len(intent_details['custom_variables'])
+    ])
+    
+    if detected_count >= 3:
+        intent_details['intent_confidence'] = 'high'
+    elif detected_count >= 1:
+        intent_details['intent_confidence'] = 'medium'
+    else:
+        intent_details['intent_confidence'] = 'low'
+    
+    return 'segment', intent_details
+
+
+def generate_segment_suggestions(intent_details):
+    """
+    Generate segment creation suggestions based on detected intent.
+    
+    Args:
+        intent_details (dict): Intent details from detect_segment_creation_intent
+        
+    Returns:
+        dict: Suggestions for segment creation
+    """
+    suggestions = {
+        'segment_name': '',
+        'segment_description': '',
+        'recommended_rules': [],
+        'confidence': intent_details.get('intent_confidence', 'low'),
+        'next_steps': []
+    }
+    
+    # Build segment name based on detected intent
+    name_parts = []
+    
+    if intent_details.get('device'):
+        name_parts.append(f"{intent_details['device'].title()} Users")
+    
+    if intent_details.get('geographic'):
+        if intent_details['geographic'] == 'country':
+            name_parts.append("from Specific Country")
+        elif intent_details['geographic'] == 'city':
+            name_parts.append("from Specific City")
+        elif intent_details['geographic'] == 'state':
+            name_parts.append("from Specific State")
+    
+    if intent_details.get('behavioral'):
+        for behavior in intent_details['behavioral']:
+            if behavior == 'page_views':
+                name_parts.append("with High Page Views")
+            elif behavior == 'time_on_site':
+                name_parts.append("with Long Session Duration")
+            elif behavior == 'conversion':
+                name_parts.append("who Converted")
+            elif behavior == 'cart':
+                name_parts.append("who Added to Cart")
+    
+    if intent_details.get('time_based'):
+        if intent_details['time_based'] == 'day_of_week':
+            name_parts.append("on Weekends")
+        elif intent_details['time_based'] == 'time_of_day':
+            name_parts.append("during Business Hours")
+        elif intent_details['time_based'] == 'seasonal':
+            name_parts.append("during Holiday Season")
+    
+    # If no specific patterns detected, use generic name
+    if not name_parts:
+        name_parts = ["Custom Segment"]
+    
+    suggestions['segment_name'] = " ".join(name_parts)
+    
+    # Build description
+    description_parts = []
+    target_audience = intent_details.get('target_audience', 'visitors')
+    description_parts.append(f"Segment targeting {target_audience}")
+    
+    if intent_details.get('device'):
+        description_parts.append(f"using {intent_details['device']} devices")
+    
+    if intent_details.get('geographic'):
+        description_parts.append(f"from specific geographic locations")
+    
+    if intent_details.get('behavioral'):
+        behavior_descriptions = []
+        for behavior in intent_details['behavioral']:
+            if behavior == 'page_views':
+                behavior_descriptions.append("with high page view counts")
+            elif behavior == 'time_on_site':
+                behavior_descriptions.append("with long session durations")
+            elif behavior == 'conversion':
+                behavior_descriptions.append("who completed conversions")
+            elif behavior == 'cart':
+                behavior_descriptions.append("who added items to cart")
+        
+        if behavior_descriptions:
+            description_parts.append(" ".join(behavior_descriptions))
+    
+    if intent_details.get('time_based'):
+        if intent_details['time_based'] == 'day_of_week':
+            description_parts.append("visiting on specific days of the week")
+        elif intent_details['time_based'] == 'time_of_day':
+            description_parts.append("visiting during specific times of day")
+        elif intent_details['time_based'] == 'seasonal':
+            description_parts.append("visiting during seasonal periods")
+    
+    suggestions['segment_description'] = " ".join(description_parts) + "."
+    
+    # Generate recommended rules
+    rules = []
+    
+    # Device rule
+    if intent_details.get('device'):
+        if intent_details['device'] == 'mobile':
+            rules.append({
+                'func': 'streq',
+                'name': 'variables/device_type',
+                'val': 'Mobile'
+            })
+        elif intent_details['device'] == 'desktop':
+            rules.append({
+                'func': 'streq',
+                'name': 'variables/device_type',
+                'val': 'Desktop'
+            })
+        elif intent_details['device'] == 'tablet':
+            rules.append({
+                'func': 'streq',
+                'name': 'variables/device_type',
+                'val': 'Tablet'
+            })
+    
+    # Geographic rule (placeholder)
+    if intent_details.get('geographic'):
+        rules.append({
+            'func': 'streq',
+            'name': 'variables/geocountry',
+            'val': 'Specific Country'
+        })
+    
+    # Behavioral rules
+    if intent_details.get('behavioral'):
+        for behavior in intent_details['behavioral']:
+            if behavior == 'page_views':
+                rules.append({
+                    'func': 'gt',
+                    'name': 'variables/pageviews',
+                    'val': 5
+                })
+            elif behavior == 'time_on_site':
+                rules.append({
+                    'func': 'gt',
+                    'name': 'variables/time_on_site',
+                    'val': 600  # 10 minutes in seconds
+                })
+    
+    suggestions['recommended_rules'] = rules
+    
+    # Generate next steps
+    next_steps = []
+    
+    if intent_details.get('intent_confidence') == 'low':
+        next_steps.append("Clarify the specific targeting criteria")
+        next_steps.append("Specify geographic location if needed")
+        next_steps.append("Define behavioral thresholds")
+    
+    if intent_details.get('geographic') == 'country':
+        next_steps.append("Specify the target country")
+    
+    if intent_details.get('geographic') == 'city':
+        next_steps.append("Specify the target city")
+    
+    if intent_details.get('geographic') == 'state':
+        next_steps.append("Specify the target state/province")
+    
+    if intent_details.get('behavioral'):
+        for behavior in intent_details['behavioral']:
+            if behavior == 'page_views':
+                next_steps.append("Specify the minimum page view count")
+            elif behavior == 'time_on_site':
+                next_steps.append("Specify the minimum session duration")
+    
+    if not next_steps:
+        next_steps.append("Review the suggested segment configuration")
+        next_steps.append("Customize segment name and description if needed")
+        next_steps.append("Confirm segment creation")
+    
+    suggestions['next_steps'] = next_steps
+    
+    return suggestions
+
 
 def generate_adobe_url(source_name):
     """Generate Adobe Experience League URL based on source name"""
