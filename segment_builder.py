@@ -48,6 +48,26 @@ class SegmentBuilder:
                 'validation_errors': [],
                 'creation_status': None
             }
+        
+        # Check if we have pre-populated intent from the main app
+        if 'segment_intent' in self.session_state:
+            intent_data = self.session_state.segment_intent
+            self.session_state.segment_builder_state.update({
+                'current_step': 'configuration',  # Skip to configuration step
+                'user_query': intent_data.get('prompt', ''),
+                'detected_intent': intent_data.get('action_details'),
+                'segment_suggestions': intent_data.get('suggestions'),
+                'segment_config': {
+                    'name': intent_data.get('suggestions', {}).get('segment_name', ''),
+                    'description': intent_data.get('suggestions', {}).get('segment_description', ''),
+                    'rsid': '',
+                    'target_audience': intent_data.get('action_details', {}).get('target_audience', 'visitors'),
+                    'rules': intent_data.get('suggestions', {}).get('recommended_rules', [])
+                }
+            })
+            
+            # Clear the segment intent to avoid re-processing
+            del self.session_state.segment_intent
     
     def render_intent_detection_step(self):
         """Render the intent detection step."""
@@ -287,7 +307,7 @@ class SegmentBuilder:
         
         # Next steps
         st.markdown("---")
-        col1, col2 = st.columns(2)
+        col1, col2, col3 = st.columns(3)
         
         with col1:
             if st.button("🔙 Back to Intent", type="secondary"):
@@ -299,6 +319,10 @@ class SegmentBuilder:
                 if self.validate_configuration():
                     self.session_state.segment_builder_state['current_step'] = 'review'
                     st.rerun()
+        
+        with col3:
+            if st.button("🏠 Back to Main App", type="secondary"):
+                st.switch_page("app.py")
     
     def validate_configuration(self) -> bool:
         """Validate the segment configuration."""
@@ -371,7 +395,7 @@ class SegmentBuilder:
         
         # Creation actions
         st.markdown("---")
-        col1, col2, col3 = st.columns(3)
+        col1, col2, col3, col4 = st.columns(4)
         
         with col1:
             if st.button("🔙 Back to Configuration", type="secondary"):
@@ -385,6 +409,10 @@ class SegmentBuilder:
         with col3:
             if st.button("🚀 Create Segment", type="primary"):
                 self.create_segment(segment_payload)
+        
+        with col4:
+            if st.button("🏠 Back to Main App", type="secondary"):
+                st.switch_page("app.py")
     
     def build_segment_payload(self) -> Dict[str, Any]:
         """Build the complete segment payload for Adobe Analytics API."""
@@ -525,7 +553,7 @@ class SegmentBuilder:
             """)
             
             # Action buttons
-            col1, col2 = st.columns(2)
+            col1, col2, col3 = st.columns(3)
             
             with col1:
                 if st.button("🔄 Create Another Segment", type="primary"):
@@ -534,6 +562,10 @@ class SegmentBuilder:
             
             with col2:
                 if st.button("🏠 Back to Main App", type="secondary"):
+                    st.switch_page("app.py")
+            
+            with col3:
+                if st.button("📚 Ask More Questions", type="secondary"):
                     st.switch_page("app.py")
         else:
             st.error("❌ Segment creation failed. Please check the error details above.")

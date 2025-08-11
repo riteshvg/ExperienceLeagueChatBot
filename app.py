@@ -631,6 +631,71 @@ def generate_follow_up_questions(answer, original_question):
         ]
         return general_questions[:4]  # Return 4 general questions
 
+def handle_segment_creation_workflow(prompt, action_details):
+    """
+    Handle the segment creation workflow when a user wants to create a segment.
+    
+    Args:
+        prompt (str): The user's original query
+        action_details (dict): Detected intent details
+    """
+    st.markdown("---")
+    st.header("🔧 Segment Creation Workflow")
+    st.info(f"I detected you want to create a segment! Let me help you with that.")
+    
+    # Display detected intent
+    if isinstance(action_details, dict):
+        st.subheader("📊 Detected Intent")
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.metric("Target Audience", action_details.get('target_audience', 'visitors').title())
+            if action_details.get('device'):
+                st.metric("Device Type", action_details['device'].title())
+        
+        with col2:
+            if action_details.get('geographic'):
+                st.metric("Geographic", action_details['geographic'].title())
+            if action_details.get('time_based'):
+                st.metric("Time-based", action_details['time_based'].replace('_', ' ').title())
+        
+        # Generate suggestions
+        suggestions = generate_segment_suggestions(action_details)
+        
+        st.subheader("💡 Suggested Configuration")
+        st.info(f"**Suggested Name:** {suggestions['segment_name']}")
+        st.info(f"**Suggested Description:** {suggestions['segment_description']}")
+        st.info(f"**Recommended Rules:** {len(suggestions['recommended_rules'])} rules")
+        
+        # Show next steps
+        st.subheader("🔄 Next Steps")
+        for i, step in enumerate(suggestions['next_steps'], 1):
+            st.markdown(f"{i}. {step}")
+        
+        # Action buttons
+        st.markdown("---")
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            if st.button("🚀 Start Segment Builder", type="primary"):
+                # Store the intent details in session state for the segment builder
+                st.session_state.segment_intent = {
+                    'prompt': prompt,
+                    'action_details': action_details,
+                    'suggestions': suggestions
+                }
+                # Redirect to segment builder
+                st.switch_page("segment_builder.py")
+        
+        with col2:
+            if st.button("💬 Ask More Questions", type="secondary"):
+                st.info("Feel free to ask more questions about Adobe Analytics or other topics!")
+    
+    else:
+        st.error("❌ Unable to parse segment creation intent. Please try rephrasing your request.")
+        st.info("💡 Example: 'Create a segment for mobile users from California'")
+
+
 def main():
     """Main Streamlit app"""
     
@@ -1068,25 +1133,30 @@ def main():
             st.session_state.input_text = ""  # Clear the input
             st.session_state.is_processing = True  # Set processing state
             
-            # Check for create actions and store in message
-            action_type, keyword = detect_create_action(prompt)
-            
-            # Add user message to chat history
-            user_message = {"role": "user", "content": prompt}
-            if action_type:
-                user_message["create_action"] = {"type": action_type, "keyword": keyword}
-            st.session_state.messages.append(user_message)
-            
-            # Update usage statistics
-            st.session_state.usage_stats["total_questions"] += 1
-            st.session_state.usage_stats["last_question_time"] = time.time()
-            
-            # Display user message in chat message container
-            with st.chat_message("user"):
-                st.markdown(prompt)
-            
-            # Display assistant response in chat message container
-            with st.chat_message("assistant"):
+                    # Check for create actions and store in message
+        action_type, action_details = detect_create_action(prompt)
+        
+        # Add user message to chat history
+        user_message = {"role": "user", "content": prompt}
+        if action_type:
+            user_message["create_action"] = {"type": action_type, "details": action_details}
+        st.session_state.messages.append(user_message)
+        
+        # Update usage statistics
+        st.session_state.usage_stats["total_questions"] += 1
+        st.session_state.usage_stats["last_question_time"] = time.time()
+        
+        # Display user message in chat message container
+        with st.chat_message("user"):
+            st.markdown(prompt)
+        
+        # Handle segment creation workflow
+        if action_type == 'segment':
+            handle_segment_creation_workflow(prompt, action_details)
+            return  # Skip the regular QA flow for segment creation
+        
+        # Display assistant response in chat message container
+        with st.chat_message("assistant"):
                 with st.spinner("Thinking..."):
                     try:
                         # Start timer for response time
