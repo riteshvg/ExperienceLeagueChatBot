@@ -919,14 +919,14 @@ def render_segment_creation_workflow():
 
 def transform_rules_to_adobe_format(rules, target_audience):
     """
-    Transform simplified rules into proper Adobe Analytics segment format
+    Transform simplified rules into proper Adobe Analytics 2.0 API segment format
     
     Args:
         rules: List of simplified rule objects
         target_audience: Target audience context (visitors, visits, hits)
     
     Returns:
-        dict: Adobe Analytics compatible segment definition
+        dict: Adobe Analytics 2.0 API compatible segment definition
     """
     if not rules:
         return None
@@ -941,12 +941,16 @@ def transform_rules_to_adobe_format(rules, target_audience):
                 "func": "container",
                 "context": target_audience,
                 "pred": {
-                    "func": rule.get('func', 'streq'),
-                    "val": {
-                        "func": "attr",
-                        "name": rule.get('name', 'variables/geocountry')
-                    },
-                    "str": rule.get('str', rule.get('val', ''))
+                    "func": "container",
+                    "context": "hits",
+                    "pred": {
+                        "func": rule.get('func', 'streq'),
+                        "val": {
+                            "func": "attr",
+                            "name": rule.get('name', 'variables/geocountry')
+                        },
+                        "str": rule.get('str', rule.get('val', ''))
+                    }
                 }
             }
         }
@@ -957,38 +961,67 @@ def transform_rules_to_adobe_format(rules, target_audience):
     for rule in rules:
         if rule.get('func') == 'streq':
             pred_conditions.append({
-                "func": "streq",
-                "val": {
-                    "func": "attr",
-                    "name": rule.get('name', 'variables/geocountry')
-                },
-                "str": rule.get('str', rule.get('val', ''))
+                "func": "container",
+                "context": "hits",
+                "pred": {
+                    "func": "streq",
+                    "val": {
+                        "func": "attr",
+                        "name": rule.get('name', 'variables/geocountry')
+                    },
+                    "str": rule.get('str', rule.get('val', ''))
+                }
             })
         elif rule.get('func') == 'gt':
             pred_conditions.append({
-                "func": "gt",
-                "val": {
-                    "func": "attr",
-                    "name": rule.get('name', 'variables/pageviews')
-                },
-                "num": rule.get('val', 0)
+                "func": "container",
+                "context": "hits",
+                "pred": {
+                    "func": "gt",
+                    "val": {
+                        "func": "attr",
+                        "name": rule.get('name', 'variables/pageviews')
+                    },
+                    "num": rule.get('val', 0)
+                }
             })
         elif rule.get('func') == 'event-exists':
             pred_conditions.append({
-                "func": "event-exists",
-                "evt": {
-                    "func": "event",
-                    "name": rule.get('evt', {}).get('name', 'metrics/purchase')
+                "func": "container",
+                "context": "hits",
+                "pred": {
+                    "func": "event-exists",
+                    "evt": {
+                        "func": "event",
+                        "name": rule.get('evt', {}).get('name', 'metrics/purchase')
+                    }
                 }
             })
         elif rule.get('func') == 'streq-in':
             pred_conditions.append({
-                "func": "streq-in",
-                "val": {
-                    "func": "attr",
-                    "name": rule.get('name', 'variables/dayofweek')
-                },
-                "list": rule.get('list', [])
+                "func": "container",
+                "context": "hits",
+                "pred": {
+                    "func": "streq-in",
+                    "val": {
+                        "func": "attr",
+                        "name": rule.get('name', 'variables/dayofweek')
+                    },
+                    "list": rule.get('list', [])
+                }
+            })
+        elif rule.get('func') == 'not-streq':
+            pred_conditions.append({
+                "func": "container",
+                "context": "hits",
+                "pred": {
+                    "func": "not-streq",
+                    "val": {
+                        "func": "attr",
+                        "name": rule.get('name', 'variables/mobiledevice')
+                    },
+                    "str": rule.get('str', rule.get('val', ''))
+                }
             })
     
     # If we have multiple conditions, combine them with AND logic
@@ -1014,12 +1047,16 @@ def transform_rules_to_adobe_format(rules, target_audience):
                 "func": "container",
                 "context": target_audience,
                 "pred": pred_conditions[0] if pred_conditions else {
-                    "func": "streq",
-                    "val": {
-                        "func": "attr",
-                        "name": "variables/geocountry"
-                    },
-                    "str": "United States"
+                    "func": "container",
+                    "context": "hits",
+                    "pred": {
+                        "func": "streq",
+                        "val": {
+                            "func": "attr",
+                            "name": "variables/geocountry"
+                        },
+                        "str": "United States"
+                    }
                 }
             }
         }
@@ -1186,23 +1223,94 @@ def render_segment_builder_workflow():
             key="device_input"
         )
         
-        # Allow users to specify which eVar to use for device type
-        device_evar = st.text_input(
-            "Device Type eVar (e.g., evar1, evar2)",
-            value="evar1",
-            help="Enter the eVar that stores device type information",
-            key="device_evar_input"
+        # Device detection method selection
+        device_method = st.selectbox(
+            "Device Detection Method",
+            options=[
+                "Custom eVar (e.g., evar1, evar2)",
+                "Built-in Mobile Device Variable",
+                "Mobile Device Type Variable"
+            ],
+            index=0,
+            help="Select how device type is detected in your implementation",
+            key="device_method"
         )
         
-        if device_input and device_evar:
-            configured_rules.append({
-                'func': 'streq',
-                'name': f'variables/{device_evar}',
-                'val': device_input,
-                'str': device_input,
-                'type': 'device',
-                'description': f'Users on {device_input} devices'
-            })
+        if device_method == "Custom eVar (e.g., evar1, evar2)":
+            device_evar = st.text_input(
+                "Device Type eVar (e.g., evar1, evar2)",
+                value="evar1",
+                help="Enter the eVar that stores device type information",
+                key="device_evar_input"
+            )
+            
+            if device_input and device_evar:
+                configured_rules.append({
+                    'func': 'streq',
+                    'name': f'variables/{device_evar}',
+                    'val': device_input,
+                    'str': device_input,
+                    'type': 'device',
+                    'description': f'Users on {device_input} devices'
+                })
+        
+        elif device_method == "Built-in Mobile Device Variable":
+            if device_input == "Mobile":
+                configured_rules.append({
+                    'func': 'streq',
+                    'name': 'variables/mobiledevice',
+                    'val': '1',
+                    'str': '1',
+                    'type': 'device',
+                    'description': f'Users on {device_input} devices'
+                })
+            elif device_input == "Desktop":
+                configured_rules.append({
+                    'func': 'not-streq',
+                    'name': 'variables/mobiledevice',
+                    'val': '1',
+                    'str': '1',
+                    'type': 'device',
+                    'description': f'Users on {device_input} devices'
+                })
+            else:  # Tablet
+                configured_rules.append({
+                    'func': 'streq',
+                    'name': 'variables/mobiledevice',
+                    'val': '2',
+                    'str': '2',
+                    'type': 'device',
+                    'description': f'Users on {device_input} devices'
+                })
+        
+        elif device_method == "Mobile Device Type Variable":
+            if device_input == "Mobile":
+                configured_rules.append({
+                    'func': 'streq',
+                    'name': 'variables/mobiledevicetype',
+                    'val': 'Mobile',
+                    'str': 'Mobile',
+                    'type': 'device',
+                    'description': f'Users on {device_input} devices'
+                })
+            elif device_input == "Desktop":
+                configured_rules.append({
+                    'func': 'streq',
+                    'name': 'variables/mobiledevicetype',
+                    'val': 'Desktop',
+                    'str': 'Desktop',
+                    'type': 'device',
+                    'description': f'Users on {device_input} devices'
+                })
+            else:  # Tablet
+                configured_rules.append({
+                    'func': 'streq',
+                    'name': 'variables/mobiledevicetype',
+                    'val': 'Tablet',
+                    'str': 'Tablet',
+                    'type': 'device',
+                    'description': f'Users on {device_input} devices'
+                })
     
     # Behavioral rule configuration
     if intent_details.get('behavioral'):
