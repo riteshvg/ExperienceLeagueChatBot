@@ -907,9 +907,39 @@ def main():
     if 'current_workflow' not in st.session_state:
         st.session_state.current_workflow = 'chat'
     
-    # Debug: Show current workflow state
-    if st.session_state.current_workflow != 'chat':
-        st.sidebar.info(f"🔧 Current Workflow: {st.session_state.current_workflow}")
+    # Debug: Show current workflow state in sidebar
+    with st.sidebar:
+        st.header("🔧 Workflow Status")
+        st.info(f"**Current Workflow:** {st.session_state.current_workflow}")
+        
+        # Show additional debug info
+        if 'segment_intent' in st.session_state:
+            st.success("✅ Segment Intent Detected")
+        if 'segment_config' in st.session_state:
+            st.success("✅ Segment Config Ready")
+        
+        st.markdown("---")
+        
+        # Debug Controls
+        st.header("🐛 Debug Controls")
+        if st.button("🔄 Reset Workflow State", help="Reset to main chat"):
+            st.session_state.current_workflow = 'chat'
+            if 'segment_intent' in st.session_state:
+                del st.session_state.segment_intent
+            if 'segment_config' in st.session_state:
+                del st.session_state.segment_config
+            st.rerun()
+        
+        if st.button("🔧 Test Segment Builder", help="Manually enter segment builder workflow"):
+            st.session_state.current_workflow = 'segment_builder'
+            st.session_state.segment_intent = {
+                'prompt': 'Test segment creation',
+                'action_details': {'action_type': 'segment', 'target_audience': 'visitors'},
+                'suggestions': {'segment_name': 'Test Segment', 'segment_description': 'Test description', 'recommended_rules': []}
+            }
+            st.rerun()
+        
+        st.markdown("---")
     
     # Header
     st.title("🤖 Adobe Experience League Documentation Chatbot")
@@ -1376,8 +1406,16 @@ def main():
             
             # Handle segment creation workflow
             if action_type == 'segment':
-                handle_segment_creation_workflow(prompt, action_details)
-                return  # Skip the regular QA flow for segment creation
+                # Store the intent details in session state for the segment builder
+                suggestions = generate_segment_suggestions(action_details)
+                st.session_state.segment_intent = {
+                    'prompt': prompt,
+                    'action_details': action_details,
+                    'suggestions': suggestions
+                }
+                # Set the current workflow step to segment builder immediately
+                st.session_state.current_workflow = 'segment_builder'
+                st.rerun()  # Redirect to segment builder workflow
             
             # Display assistant response in chat message container
             with st.chat_message("assistant"):
