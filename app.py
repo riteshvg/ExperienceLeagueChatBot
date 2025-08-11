@@ -15,6 +15,7 @@ from langchain_ollama import OllamaLLM
 from langchain_groq import ChatGroq
 from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
+import json
 
 def categorize_sources(sources):
     """Categorize sources into Adobe docs and Stack Overflow"""
@@ -201,6 +202,7 @@ def detect_segment_creation_intent(query, query_lower):
 def generate_segment_suggestions(intent_details):
     """
     Generate segment creation suggestions based on detected intent.
+    Now enhanced to use vector database for better suggestions.
     
     Args:
         intent_details (dict): Intent details from detect_segment_creation_intent
@@ -215,6 +217,36 @@ def generate_segment_suggestions(intent_details):
         'confidence': intent_details.get('intent_confidence', 'low'),
         'next_steps': []
     }
+    
+    # Try to get relevant segment examples from vector database
+    relevant_examples = []
+    try:
+        vectorstore = load_knowledge_base()
+        if vectorstore:
+            # Create a search query based on intent
+            search_query = ""
+            if intent_details.get('device'):
+                search_query += f"{intent_details['device']} "
+            if intent_details.get('geographic'):
+                search_query += f"{intent_details['geographic']} "
+            if intent_details.get('behavioral'):
+                for behavior in intent_details['behavioral']:
+                    search_query += f"{behavior} "
+            
+            if search_query.strip():
+                # Search for relevant examples
+                results = vectorstore.similarity_search(search_query.strip(), k=3)
+                for result in results:
+                    if result.metadata.get('type') == 'segment_example':
+                        relevant_examples.append(result.metadata)
+            else:
+                # Generic search for segment examples
+                results = vectorstore.similarity_search("Adobe Analytics segment examples", k=3)
+                for result in results:
+                    if result.metadata.get('type') == 'segment_example':
+                        relevant_examples.append(result.metadata)
+    except Exception as e:
+        print(f"Warning: Could not load relevant examples: {e}")
     
     # Build segment name based on detected intent
     name_parts = []
@@ -291,7 +323,7 @@ def generate_segment_suggestions(intent_details):
     
     suggestions['segment_description'] = " ".join(description_parts) + "."
     
-    # Generate recommended rules
+    # Generate recommended rules based on relevant examples or defaults
     rules = []
     
     # Device rule - use valid Adobe Analytics variables
@@ -318,14 +350,31 @@ def generate_segment_suggestions(intent_details):
                 'str': 'Tablet'
             })
     
-    # Geographic rule - use valid Adobe Analytics variables
+    # Geographic rule - now smarter based on examples
     if intent_details.get('geographic'):
-        rules.append({
-            'func': 'streq',
-            'name': 'variables/geocountry',  # This is a standard Adobe variable
-            'val': 'United States',  # Use a real country name
-            'str': 'United States'
-        })
+        # Look for relevant geographic examples
+        geographic_example = None
+        for example in relevant_examples:
+            if 'geocountry' in str(example.get('description', '')).lower():
+                geographic_example = example
+                break
+        
+        if geographic_example:
+            # Use the example's geographic variable
+            rules.append({
+                'func': 'streq',
+                'name': 'variables/geocountry',
+                'val': 'Specific Country',  # User will specify
+                'str': 'Specific Country'
+            })
+        else:
+            # Default geographic rule
+            rules.append({
+                'func': 'streq',
+                'name': 'variables/geocountry',
+                'val': 'Specific Country',
+                'str': 'Specific Country'
+            })
     
     # Behavioral rules - use valid Adobe Analytics variables
     if intent_details.get('behavioral'):
@@ -345,6 +394,10 @@ def generate_segment_suggestions(intent_details):
     
     suggestions['recommended_rules'] = rules
     
+    # Add relevant examples to suggestions if found
+    if relevant_examples:
+        suggestions['relevant_examples'] = relevant_examples[:2]  # Limit to 2 examples
+    
     # Generate next steps
     next_steps = []
     
@@ -354,7 +407,7 @@ def generate_segment_suggestions(intent_details):
         next_steps.append("Define behavioral thresholds")
     
     if intent_details.get('geographic') == 'country':
-        next_steps.append("Specify the target country")
+        next_steps.append("Specify the target country (e.g., New Zealand, United States)")
     
     if intent_details.get('geographic') == 'city':
         next_steps.append("Specify the target city")
@@ -875,6 +928,33 @@ def render_segment_builder_workflow():
             st.metric("Geographic", intent_data['action_details']['geographic'].title())
         if intent_data['action_details'].get('time_based'):
             st.metric("Time-based", intent_data['action_details']['time_based'].replace('_', ' ').title())
+    
+    # Display relevant examples from vector database
+    if 'relevant_examples' in intent_data['suggestions'] and intent_data['suggestions']['relevant_examples']:
+        st.subheader("📚 Relevant Segment Examples")
+        st.info("Based on your request, here are some relevant segment examples from our database:")
+        
+        for i, example in enumerate(intent_data['suggestions']['relevant_examples']):
+            with st.expander(f"📋 {example.get('name', 'Example Segment')}", expanded=False):
+                col1, col2 = st.columns([2, 1])
+                with col1:
+                    st.write(f"**Description:** {example.get('description', 'No description')}")
+                    st.write(f"**Context:** {example.get('context', 'Not specified')}")
+                    st.write(f"**Predicate Function:** {example.get('pred_func', 'Not specified')}")
+                
+                with col2:
+                    st.write(f"**Source:** {example.get('source', 'Unknown')}")
+                    if example.get('rsid'):
+                        st.write(f"**RSID:** {example['rsid']}")
+                
+                # Show the example structure
+                st.write("**Example Structure:**")
+                st.code(json.dumps({
+                    "name": example.get('name'),
+                    "description": example.get('description'),
+                    "context": example.get('context'),
+                    "pred_func": example.get('pred_func')
+                }, indent=2), language="json")
     
     # Segment configuration form
     st.subheader("⚙️ Segment Configuration")
