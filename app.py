@@ -688,8 +688,9 @@ def handle_segment_creation_workflow(prompt, action_details):
                     'action_details': action_details,
                     'suggestions': suggestions
                 }
-                # Redirect to segment builder
-                st.switch_page("segment_builder.py")
+                # Set the current workflow step to segment builder
+                st.session_state.current_workflow = 'segment_builder'
+                st.rerun()
         
         with col2:
             if st.button("💬 Ask More Questions", type="secondary"):
@@ -700,12 +701,225 @@ def handle_segment_creation_workflow(prompt, action_details):
         st.info("💡 Example: 'Create a segment for mobile users from California'")
 
 
+def render_segment_creation_workflow():
+    """Render the segment creation workflow within the main app."""
+    
+    # Header for segment creation
+    st.header("🚀 Creating Your Segment")
+    st.caption("Executing segment creation in Adobe Analytics")
+    
+    # Back to segment builder button
+    if st.button("← Back to Segment Builder", type="secondary"):
+        st.session_state.current_workflow = 'segment_builder'
+        st.rerun()
+    
+    # Check if we have segment configuration
+    if 'segment_config' not in st.session_state:
+        st.error("❌ No segment configuration found. Please go back to the segment builder.")
+        return
+    
+    segment_config = st.session_state.segment_config
+    
+    # Display configuration summary
+    st.subheader("📋 Configuration Summary")
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.metric("Segment Name", segment_config['name'])
+        st.metric("RSID", segment_config['rsid'])
+    
+    with col2:
+        st.metric("Target Audience", segment_config['target_audience'])
+        st.metric("Rules Count", len(segment_config['rules']))
+    
+    # Display full configuration
+    with st.expander("🔍 View Full Configuration"):
+        st.json(segment_config)
+    
+    # Create segment button
+    if st.button("🎯 Create Segment in Adobe Analytics", type="primary"):
+        with st.spinner("🚀 Creating your segment in Adobe Analytics..."):
+            try:
+                # Import the Adobe API function
+                from adobe_api import create_analytics_segment_from_json
+                
+                # Build the payload
+                from segment_builder import SegmentBuilder
+                builder = SegmentBuilder()
+                builder.session_state.segment_builder_state['segment_config'] = segment_config
+                
+                payload = builder.build_segment_payload()
+                
+                # Create the segment
+                result = create_analytics_segment_from_json(payload)
+                
+                if result.get('status') == 'success':
+                    st.success("🎉 Segment created successfully!")
+                    
+                    # Display segment details
+                    segment_data = result.get('data', {})
+                    st.subheader("✅ Segment Created")
+                    st.json(segment_data)
+                    
+                    # Show segment ID
+                    if 'id' in segment_data:
+                        st.info(f"**Segment ID:** {segment_data['id']}")
+                    
+                    # Success message
+                    st.success("Your segment has been created in Adobe Analytics and is ready to use!")
+                    
+                    # Back to main chat button
+                    if st.button("🏠 Back to Main Chat", type="primary"):
+                        # Clear workflow state
+                        if 'current_workflow' in st.session_state:
+                            del st.session_state.current_workflow
+                        if 'segment_intent' in st.session_state:
+                            del st.session_state.segment_intent
+                        if 'segment_config' in st.session_state:
+                            del st.session_state.segment_config
+                        st.rerun()
+                
+                else:
+                    st.error(f"❌ Failed to create segment: {result.get('message', 'Unknown error')}")
+                    
+                    # Show error details
+                    with st.expander("🔍 Error Details"):
+                        st.json(result)
+                    
+                    # Retry button
+                    if st.button("🔄 Try Again", type="secondary"):
+                        st.rerun()
+            
+            except Exception as e:
+                st.error(f"❌ Error creating segment: {str(e)}")
+                
+                # Show error details
+                with st.expander("🔍 Error Details"):
+                    st.error(f"Exception: {type(e).__name__}")
+                    st.error(f"Message: {str(e)}")
+                
+                # Back to segment builder button
+                if st.button("← Back to Segment Builder", type="secondary"):
+                    st.session_state.current_workflow = 'segment_builder'
+                    st.rerun()
+
+def render_segment_builder_workflow():
+    """Render the segment builder workflow within the main app."""
+    
+    # Header for segment builder
+    st.header("🔧 Segment Builder")
+    st.caption("Create and configure your Adobe Analytics segment")
+    
+    # Back to main app button
+    if st.button("← Back to Main Chat", type="secondary"):
+        st.session_state.current_workflow = 'chat'
+        st.rerun()
+    
+    # Check if we have segment intent data
+    if 'segment_intent' not in st.session_state:
+        st.error("❌ No segment creation intent found. Please go back to the main chat.")
+        return
+    
+    intent_data = st.session_state.segment_intent
+    
+    # Display detected intent
+    st.subheader("📊 Detected Intent")
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.metric("Target Audience", intent_data['action_details'].get('target_audience', 'visitors').title())
+        if intent_data['action_details'].get('device'):
+            st.metric("Device Type", intent_data['action_details']['device'].title())
+    
+    with col2:
+        if intent_data['action_details'].get('geographic'):
+            st.metric("Geographic", intent_data['action_details']['geographic'].title())
+        if intent_data['action_details'].get('time_based'):
+            st.metric("Time-based", intent_data['action_details']['time_based'].replace('_', ' ').title())
+    
+    # Segment configuration form
+    st.subheader("⚙️ Segment Configuration")
+    
+    with st.form("segment_config_form"):
+        # Basic information
+        segment_name = st.text_input(
+            "Segment Name",
+            value=intent_data['suggestions']['segment_name'],
+            help="Enter a descriptive name for your segment"
+        )
+        
+        segment_description = st.text_area(
+            "Description",
+            value=intent_data['suggestions']['segment_description'],
+            help="Describe what this segment targets"
+        )
+        
+        rsid = st.text_input(
+            "Report Suite ID (RSID)",
+            value="argupaepdemo",
+            help="Enter your Adobe Analytics Report Suite ID"
+        )
+        
+        target_audience = st.selectbox(
+            "Target Audience",
+            options=["visitors", "visits", "hits"],
+            index=0,
+            help="Select the context for your segment"
+        )
+        
+        # Rules configuration
+        st.subheader("📋 Segment Rules")
+        st.info("Configure the rules that define your segment")
+        
+        # Display suggested rules
+        suggested_rules = intent_data['suggestions']['recommended_rules']
+        st.write("**Suggested Rules:**")
+        for i, rule in enumerate(suggested_rules):
+            st.json(rule)
+        
+        # Submit button
+        submitted = st.form_submit_button("🚀 Create Segment", type="primary")
+        
+        if submitted:
+            # Validate inputs
+            if not segment_name or not segment_description or not rsid:
+                st.error("❌ Please fill in all required fields.")
+                return
+            
+            # Create segment configuration
+            segment_config = {
+                'name': segment_name,
+                'description': segment_description,
+                'rsid': rsid,
+                'target_audience': target_audience,
+                'rules': suggested_rules
+            }
+            
+            # Store in session state for the next step
+            st.session_state.segment_config = segment_config
+            st.session_state.current_workflow = 'segment_creation'
+            st.rerun()
+
 def main():
     """Main Streamlit app"""
+    
+    # Initialize session state for workflow management
+    if 'current_workflow' not in st.session_state:
+        st.session_state.current_workflow = 'chat'
     
     # Header
     st.title("🤖 Adobe Experience League Documentation Chatbot")
     st.caption("This chatbot is powered by local open-source models and Adobe's official documentation.")
+    
+    # Check if we're in segment builder workflow
+    if st.session_state.current_workflow == 'segment_builder':
+        render_segment_builder_workflow()
+        return
+    
+    # Check if we're in segment creation workflow
+    if st.session_state.current_workflow == 'segment_creation':
+        render_segment_creation_workflow()
+        return
     
     # Sidebar for controls and information
     with st.sidebar:
