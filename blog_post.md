@@ -63,7 +63,7 @@ In this comprehensive guide, I'll walk you through building an intelligent chatb
 
 #### 4. **AI Models**
 
-- **Groq (Default)**: Cloud-based inference with `llama3-8b-8192` model
+- **Groq (Default)**: Cloud-based inference with `llama-3.1-8b-instant` model
   - Fast response times (~2-5 seconds)
   - No local setup required
   - Handles complex queries efficiently

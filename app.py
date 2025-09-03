@@ -17,6 +17,14 @@ from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
 import json
 
+# Import source attribution system
+try:
+    from source_attributor import SourceAttributor, quick_attribution
+    SOURCE_ATTRIBUTION_AVAILABLE = True
+except ImportError:
+    SOURCE_ATTRIBUTION_AVAILABLE = False
+    st.warning("⚠️ Source attribution system not available. Install source_attributor.py")
+
 def categorize_sources(sources):
     """Categorize sources into Adobe docs and Stack Overflow"""
     adobe_sources = []
@@ -29,6 +37,32 @@ def categorize_sources(sources):
             adobe_sources.append(source)
     
     return adobe_sources, stackoverflow_sources
+
+def generate_source_attributions(sources, format_type="markdown"):
+    """Generate proper attributions for sources using the attribution system"""
+    if not SOURCE_ATTRIBUTION_AVAILABLE:
+        return []
+    
+    try:
+        attributor = SourceAttributor()
+        attributions = attributor.generate_bulk_attribution(sources, format_type)
+        return attributions
+    except Exception as e:
+        st.error(f"Error generating attributions: {str(e)}")
+        return []
+
+def get_simple_attributions(sources):
+    """Get simple attributions with links and license text only"""
+    if not SOURCE_ATTRIBUTION_AVAILABLE:
+        return []
+    
+    try:
+        attributor = SourceAttributor()
+        attributions = attributor.generate_bulk_attribution(sources, "markdown")
+        return attributions
+    except Exception as e:
+        st.error(f"Error generating attributions: {str(e)}")
+        return []
 
 def has_stackoverflow_sources(sources):
     """Check if any sources are from Stack Overflow"""
@@ -520,7 +554,7 @@ def setup_qa_chain(_vectorstore, provider="Groq (Cloud)"):
                 
                 llm = ChatGroq(
                     groq_api_key=groq_api_key,
-                    model_name="llama3-8b-8192",
+                    model_name="llama-3.1-8b-instant",
                     temperature=0.1
                 )
                 
@@ -1719,6 +1753,10 @@ def main():
         st.metric("Responses Generated", st.session_state.usage_stats["total_responses"])
         if st.session_state.usage_stats["avg_response_time"] > 0:
             st.metric("Avg Response Time", f"{st.session_state.usage_stats['avg_response_time']:.1f}s")
+        
+
+
+
     
     # Load knowledge base
     with st.spinner("Loading knowledge base..."):
@@ -1762,7 +1800,6 @@ def main():
             
             with status_col3:
                 # Show knowledge base status
-                # Show knowledge base status
                 adobe_docs_count = len(list(Path("./adobe_docs").glob("*.txt")))
                 stackoverflow_docs_count = len(list(Path("./stackoverflow_docs").glob("*.txt")))
                 total_docs = adobe_docs_count + stackoverflow_docs_count
@@ -1771,6 +1808,12 @@ def main():
                     st.info(f"📚 Knowledge Base: {adobe_docs_count} Adobe docs, {stackoverflow_docs_count} SO docs")
                 else:
                     st.info(f"📚 Knowledge Base: {adobe_docs_count} Adobe docs")
+                
+                # Show attribution system status
+                if SOURCE_ATTRIBUTION_AVAILABLE:
+                    st.success("✅ Source Attribution: Available")
+                else:
+                    st.warning("⚠️ Source Attribution: Not Available")
             
             with status_col4:
                 # Close button for the entire info section
@@ -1793,7 +1836,6 @@ def main():
                     - Ask questions about Adobe Experience League solutions features, implementation, or best practices
                     - Use the sidebar to quickly access common questions
                     - Groq (cloud) is the default for fast responses, Ollama (local) is available as fallback
-                    - Check the "View Sources" expander to see which documents were used
                     - Use reactions (👍👎💡) to provide feedback on responses
                     
                     **🚀 Getting Started:**
@@ -1802,6 +1844,10 @@ def main():
     
     # Main chat interface
     st.markdown("---")
+    
+
+            
+
     
     # Display chat messages from history
     for message in st.session_state.messages:
@@ -1815,193 +1861,22 @@ def main():
                 if st.button(f"📋 Help Create {action_type.title()}", key=f"create_{action_type}_{len(st.session_state.messages)}"):
                     st.success(f"🎉 Let's create a {action_type}! This feature is coming soon.")
             
-            # Display sources for assistant messages if available
+            # Display simple attribution for assistant messages if available
             if message["role"] == "assistant" and "sources" in message:
-                with st.expander("📚 View Sources", expanded=False):
-                    st.write("**The answer was generated based on the following documents:**")
-                    # Categorize sources
-                    adobe_sources, stackoverflow_sources = categorize_sources(message["sources"])
-                    
-                    # Show source summary
-                    if adobe_sources and stackoverflow_sources:
-                        st.success("✅ Answer combines official Adobe documentation and community solutions")
-                        st.info(f"📖 Adobe Docs: {len(adobe_sources)} | 💬 Stack Overflow: {len(stackoverflow_sources)}")
-                    elif stackoverflow_sources:
-                        st.warning("💬 Answer based on community solutions from Stack Overflow")
-                        st.info(f"💬 Stack Overflow: {len(stackoverflow_sources)} sources")
-                    else:
-                        st.success("📖 Answer based on official Adobe documentation")
-                        st.info(f"📖 Adobe Docs: {len(adobe_sources)} sources")
-                    
-                    st.write(f"**Debug: Found {len(message["sources"])} sources")
-                    for idx, src in enumerate(message["sources"]):
-                        st.write(f"  {idx+1}. {src}")
-                    st.write("**Detailed sources:**")
-                    for i, source in enumerate(message["sources"], 1):
-                        # Add source type indicator
-                        if source.startswith('stackoverflow_'):
-                            source_icon = "💬"
-                            source_type = "Stack Overflow"
-                        else:
-                            source_icon = "📖"
-                            source_type = "Adobe Docs"
-                        source_name = source
-                        # Clean up the source name for better display
-                        if source_name.endswith('.txt'):
-                            source_name = source_name[:-4]  # Remove .txt extension
-                        if source_name.startswith('en_docs_'):
-                            source_name = source_name[8:]  # Remove en_docs_ prefix
-                        source_name = source_name.replace('_', ' ').title()  # Format nicely
-                        
-                        # Create Adobe Analytics documentation URL based on source name
-                        base_url = "https://experienceleague.adobe.com/docs/analytics.html"
-                        
-                        # Map source names to specific Adobe Analytics URLs
-                        url_mapping = {
-                            # Analytics Core Documentation
-                            "en_docs_analytics_admin_home": "https://experienceleague.adobe.com/en/docs/analytics/admin/home",
-                            "en_docs_analytics_analyze_admin-overview_analytics-overview": "https://experienceleague.adobe.com/en/docs/analytics/analyze/admin-overview/analytics-overview",
-                            "en_docs_analytics_analyze_home": "https://experienceleague.adobe.com/en/docs/analytics/analyze/home",
-                            "en_docs_analytics_components_calculated-metrics_cm-overview": "https://experienceleague.adobe.com/en/docs/analytics/components/calculated-metrics/cm-overview",
-                            "en_docs_analytics_components_home": "https://experienceleague.adobe.com/en/docs/analytics/components/home",
-                            "en_docs_analytics_components_segmentation_seg-overview": "https://experienceleague.adobe.com/en/docs/analytics/components/segmentation/seg-overview",
-                            "en_docs_analytics_export_home": "https://experienceleague.adobe.com/en/docs/analytics/export/home",
-                            "en_docs_analytics_implementation_home": "https://experienceleague.adobe.com/en/docs/analytics/implementation/home",
-                            "en_docs_analytics_import_home": "https://experienceleague.adobe.com/en/docs/analytics/import/home",
-                            "en_docs_analytics_integration_home": "https://experienceleague.adobe.com/en/docs/analytics/integration/home",
-                            "en_docs_analytics_release-notes_doc-updates": "https://experienceleague.adobe.com/en/docs/analytics/release-notes/doc-updates",
-                            "en_docs_analytics_release-notes_latest": "https://experienceleague.adobe.com/en/docs/analytics/release-notes/latest",
-                            "en_docs_analytics_technotes_home": "https://experienceleague.adobe.com/en/docs/analytics/technotes/home",
-                            
-                            # Analytics Platform and CJA
-                            "en_docs_analytics-platform_using_cja-overview_cja-b2c-overview_data-analysis-ai": "https://experienceleague.adobe.com/en/docs/analytics-platform/using/cja-overview/cja-b2c-overview/data-analysis-ai",
-                            "en_docs_analytics-platform_using_cja-workspace_attribution_algorithmic": "https://experienceleague.adobe.com/en/docs/analytics-platform/using/cja-workspace/attribution/algorithmic",
-                            "en_docs_analytics-platform_using_cja-workspace_attribution_best-practices": "https://experienceleague.adobe.com/en/docs/analytics-platform/using/cja-workspace/attribution/best-practices",
-                            "en_docs_analytics-platform_using_cja-workspace_attribution_models": "https://experienceleague.adobe.com/en/docs/analytics-platform/using/cja-workspace/attribution/models",
-                            "en_docs_analytics-platform_using_cja-workspace_attribution_overview": "https://experienceleague.adobe.com/en/docs/analytics-platform/using/cja-workspace/attribution/overview",
-                            
-                            # Customer Journey Analytics
-                            "en_docs_customer-journey-analytics": "https://experienceleague.adobe.com/en/docs/customer-journey-analytics",
-                            "en_docs_customer-journey-analytics-learn_tutorials_analysis-workspace_workspace-projects_analysis-workspace-overview": "https://experienceleague.adobe.com/en/docs/customer-journey-analytics-learn/tutorials/analysis-workspace/workspace-projects/analysis-workspace-overview",
-                            "en_docs_customer-journey-analytics-learn_tutorials_cja-basics_what-is-customer-journey-analytics": "https://experienceleague.adobe.com/en/docs/customer-journey-analytics-learn/tutorials/cja-basics/what-is-customer-journey-analytics",
-                            "en_docs_customer-journey-analytics-learn_tutorials_overview": "https://experienceleague.adobe.com/en/docs/customer-journey-analytics-learn/tutorials/overview",
-                            
-                            # Analytics Learn Tutorials
-                            "en_docs_analytics-learn_tutorials_administration_key-admin-skills_translating-adobe-analytics-technical-language": "https://experienceleague.adobe.com/en/docs/analytics-learn/tutorials/administration/key-admin-skills/translating-adobe-analytics-technical-language",
-                            "en_docs_analytics-learn_tutorials_analysis-use-cases_setting-up-in-market-zip-code-analysis-use-case": "https://experienceleague.adobe.com/en/docs/analytics-learn/tutorials/analysis-use-cases/setting-up-in-market-zip-code-analysis-use-case",
-                            "en_docs_analytics-learn_tutorials_analysis-workspace_building-freeform-tables_row-and-column-settings-in-freeform-tables": "https://experienceleague.adobe.com/en/docs/analytics-learn/tutorials/analysis-workspace/building-freeform-tables/row-and-column-settings-in-freeform-tables",
-                            "en_docs_analytics-learn_tutorials_exporting_report-builder_upgrade-and-reschedule-workbooks": "https://experienceleague.adobe.com/en/docs/analytics-learn/tutorials/exporting/report-builder/upgrade-and-reschedule-workbooks",
-                            "en_docs_analytics-learn_tutorials_overview": "https://experienceleague.adobe.com/en/docs/analytics-learn/tutorials/overview",
-                            
-                            # Analytics Admin Tools
-                            "en_docs_analytics_admin_admin-tools_manage-report-suites_edit-report-suite_report-suite-general_processing-rules_pr-copy": "https://experienceleague.adobe.com/en/docs/analytics/admin/admin-tools/manage-report-suites/edit-report-suite/report-suite-general/processing-rules/pr-copy",
-                            "en_docs_analytics_admin_admin-tools_manage-report-suites_edit-report-suite_report-suite-general_processing-rules_pr-interface": "https://experienceleague.adobe.com/en/docs/analytics/admin/admin-tools/manage-report-suites/edit-report-suite/report-suite-general/processing-rules/pr-interface",
-                            "en_docs_analytics_admin_admin-tools_manage-report-suites_edit-report-suite_report-suite-general_processing-rules_pr-use-cases": "https://experienceleague.adobe.com/en/docs/analytics/admin/admin-tools/manage-report-suites/edit-report-suite/report-suite-general/processing-rules/pr-use-cases",
-                            
-                            # Analytics Implementation
-                            "en_docs_analytics_implementation_aep-edge_hit-types": "https://experienceleague.adobe.com/en/docs/analytics/implementation/aep-edge/hit-types",
-                            
-                            # Blueprints and Architecture
-                            "en_docs_blueprints-learn_architecture_architecture-overview_experience-cloud": "https://experienceleague.adobe.com/en/docs/blueprints-learn/architecture/architecture-overview/experience-cloud",
-                            "en_docs_blueprints-learn_architecture_architecture-overview_platform-applications": "https://experienceleague.adobe.com/en/docs/blueprints-learn/architecture/architecture-overview/platform-applications",
-                            "en_docs_blueprints-learn_architecture_customer-journey-analytics_cja-ajo": "https://experienceleague.adobe.com/en/docs/blueprints-learn/architecture/customer-journey-analytics/cja-ajo",
-                            "en_docs_blueprints-learn_architecture_customer-journey-analytics_cja-rtcdp": "https://experienceleague.adobe.com/en/docs/blueprints-learn/architecture/customer-journey-analytics/cja-rtcdp",
-                            
-                            # Certification
-                            "en_docs_certification_program_technical-certifications_aa_aa-overview": "https://experienceleague.adobe.com/en/docs/certification/program/technical-certifications/aa/aa-overview",
-                            "en_docs_certification_program_technical-certifications_aem_aem-overview": "https://experienceleague.adobe.com/en/docs/certification/program/technical-certifications/aem/aem-overview",
-                            
-                            # Knowledge Base Articles
-                            "en_docs_experience-cloud-kcs_kbarticles_ka-25262": "https://experienceleague.adobe.com/en/docs/experience-cloud-kcs/kbarticles/ka-25262",
-                            "en_docs_experience-cloud-kcs_kbarticles_ka-26568": "https://experienceleague.adobe.com/en/docs/experience-cloud-kcs/kbarticles/ka-26568",
-                            "en_docs_experience-cloud-kcs_kbarticles_ka-26635": "https://experienceleague.adobe.com/en/docs/experience-cloud-kcs/kbarticles/ka-26635",
-                            "en_docs_experience-cloud-kcs_kbarticles_ka-26946": "https://experienceleague.adobe.com/en/docs/experience-cloud-kcs/kbarticles/ka-26946",
-                            "en_docs_experience-cloud-kcs_kbarticles_ka-16598": "https://experienceleague.adobe.com/en/docs/experience-cloud-kcs/kbarticles/ka-16598",
-                            "en_docs_experience-cloud-kcs_kbarticles_ka-17254": "https://experienceleague.adobe.com/en/docs/experience-cloud-kcs/kbarticles/ka-17254",
-                            "en_docs_experience-cloud-kcs_kbarticles_ka-17580": "https://experienceleague.adobe.com/en/docs/experience-cloud-kcs/kbarticles/ka-17580",
-                            "en_docs_experience-cloud-kcs_kbarticles_ka-20022": "https://experienceleague.adobe.com/en/docs/experience-cloud-kcs/kbarticles/ka-20022",
-                            
-                            # Home Tutorials and Documentation
-                            "en_docs_home-tutorials": "https://experienceleague.adobe.com/en/docs/home-tutorials",
-                            "en_docs_release-notes_experience-cloud_current": "https://experienceleague.adobe.com/en/docs/release-notes/experience-cloud/current",
-                            
-                            # Browse Pages
-                            "en_browse_analytics": "https://experienceleague.adobe.com/en/browse/analytics",
-                            "en_browse_advertising": "https://experienceleague.adobe.com/en/browse/advertising",
-                            "en_browse_audience-manager": "https://experienceleague.adobe.com/en/browse/audience-manager",
-                            "en_browse_campaign": "https://experienceleague.adobe.com/en/browse/campaign",
-                            "en_browse_commerce": "https://experienceleague.adobe.com/en/browse/commerce",
-                            "en_browse_creative-cloud-for-enterprise": "https://experienceleague.adobe.com/en/browse/creative-cloud-for-enterprise",
-                            "en_browse_customer-journey-analytics": "https://experienceleague.adobe.com/en/browse/customer-journey-analytics",
-                            "en_browse_document-cloud": "https://experienceleague.adobe.com/en/browse/document-cloud",
-                            "en_browse_dynamic-media-classic": "https://experienceleague.adobe.com/en/browse/dynamic-media-classic",
-                            "en_browse_experience-cloud-administration-and-interface-services": "https://experienceleague.adobe.com/en/browse/experience-cloud-administration-and-interface-services",
-                            "en_browse_experience-manager": "https://experienceleague.adobe.com/en/browse/experience-manager",
-                            "en_browse_experience-platform": "https://experienceleague.adobe.com/en/browse/experience-platform",
-                            "en_browse_experience-platform_data-collection": "https://experienceleague.adobe.com/en/browse/experience-platform/data-collection",
-                            "en_browse_genstudio-for-performance-marketing": "https://experienceleague.adobe.com/en/browse/genstudio-for-performance-marketing",
-                            "en_browse_journey-optimizer": "https://experienceleague.adobe.com/en/browse/journey-optimizer",
-                            "en_browse_journey-optimizer-b2b-edition": "https://experienceleague.adobe.com/en/browse/journey-optimizer-b2b-edition",
-                            "en_browse_learning-manager": "https://experienceleague.adobe.com/en/browse/learning-manager",
-                            "en_browse_marketo-engage": "https://experienceleague.adobe.com/en/browse/marketo-engage",
-                            "en_browse_mix-modeler": "https://experienceleague.adobe.com/en/browse/mix-modeler",
-                            "en_browse_pass": "https://experienceleague.adobe.com/en/browse/pass",
-                            "en_browse_real-time-customer-data-platform": "https://experienceleague.adobe.com/en/browse/real-time-customer-data-platform",
-                            "en_browse_target": "https://experienceleague.adobe.com/en/browse/target",
-                            "en_browse_workfront": "https://experienceleague.adobe.com/en/browse/workfront",
-                            
-                            # Legacy mapping for old filenames
-                            "docs_analytics_implementation_home": "https://experienceleague.adobe.com/en/docs/analytics/implementation/home"
-                        }
-                        
-                        # Get the appropriate URL for this source
-                        # Stack Overflow URL handling
-                        if source_name.startswith("stackoverflow_"):
-                            # Extract question ID from filename
-                            parts = source_name.split("_")
-                            if len(parts) >= 2:
-                                try:
-                                    question_id = parts[1]
-                                    doc_url = f"https://stackoverflow.com/questions/{question_id}"
-                                except:
-                                    doc_url = "https://stackoverflow.com/questions"
-                            else:
-                                doc_url = "https://stackoverflow.com/questions"
-                        else:
-                            # Adobe documentation URL handling
-                            # Use the original source name (without .txt extension) for exact matching
-                            source_key = source_name  # This is already cleaned (no .txt extension)
-                            
-                            # Try exact match first in the mapping
-                            doc_url = url_mapping.get(source_key, None)
-                            
-                            # If no exact match, try with en_docs_ prefix
-                            if doc_url is None:
-                                source_key_with_prefix = f"en_docs_{source_key}"
-                                doc_url = url_mapping.get(source_key_with_prefix, None)
-                            
-                            # If still no match, try partial matching
-                            if doc_url is None:
-                                for key, url in url_mapping.items():
-                                    # Remove en_docs_ prefix from key for comparison
-                                    clean_key = key.replace('en_docs_', '') if key.startswith('en_docs_') else key
-                                    if clean_key == source_key or source_key in clean_key or clean_key in source_key:
-                                        doc_url = url
-                                        break
-                            
-                            # If still no match, generate URL dynamically
-                            if doc_url is None:
-                                doc_url = generate_adobe_url(source)  # Use original source name
-
-                            # Fallback to base URL if no match found
-                            if doc_url is None:
-                                doc_url = base_url
-
-                        # Create clickable link that opens in new window
-                        st.markdown(f"**{i}.** {source_icon} [{source_name}]({doc_url}) ({source_type})", help=f"Click to open {source_name} in a new window")
-    
-
-    
+                if SOURCE_ATTRIBUTION_AVAILABLE:
+                    try:
+                        attributions = get_simple_attributions(message["sources"])
+                        if attributions:
+                            st.markdown("---")
+                            st.markdown("**📚 Sources & Attribution:**")
+                            for attribution in attributions:
+                                st.markdown(attribution.attribution_markdown)
+                                if attribution.license_notice:
+                                    st.info(attribution.license_notice)
+                    except Exception as e:
+                        st.write(f"*Sources: {len(message['sources'])} documents used*")
+                else:
+                    st.write(f"*Sources: {len(message['sources'])} documents used*")
     # Initialize selected question in session state if not exists
     if "selected_question" not in st.session_state:
         st.session_state.selected_question = ""
@@ -2018,6 +1893,11 @@ def main():
     if st.session_state.selected_question:
         st.session_state.input_text = st.session_state.selected_question
         st.session_state.selected_question = ""  # Clear the selection
+    
+    # If a quick test source was selected, set it as test source
+    if "quick_test_source" in st.session_state and st.session_state.quick_test_source:
+        # This will be handled in the attribution testing section
+        pass
     
     # Show processing status in the main info section
     if st.session_state.is_processing:
@@ -2136,10 +2016,6 @@ def main():
                             sources = [doc.metadata.get('source', 'Unknown') for doc in response["source_documents"]]
                             has_stackoverflow = has_stackoverflow_sources(sources)
                         
-                        # Add source indicator to response
-                        if has_stackoverflow:
-                            st.info("💬 This response includes community solutions from Stack Overflow")
-                        
                         # Calculate response time
                         end_time = time.time()
                         response_time = end_time - start_time
@@ -2148,6 +2024,150 @@ def main():
                         col1, col2 = st.columns([6, 1])
                         with col1:
                             st.markdown(answer)
+                            
+                            # Display integrated source attribution directly in the response
+                            if "source_documents" in response:
+                                sources = [doc.metadata.get('source', 'Unknown') for doc in response["source_documents"]]
+                                
+                                # Generate attributions for all sources
+                                if SOURCE_ATTRIBUTION_AVAILABLE and sources:
+                                    try:
+                                        attributor = SourceAttributor()
+                                        attributions = attributor.generate_bulk_attribution(sources, "markdown")
+                                        
+                                        # Show attribution summary
+                                        st.markdown("---")
+                                        st.markdown("**📚 Sources & Attribution:**")
+                                        
+                                        # Count compliance
+                                        compliant_count = sum(1 for attr in attributions if attr.compliance_status == "compliant")
+                                        warnings_count = sum(1 for attr in attributions if attr.compliance_status == "compliant_with_warnings")
+                                        non_compliant_count = sum(1 for attr in attributions if attr.compliance_status == "non_compliant")
+                                        
+                                        # Show compliance status
+                                        if non_compliant_count == 0:
+                                            st.success("✅ All sources are properly attributed")
+                                        elif non_compliant_count > 0:
+                                            st.warning(f"⚠️ {non_compliant_count} sources need attention for proper attribution")
+                                        
+                                        # Display each source with its attribution
+                                        for i, (source, attribution) in enumerate(zip(sources, attributions), 1):
+                                            # Determine source type and icon
+                                            if source.startswith('stackoverflow_'):
+                                                source_icon = "💬"
+                                                source_type = "Stack Overflow"
+                                            else:
+                                                source_icon = "📖"
+                                                source_type = "Adobe Docs"
+                                            
+                                            # Clean up source name for display
+                                            source_name = source
+                                            if source_name.endswith('.txt'):
+                                                source_name = source_name[:-4]
+                                            if source_name.startswith('en_docs_'):
+                                                source_name = source_name[8:]
+                                            source_name = source_name.replace('_', ' ').title()
+                                            
+                                            # Generate URL for the source
+                                            if source.startswith('stackoverflow_'):
+                                                parts = source.split('_')
+                                                if len(parts) >= 2:
+                                                    try:
+                                                        question_id = parts[1]
+                                                        doc_url = f"https://stackoverflow.com/questions/{question_id}"
+                                                    except:
+                                                        doc_url = "https://stackoverflow.com/questions"
+                                                else:
+                                                    doc_url = "https://stackoverflow.com/questions"
+                                            else:
+                                                # Use existing URL mapping logic for Adobe docs
+                                                doc_url = generate_adobe_url(source)
+                                                if not doc_url:
+                                                    doc_url = "https://experienceleague.adobe.com/docs/analytics.html"
+                                            
+                                            # Display source with attribution
+                                            with st.expander(f"{i}. {source_icon} {source_name} ({source_type})", expanded=False):
+                                                # Show attribution status
+                                                if attribution.compliance_status == "compliant":
+                                                    st.success(f"✅ **Attribution:** {attribution.attribution_markdown}")
+                                                elif attribution.compliance_status == "compliant_with_warnings":
+                                                    st.warning(f"⚠️ **Attribution:** {attribution.attribution_markdown}")
+                                                    if attribution.warnings:
+                                                        st.caption(f"⚠️ {', '.join(attribution.warnings)}")
+                                                else:
+                                                    st.error(f"❌ **Attribution:** {attribution.attribution_markdown}")
+                                                    if attribution.errors:
+                                                        st.caption(f"❌ {', '.join(attribution.errors)}")
+                                                
+                                                # Show license and metadata
+                                                st.caption(f"📄 License: {attribution.source_metadata.license_type.value}")
+                                                st.caption(f"🔗 [View Source]({doc_url})")
+                                                
+                                                # Show license notice if applicable
+                                                if attribution.license_notice:
+                                                    st.info(attribution.license_notice)
+                                        
+                                        # Show overall compliance summary
+                                        st.markdown("---")
+                                        col1, col2, col3, col4 = st.columns(4)
+                                        with col1:
+                                            st.metric("Total Sources", len(sources))
+                                        with col2:
+                                            st.metric("✅ Compliant", compliant_count)
+                                        with col3:
+                                            st.metric("⚠️ Warnings", warnings_count)
+                                        with col4:
+                                            st.metric("❌ Non-Compliant", non_compliant_count)
+                                        
+                                        # Generate attribution report button
+                                        if st.button("📊 Generate Attribution Report", key=f"attribution_report_{len(st.session_state.messages)}"):
+                                            try:
+                                                json_report = attributor.export_attribution_report(attributions, "json")
+                                                markdown_report = attributor.export_attribution_report(attributions, "markdown")
+                                                
+                                                # Display reports in tabs
+                                                tab1, tab2 = st.tabs(["📋 JSON Report", "📝 Markdown Report"])
+                                                
+                                                with tab1:
+                                                    st.json(json.loads(json_report))
+                                                    st.download_button(
+                                                        label="💾 Download JSON Report",
+                                                        data=json_report,
+                                                        file_name="attribution_report.json",
+                                                        mime="application/json"
+                                                    )
+                                                
+                                                with tab2:
+                                                    st.markdown(markdown_report)
+                                                    st.download_button(
+                                                        label="💾 Download Markdown Report",
+                                                        data=markdown_report,
+                                                        file_name="attribution_report.md",
+                                                        mime="text/markdown"
+                                                    )
+                                                
+                                            except Exception as e:
+                                                st.error(f"Error generating report: {str(e)}")
+                                    
+                                    except Exception as e:
+                                        st.error(f"Error generating attributions: {str(e)}")
+                                        # Fallback to simple source display
+                                        st.markdown("---")
+                                        st.markdown("**📚 Sources:**")
+                                        for i, source in enumerate(sources, 1):
+                                            if source.startswith('stackoverflow_'):
+                                                st.info(f"{i}. 💬 {source} (Stack Overflow)")
+                                            else:
+                                                st.info(f"{i}. 📖 {source} (Adobe Docs)")
+                                else:
+                                    # Simple source display if attribution system not available
+                                    st.markdown("---")
+                                    st.markdown("**📚 Sources:**")
+                                    for i, source in enumerate(sources, 1):
+                                        if source.startswith('stackoverflow_'):
+                                            st.info(f"{i}. 💬 {source} (Stack Overflow)")
+                                        else:
+                                            st.info(f"{i}. 📖 {source} (Adobe Docs)")
                             
                             # Extract and display links from source documents
                             if "source_documents" in response:

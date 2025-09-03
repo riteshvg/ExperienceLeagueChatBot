@@ -29,7 +29,7 @@ This document outlines the current limitations, constraints, and potential bottl
 ```python
 llm = ChatGroq(
     groq_api_key=groq_api_key,
-    model_name="llama3-8b-8192",
+    model_name="llama-3.1-8b-instant",
     temperature=0.1
 )
 ```
@@ -39,7 +39,7 @@ llm = ChatGroq(
 - **Rate Limits**: **60 requests per minute** (Groq default)
 - **Quota Limits**: **~1,000 requests/month** (Free tier)
 - **Concurrent Requests**: **10-20 concurrent** (depending on plan)
-- **Request Size**: **8,192 tokens** maximum context window for `llama3-8b-8192`
+- **Request Size**: **8,192 tokens** maximum context window for `llama-3.1-8b-instant`
 - **Response Time**: **2-5 seconds** average per request
 
 #### **Error Handling**

@@ -297,18 +297,63 @@ class SourceAttributor:
             return "https://stackoverflow.com/questions"
         
         elif source_type == SourceType.ADOBE_DOCS:
-            # Generate Adobe Experience League URL
-            if source.startswith('en_docs_'):
-                clean_source = source.replace('en_docs_', '')
-                return f"https://experienceleague.adobe.com/en/docs/analytics/{clean_source.replace('_', '/')}"
-            elif source.startswith('en_browse_'):
-                clean_source = source.replace('en_browse_', '')
-                return f"https://experienceleague.adobe.com/en/browse/{clean_source.replace('_', '/')}"
-            else:
-                return "https://experienceleague.adobe.com/en/docs/analytics"
+            # Use comprehensive Adobe URL generation logic
+            return self._generate_adobe_url(source)
         
         # Generic fallback
         return f"https://example.com/{source}"
+    
+    def _generate_adobe_url(self, source_name: str) -> str:
+        """Generate Adobe Experience League URL based on source name"""
+        # Remove .txt extension if present
+        if source_name.endswith('.txt'):
+            source_name = source_name[:-4]
+        
+        # Remove en_docs_ prefix if present
+        if source_name.startswith('en_docs_'):
+            source_name = source_name[8:]
+        
+        # Base URL for Adobe Experience League
+        base_url = "https://experienceleague.adobe.com/en/docs"
+        
+        # Common patterns for URL generation
+        if source_name.startswith('analytics_'):
+            clean_name = source_name.replace('analytics_', '').replace('_', '/')
+            return f"{base_url}/analytics/{clean_name}"
+        elif source_name.startswith('customer-journey-analytics'):
+            clean_name = source_name.replace('customer-journey-analytics', '').replace('_', '/')
+            if clean_name.startswith('/'):
+                clean_name = clean_name[1:]
+            return f"{base_url}/customer-journey-analytics/{clean_name}"
+        elif source_name.startswith('analytics-platform'):
+            clean_name = source_name.replace('analytics-platform_', '').replace('_', '/')
+            return f"{base_url}/analytics-platform/{clean_name}"
+        elif source_name.startswith('analytics-learn'):
+            clean_name = source_name.replace('analytics-learn_', '').replace('_', '/')
+            return f"{base_url}/analytics-learn/{clean_name}"
+        elif source_name.startswith('blueprints-learn'):
+            clean_name = source_name.replace('blueprints-learn_', '').replace('_', '/')
+            return f"{base_url}/blueprints-learn/{clean_name}"
+        elif source_name.startswith('certification'):
+            clean_name = source_name.replace('certification_', '').replace('_', '/')
+            return f"{base_url}/certification/{clean_name}"
+        elif source_name.startswith('experience-cloud-kcs'):
+            clean_name = source_name.replace('experience-cloud-kcs_', '').replace('_', '/')
+            return f"{base_url}/experience-cloud-kcs/{clean_name}"
+        elif source_name.startswith('home-tutorials'):
+            return f"{base_url}/home-tutorials"
+        elif source_name.startswith('release-notes'):
+            clean_name = source_name.replace('release-notes_', '').replace('_', '/')
+            return f"{base_url}/release-notes/{clean_name}"
+        elif source_name.startswith('browse_'):
+            clean_name = source_name.replace('browse_', '').replace('_', '/')
+            return f"{base_url}/browse/{clean_name}"
+        elif source_name.startswith('en_browse_'):
+            clean_source = source_name.replace('en_browse_', '')
+            return f"https://experienceleague.adobe.com/en/browse/{clean_source.replace('_', '/')}"
+        else:
+            # Fallback to base analytics URL
+            return "https://experienceleague.adobe.com/en/docs/analytics"
     
     def generate_attribution(self, source_metadata: SourceMetadata, format_type: str = "plain_text") -> AttributionResult:
         """
