@@ -273,9 +273,29 @@ class SourceAttributor:
         title = title.replace('_', ' ').replace('-', ' ')
         return title.title()
     
+    def generate_url_from_source(self, source: str) -> str:
+        """
+        Generate URL from source identifier.
+        
+        This is a public method that identifies the source type and generates
+        the appropriate URL using the private _generate_url_from_source method.
+        
+        Args:
+            source (str): Source identifier
+            
+        Returns:
+            str: Generated URL
+        """
+        stype = self.identify_source_type(source)
+        return self._generate_url_from_source(source, stype)
+    
     def _generate_url_from_source(self, source: str, source_type: SourceType) -> str:
         """
         Generate URL from source identifier based on source type.
+        
+        This method uses comprehensive Adobe URL generation logic for better
+        support of complex Adobe documentation patterns including analytics-platform,
+        customer-journey-analytics, experience-cloud-kcs, and other nested structures.
         
         Args:
             source (str): Source identifier
@@ -298,62 +318,266 @@ class SourceAttributor:
         
         elif source_type == SourceType.ADOBE_DOCS:
             # Use comprehensive Adobe URL generation logic
+            logger.debug(f"Using Adobe URL generation for source: {source}")
             return self._generate_adobe_url(source)
         
         # Generic fallback
         return f"https://example.com/{source}"
     
+
+    
     def _generate_adobe_url(self, source_name: str) -> str:
-        """Generate Adobe Experience League URL based on source name"""
-        # Remove .txt extension if present
-        if source_name.endswith('.txt'):
+        """
+        Generate Adobe Experience League URL based on source name with comprehensive pattern matching.
+        
+        This method implements a hierarchical approach to URL generation:
+        1. Identify prefix type (docs/browse/playlists/perspectives)
+        2. Apply specific mapping rules for each category
+        3. Use intelligent fallback by parsing source structure
+        
+        Args:
+            source_name (str): Source filename or identifier
+            
+        Returns:
+            str: Generated Adobe Experience League URL
+            
+        Supported Patterns:
+        - en_docs_* → https://experienceleague.adobe.com/en/docs/*
+        - en_browse_* → https://experienceleague.adobe.com/en/browse/*
+        - en_playlists_* → https://experienceleague.adobe.com/en/playlists/*
+        - en_perspectives_* → https://experienceleague.adobe.com/en/perspectives/*
+        - docs_* → https://experienceleague.adobe.com/docs/*
+        
+        Special Cases:
+        - experience-cloud-kcs_kbarticles_ka-{id} → /experience-cloud-kcs/kbarticles/ka-{id}
+        - analytics-platform_* → /analytics-platform/*
+        - customer-journey-analytics-learn_* → /customer-journey-analytics-learn/*
+        - analytics-learn_* → /analytics-learn/*
+        - blueprints-learn_* → /blueprints-learn/*
+        - certification_* → /certification/*
+        - release-notes_* → /release-notes/*
+        """
+        if not source_name:
+            raise ValueError("source_name must be a non-empty string")
+        
+        # Input preprocessing: Remove .txt extension (case-insensitive)
+        name_lower = source_name.lower()
+        if name_lower.endswith('.txt'):
             source_name = source_name[:-4]
         
-        # Remove en_docs_ prefix if present
-        if source_name.startswith('en_docs_'):
-            source_name = source_name[8:]
+        logger.debug(f"Processing source name: {source_name}")
         
-        # Base URL for Adobe Experience League
+        # Handle legacy HTML suffix for docs_ prefixed files (case-insensitive)
+        html_suffix = ""
+        if name_lower.endswith('.html'):
+            html_suffix = ".html"
+            source_name = source_name[:-5]
+        
+        # Prefix identification and routing
+        if source_name.startswith('en_docs_'):
+            return self._handle_docs_prefix(source_name[8:], html_suffix)
+        elif source_name.startswith('en_browse_'):
+            return self._handle_browse_prefix(source_name[10:])
+        elif source_name.startswith('en_playlists_'):
+            return self._handle_playlists_prefix(source_name[13:])
+        elif source_name.startswith('en_perspectives_'):
+            return self._handle_perspectives_prefix(source_name[16:])
+        elif source_name.startswith('docs_'):
+            return self._handle_legacy_docs_prefix(source_name[5:], html_suffix)
+        elif source_name.startswith('browse_'):
+            return self._handle_browse_prefix(source_name[7:])
+        else:
+            # No prefix detected, try intelligent fallback
+            logger.debug(f"No prefix detected for {source_name}, using intelligent fallback")
+            return self._intelligent_fallback(source_name, html_suffix)
+    
+    def _handle_docs_prefix(self, path: str, html_suffix: str = "") -> str:
+        """
+        Handle en_docs_ prefix with comprehensive pattern matching.
+        
+        Args:
+            path (str): Path after en_docs_ prefix
+            html_suffix (str): HTML suffix if present
+            
+        Returns:
+            str: Generated URL
+        """
         base_url = "https://experienceleague.adobe.com/en/docs"
         
-        # Common patterns for URL generation
-        if source_name.startswith('analytics_'):
-            clean_name = source_name.replace('analytics_', '').replace('_', '/')
-            return f"{base_url}/analytics/{clean_name}"
-        elif source_name.startswith('customer-journey-analytics'):
-            clean_name = source_name.replace('customer-journey-analytics', '').replace('_', '/')
-            if clean_name.startswith('/'):
-                clean_name = clean_name[1:]
-            return f"{base_url}/customer-journey-analytics/{clean_name}"
-        elif source_name.startswith('analytics-platform'):
-            clean_name = source_name.replace('analytics-platform_', '').replace('_', '/')
-            return f"{base_url}/analytics-platform/{clean_name}"
-        elif source_name.startswith('analytics-learn'):
-            clean_name = source_name.replace('analytics-learn_', '').replace('_', '/')
-            return f"{base_url}/analytics-learn/{clean_name}"
-        elif source_name.startswith('blueprints-learn'):
-            clean_name = source_name.replace('blueprints-learn_', '').replace('_', '/')
-            return f"{base_url}/blueprints-learn/{clean_name}"
-        elif source_name.startswith('certification'):
-            clean_name = source_name.replace('certification_', '').replace('_', '/')
-            return f"{base_url}/certification/{clean_name}"
-        elif source_name.startswith('experience-cloud-kcs'):
-            clean_name = source_name.replace('experience-cloud-kcs_', '').replace('_', '/')
-            return f"{base_url}/experience-cloud-kcs/{clean_name}"
-        elif source_name.startswith('home-tutorials'):
-            return f"{base_url}/home-tutorials"
-        elif source_name.startswith('release-notes'):
-            clean_name = source_name.replace('release-notes_', '').replace('_', '/')
-            return f"{base_url}/release-notes/{clean_name}"
-        elif source_name.startswith('browse_'):
-            clean_name = source_name.replace('browse_', '').replace('_', '/')
-            return f"{base_url}/browse/{clean_name}"
-        elif source_name.startswith('en_browse_'):
-            clean_source = source_name.replace('en_browse_', '')
-            return f"https://experienceleague.adobe.com/en/browse/{clean_source.replace('_', '/')}"
+        # Special cases for complex nested paths
+        # Use regex to capture the ka- ID and optionally append remaining segments
+        m = re.match(r'^experience-cloud-kcs_kbarticles_(ka-[\w\-]+)(?:_(.*))?$', path)
+        if m:
+            kb_id = m.group(1)
+            if m.group(2):
+                # Convert remaining segments to path format
+                converted_remainder = self._convert_underscores_to_path(m.group(2))
+                return f"https://experienceleague.adobe.com/en/docs/experience-cloud-kcs/kbarticles/{kb_id}/{converted_remainder}{html_suffix}"
+            else:
+                return f"https://experienceleague.adobe.com/en/docs/experience-cloud-kcs/kbarticles/{kb_id}{html_suffix}"
+        
+        elif path.startswith('analytics-platform_'):
+            # Handle analytics-platform paths
+            clean_path = path.replace('analytics-platform_', '')
+            url_path = self._convert_underscores_to_path(clean_path)
+            return f"{base_url}/analytics-platform/{url_path}{html_suffix}"
+        
+        elif path.startswith('customer-journey-analytics-learn_'):
+            # Handle customer-journey-analytics-learn paths
+            clean_path = path.replace('customer-journey-analytics-learn_', '')
+            url_path = self._convert_underscores_to_path(clean_path)
+            return f"{base_url}/customer-journey-analytics-learn/{url_path}{html_suffix}"
+        
+        elif path.startswith('analytics-learn_'):
+            # Handle analytics-learn paths
+            clean_path = path.replace('analytics-learn_', '')
+            url_path = self._convert_underscores_to_path(clean_path)
+            return f"{base_url}/analytics-learn/{url_path}{html_suffix}"
+        
+        elif path.startswith('blueprints-learn_'):
+            # Handle blueprints-learn paths
+            clean_path = path.replace('blueprints-learn_', '')
+            url_path = self._convert_underscores_to_path(clean_path)
+            return f"{base_url}/blueprints-learn/{url_path}{html_suffix}"
+        
+        elif path.startswith('certification_'):
+            # Handle certification paths
+            clean_path = path.replace('certification_', '')
+            url_path = self._convert_underscores_to_path(clean_path)
+            return f"{base_url}/certification/{url_path}{html_suffix}"
+        
+        elif path.startswith('release-notes_'):
+            # Handle release-notes paths
+            clean_path = path.replace('release-notes_', '')
+            url_path = self._convert_underscores_to_path(clean_path)
+            return f"{base_url}/release-notes/{url_path}{html_suffix}"
+        
+        elif path.startswith('customer_journey_analytics_'):
+            # Handle underscore variant customer_journey_analytics paths
+            clean = path[len('customer_journey_analytics_'):]
+            url_path = self._convert_underscores_to_path(clean)
+            return f"https://experienceleague.adobe.com/en/docs/customer-journey-analytics/{url_path}{html_suffix}"
+        
+        elif path.startswith('customer-journey-analytics_'):
+            # Handle hyphen variant customer-journey-analytics paths
+            clean = path[len('customer-journey-analytics_'):]
+            url_path = self._convert_underscores_to_path(clean)
+            return f"https://experienceleague.adobe.com/en/docs/customer-journey-analytics/{url_path}{html_suffix}"
+        
+        elif path.startswith('analytics_'):
+            # Handle generic analytics paths
+            clean_path = path.replace('analytics_', '')
+            url_path = self._convert_underscores_to_path(clean_path)
+            return f"{base_url}/analytics/{url_path}{html_suffix}"
+        
         else:
-            # Fallback to base analytics URL
-            return "https://experienceleague.adobe.com/en/docs/analytics"
+            # Generic path construction for docs
+            url_path = self._convert_underscores_to_path(path)
+            return f"{base_url}/{url_path}{html_suffix}"
+    
+    def _handle_browse_prefix(self, path: str) -> str:
+        """
+        Handle en_browse_ prefix.
+        
+        Args:
+            path (str): Path after en_browse_ prefix
+            
+        Returns:
+            str: Generated URL
+        """
+        base_url = "https://experienceleague.adobe.com/en/browse"
+        url_path = self._convert_underscores_to_path(path)
+        return f"{base_url}/{url_path}"
+    
+    def _handle_playlists_prefix(self, path: str) -> str:
+        """
+        Handle en_playlists_ prefix.
+        
+        Args:
+            path (str): Path after en_playlists_ prefix
+            
+        Returns:
+            str: Generated URL
+        """
+        base_url = "https://experienceleague.adobe.com/en/playlists"
+        url_path = self._convert_underscores_to_path(path)
+        return f"{base_url}/{url_path}"
+    
+    def _handle_perspectives_prefix(self, path: str) -> str:
+        """
+        Handle en_perspectives_ prefix.
+        
+        Args:
+            path (str): Path after en_perspectives_ prefix
+            
+        Returns:
+            str: Generated URL
+        """
+        base_url = "https://experienceleague.adobe.com/en/perspectives"
+        url_path = self._convert_underscores_to_path(path)
+        return f"{base_url}/{url_path}"
+    
+    def _handle_legacy_docs_prefix(self, path: str, html_suffix: str = "") -> str:
+        """
+        Handle legacy docs_ prefix.
+        
+        Args:
+            path (str): Path after docs_ prefix
+            html_suffix (str): HTML suffix if present
+            
+        Returns:
+            str: Generated URL
+        """
+        base_url = "https://experienceleague.adobe.com/docs"
+        url_path = self._convert_underscores_to_path(path)
+        return f"{base_url}/{url_path}{html_suffix}"
+    
+    def _convert_underscores_to_path(self, path: str) -> str:
+        """
+        Convert underscores to forward slashes while preserving hyphens within segments.
+        
+        Args:
+            path (str): Path with underscores
+            
+        Returns:
+            str: URL path with forward slashes
+        """
+        if not path:
+            return ""
+        
+        # Split on underscores and join with forward slashes
+        # This preserves hyphens within each segment
+        # Filter out empty segments to handle consecutive underscores
+        segments = [s for s in path.split('_') if s]
+        return '/'.join(segments)
+    
+    def _intelligent_fallback(self, source_name: str, html_suffix: str = "") -> str:
+        """
+        Intelligent fallback when no prefix is detected.
+        
+        Args:
+            source_name (str): Source name without prefix
+            html_suffix (str): HTML suffix if present
+            
+        Returns:
+            str: Generated URL using intelligent fallback
+        """
+        logger.debug(f"Using intelligent fallback for: {source_name}")
+        
+        # Convert underscores to forward slashes
+        url_path = self._convert_underscores_to_path(source_name)
+        
+        # Try to determine the most appropriate base URL based on content
+        # Prioritize Customer Journey Analytics before generic Analytics
+        name = source_name.lower()
+        if 'customer-journey-analytics' in name or 'customer_journey_analytics' in name:
+            base_url = 'https://experienceleague.adobe.com/en/docs/customer-journey-analytics'
+        elif 'analytics' in name:
+            base_url = 'https://experienceleague.adobe.com/en/docs/analytics'
+        else:
+            base_url = 'https://experienceleague.adobe.com/en/docs'
+        
+        return f"{base_url}/{url_path}{html_suffix}"
     
     def generate_attribution(self, source_metadata: SourceMetadata, format_type: str = "plain_text") -> AttributionResult:
         """

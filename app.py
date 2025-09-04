@@ -13,13 +13,14 @@ from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
 from langchain_ollama import OllamaLLM
 from langchain_groq import ChatGroq
+from langchain_anthropic import ChatAnthropic
 from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
 import json
 
 # Import source attribution system
 try:
-    from source_attributor import SourceAttributor, quick_attribution
+    from source_attributor import SourceAttributor, quick_attribution, SourceType
     SOURCE_ATTRIBUTION_AVAILABLE = True
 except ImportError:
     SOURCE_ATTRIBUTION_AVAILABLE = False
@@ -118,6 +119,84 @@ def detect_create_action(query):
     
     return detected_action, detected_keyword
 
+
+def detect_segment_intent_with_claude(query, claude_llm=None):
+    """
+    Use Anthropic Claude to detect and understand segment creation intent.
+    
+    Args:
+        query (str): User's segment creation request
+        claude_llm: Anthropic Claude LLM instance
+        
+    Returns:
+        dict: Enhanced intent details with Claude's analysis
+    """
+    if not claude_llm:
+        return None
+    
+    try:
+        prompt = f"""Analyze this user request for Adobe Analytics segment creation:
+"{query}"
+
+Extract and return a JSON object with the following structure:
+{{
+    "target_audience": "visitors|visits|hits",
+    "conditions": ["list of conditions mentioned"],
+    "business_context": "business goal or use case",
+    "geographic": "country|state|city|zip or null",
+    "device": "mobile|desktop|tablet or null",
+    "behavioral": ["page_views", "time_on_site", "conversion", "cart", etc.],
+    "time_based": "day_of_week|time_of_day|seasonal or null",
+    "custom_variables": ["any custom variables mentioned"],
+    "confidence": "high|medium|low",
+    "complexity": "simple|moderate|complex",
+    "business_value": "explanation of business value",
+    "recommended_approach": "suggested approach for this segment"
+}}
+
+Focus on:
+1. Understanding the business context and goals
+2. Identifying all conditions and filters
+3. Assessing complexity and confidence
+4. Providing business value insights
+5. Suggesting the best approach
+
+Return only valid JSON, no additional text."""
+
+        response = claude_llm.invoke(prompt)
+        
+        # Parse Claude's response
+        import json
+        try:
+            claude_analysis = json.loads(response.content.strip())
+            
+            # Convert to our standard format
+            intent_details = {
+                'action_type': 'segment',
+                'target_audience': claude_analysis.get('target_audience', 'visitors'),
+                'conditions': claude_analysis.get('conditions', []),
+                'business_context': claude_analysis.get('business_context', ''),
+                'geographic': claude_analysis.get('geographic'),
+                'behavioral': claude_analysis.get('behavioral', []),
+                'device': claude_analysis.get('device'),
+                'time_based': claude_analysis.get('time_based'),
+                'custom_variables': claude_analysis.get('custom_variables', []),
+                'intent_confidence': claude_analysis.get('confidence', 'medium'),
+                'complexity': claude_analysis.get('complexity', 'simple'),
+                'business_value': claude_analysis.get('business_value', ''),
+                'recommended_approach': claude_analysis.get('recommended_approach', ''),
+                'claude_enhanced': True
+            }
+            
+            return intent_details
+            
+        except json.JSONDecodeError:
+            # Fallback if Claude returns invalid JSON
+            return None
+            
+    except Exception as e:
+        print(f"Error in Claude intent detection: {e}")
+        return None
 
 def detect_segment_creation_intent(query, query_lower):
     """
@@ -465,44 +544,386 @@ def generate_segment_suggestions(intent_details):
     
     return suggestions
 
+def generate_segment_definition(query, intent_details, claude_llm=None):
+    """
+    Generate comprehensive segment definition using Claude.
+    
+    Args:
+        query (str): User's original query
+        intent_details (dict): Detected intent details
+        claude_llm: Anthropic Claude LLM instance
+        
+    Returns:
+        dict: Definition content with explanation
+    """
+    if not claude_llm:
+        return {
+            'title': 'Segment Definition',
+            'content': 'Segment definition generation requires Anthropic Claude.',
+            'business_value': 'Please use Anthropic Claude for enhanced segment definitions.',
+            'best_practices': [],
+            'limitations': []
+        }
+    
+    try:
+        prompt = f"""User wants to create this Adobe Analytics segment: "{query}"
 
-def generate_adobe_url(source_name):
-    """Generate Adobe Experience League URL based on source name"""
-    # Remove .txt extension if present
-    if source_name.endswith('.txt'):
-        source_name = source_name[:-4]
+Detected intent details: {intent_details}
+
+Provide a comprehensive definition and explanation in the following JSON format:
+{{
+    "title": "Clear, descriptive title for this segment type",
+    "content": "Detailed explanation of what this segment captures and measures",
+    "business_value": "Why this segment is valuable for business analysis",
+    "use_cases": ["list of specific business use cases"],
+    "best_practices": ["list of best practices for this segment type"],
+    "limitations": ["potential limitations or considerations"],
+    "related_segments": ["suggestions for related segments"],
+    "data_requirements": "what data is needed for this segment"
+}}
+
+Focus on:
+1. Clear, educational explanation
+2. Business value and use cases
+3. Adobe Analytics best practices
+4. Practical considerations
+5. Related segment suggestions
+
+Return only valid JSON, no additional text."""
+
+        response = claude_llm.invoke(prompt)
+        
+        # Parse Claude's response
+        import json
+        try:
+            definition = json.loads(response.content.strip())
+            return definition
+            
+        except json.JSONDecodeError:
+            # Fallback definition
+            return {
+                'title': 'Segment Definition',
+                'content': f'This segment will capture {intent_details.get("target_audience", "visitors")} based on the specified conditions.',
+                'business_value': 'Segments help you analyze specific user groups and their behavior patterns.',
+                'use_cases': ['User behavior analysis', 'Targeted marketing', 'Performance optimization'],
+                'best_practices': ['Keep segments focused', 'Use clear naming conventions', 'Test segments before deployment'],
+                'limitations': ['Segment performance depends on data quality', 'Complex segments may impact query performance']
+            }
+            
+    except Exception as e:
+        print(f"Error generating segment definition: {e}")
+        return {
+            'title': 'Segment Definition',
+            'content': 'Unable to generate definition at this time.',
+            'business_value': 'Please try again or use the standard segment builder.',
+            'use_cases': [],
+            'best_practices': [],
+            'limitations': []
+        }
+
+
+
+def generate_enhanced_segment_suggestions(query, intent_details, claude_llm=None):
+    """
+    Generate intelligent segment suggestions using Claude.
     
-    # Remove en_docs_ prefix if present
-    if source_name.startswith('en_docs_'):
-        source_name = source_name[8:]
+    Args:
+        query (str): User's original query
+        intent_details (dict): Detected intent details (potentially enhanced by Claude)
+        claude_llm: Anthropic Claude LLM instance
+        
+    Returns:
+        dict: Enhanced suggestions with Claude's intelligence
+    """
+    if not claude_llm or not intent_details.get('claude_enhanced'):
+        # Fallback to standard suggestions
+        return generate_segment_suggestions(intent_details)
     
-    # Base URL for Adobe Experience League
-    base_url = "https://experienceleague.adobe.com/en/docs"
+    try:
+        prompt = f"""Create Adobe Analytics segment suggestions for: "{query}"
+
+Intent Analysis: {intent_details}
+
+Generate comprehensive segment suggestions in the following JSON format:
+{{
+    "segment_name": "Optimal, descriptive segment name",
+    "segment_description": "Clear, detailed description of what this segment captures",
+    "recommended_rules": [
+        {{
+            "name": "Rule name (e.g., 'Mobile Device Type')",
+            "func": "Adobe Analytics function (e.g., 's.eq')",
+            "value": "Rule value (e.g., 'Mobile')",
+            "description": "What this rule does",
+            "business_rationale": "Why this rule is important"
+        }}
+    ],
+    "alternative_configurations": [
+        {{
+            "name": "Alternative segment name",
+            "description": "Alternative approach description",
+            "rules": ["list of alternative rules"],
+            "use_case": "When to use this alternative"
+        }}
+    ],
+    "performance_considerations": [
+        "Performance tip 1",
+        "Performance tip 2"
+    ],
+    "best_practices": [
+        "Adobe Analytics best practice 1",
+        "Adobe Analytics best practice 2"
+    ],
+    "validation_tips": [
+        "How to validate this segment",
+        "What to check before deploying"
+    ],
+    "related_segments": [
+        "Related segment suggestion 1",
+        "Related segment suggestion 2"
+    ],
+    "confidence": "high|medium|low",
+    "complexity": "simple|moderate|complex"
+}}
+
+Focus on:
+1. Adobe Analytics best practices and technical accuracy
+2. Business context and value
+3. Performance optimization
+4. Practical implementation guidance
+5. Alternative approaches for different use cases
+
+Return only valid JSON, no additional text."""
+
+        response = claude_llm.invoke(prompt)
+        
+        # Parse Claude's response
+        import json
+        try:
+            claude_suggestions = json.loads(response.content.strip())
+            
+            # Convert to our standard format with enhancements
+            enhanced_suggestions = {
+                'segment_name': claude_suggestions.get('segment_name', 'Custom Segment'),
+                'segment_description': claude_suggestions.get('segment_description', 'Custom segment configuration'),
+                'recommended_rules': claude_suggestions.get('recommended_rules', []),
+                'confidence': claude_suggestions.get('confidence', 'medium'),
+                'next_steps': [
+                    "Review the suggested segment configuration",
+                    "Customize segment name and description if needed",
+                    "Validate the segment rules",
+                    "Test the segment before deployment"
+                ],
+                'claude_enhanced': True,
+                'alternative_configurations': claude_suggestions.get('alternative_configurations', []),
+                'performance_considerations': claude_suggestions.get('performance_considerations', []),
+                'best_practices': claude_suggestions.get('best_practices', []),
+                'validation_tips': claude_suggestions.get('validation_tips', []),
+                'related_segments': claude_suggestions.get('related_segments', []),
+                'complexity': claude_suggestions.get('complexity', 'simple')
+            }
+            
+            return enhanced_suggestions
+            
+        except json.JSONDecodeError:
+            # Fallback to standard suggestions if Claude returns invalid JSON
+            print("Claude returned invalid JSON for suggestions, using fallback")
+            return generate_segment_suggestions(intent_details)
+            
+    except Exception as e:
+        print(f"Error generating enhanced suggestions: {e}")
+        # Fallback to standard suggestions
+        return generate_segment_suggestions(intent_details)
+
+def generate_intelligent_rules(intent_details, claude_llm=None):
+    """
+    Generate intelligent segment rules using Claude.
     
-    # Common patterns for URL generation
-    if source_name.startswith('analytics_'):
-        return f"{base_url}/analytics/{source_name.replace('analytics_', '')}"
-    elif source_name.startswith('customer-journey-analytics'):
-        return f"{base_url}/customer-journey-analytics/{source_name.replace('customer-journey-analytics', '')}"
-    elif source_name.startswith('analytics-platform'):
-        return f"{base_url}/analytics-platform/{source_name.replace('analytics-platform_', '')}"
-    elif source_name.startswith('analytics-learn'):
-        return f"{base_url}/analytics-learn/{source_name.replace('analytics-learn_', '')}"
-    elif source_name.startswith('blueprints-learn'):
-        return f"{base_url}/blueprints-learn/{source_name.replace('blueprints-learn_', '')}"
-    elif source_name.startswith('certification'):
-        return f"{base_url}/certification/{source_name.replace('certification_', '')}"
-    elif source_name.startswith('experience-cloud-kcs'):
-        return f"{base_url}/experience-cloud-kcs/{source_name.replace('experience-cloud-kcs_', '')}"
-    elif source_name.startswith('home-tutorials'):
-        return f"{base_url}/home-tutorials"
-    elif source_name.startswith('release-notes'):
-        return f"{base_url}/release-notes/{source_name.replace('release-notes_', '')}"
-    elif source_name.startswith('browse_'):
-        return f"{base_url}/browse/{source_name.replace('browse_', '')}"
-    else:
-        # Fallback to base analytics URL
-        return "https://experienceleague.adobe.com/en/docs/analytics"
+    Args:
+        intent_details (dict): Detected intent details (potentially enhanced by Claude)
+        claude_llm: Anthropic Claude LLM instance
+        
+    Returns:
+        dict: Intelligent rules with proper logic and values
+    """
+    if not claude_llm or not intent_details.get('claude_enhanced'):
+        # Fallback to standard rule generation
+        return generate_standard_rules(intent_details)
+    
+    try:
+        prompt = f"""Generate Adobe Analytics segment rules for: {intent_details}
+
+Create technically correct, performance-optimized segment rules in the following JSON format:
+{{
+    "rules": [
+        {{
+            "name": "Rule name (e.g., 'Mobile Device Type')",
+            "func": "Adobe Analytics function (e.g., 's.eq', 's.gt', 's.contains')",
+            "value": "Rule value (e.g., 'Mobile', '5', 'California')",
+            "description": "What this rule does",
+            "business_rationale": "Why this rule is important",
+            "performance_impact": "low|medium|high",
+            "data_requirement": "What data is needed for this rule"
+        }}
+    ],
+    "logic_operators": [
+        {{
+            "position": 1,
+            "operator": "AND|OR",
+            "description": "Why this operator is used"
+        }}
+    ],
+    "alternative_rules": [
+        {{
+            "name": "Alternative rule name",
+            "description": "Alternative approach",
+            "use_case": "When to use this alternative",
+            "rules": ["list of alternative rules"]
+        }}
+    ],
+    "threshold_suggestions": [
+        {{
+            "metric": "Metric name (e.g., 'Page Views')",
+            "suggested_value": "Suggested threshold",
+            "reasoning": "Why this threshold is appropriate",
+            "alternatives": ["alternative threshold values"]
+        }}
+    ],
+    "performance_optimization": [
+        "Performance optimization tip 1",
+        "Performance optimization tip 2"
+    ],
+    "validation_checks": [
+        "Validation check 1",
+        "Validation check 2"
+    ],
+    "complexity": "simple|moderate|complex",
+    "estimated_performance": "fast|medium|slow"
+}}
+
+Focus on:
+1. Adobe Analytics technical accuracy and valid functions
+2. Appropriate threshold values based on business context
+3. Performance optimization and efficient rule ordering
+4. Proper AND/OR logic for complex segments
+5. Alternative approaches for different use cases
+6. Validation and testing considerations
+
+Use valid Adobe Analytics functions like:
+- s.eq (equals)
+- s.gt (greater than)
+- s.lt (less than)
+- s.contains (contains)
+- s.exists (exists)
+- s.does-not-exist (does not exist)
+
+Return only valid JSON, no additional text."""
+
+        response = claude_llm.invoke(prompt)
+        
+        # Parse Claude's response
+        import json
+        try:
+            claude_rules = json.loads(response.content.strip())
+            
+            # Convert to our standard format with enhancements
+            intelligent_rules = {
+                'rules': claude_rules.get('rules', []),
+                'logic_operators': claude_rules.get('logic_operators', []),
+                'alternative_rules': claude_rules.get('alternative_rules', []),
+                'threshold_suggestions': claude_rules.get('threshold_suggestions', []),
+                'performance_optimization': claude_rules.get('performance_optimization', []),
+                'validation_checks': claude_rules.get('validation_checks', []),
+                'complexity': claude_rules.get('complexity', 'simple'),
+                'estimated_performance': claude_rules.get('estimated_performance', 'fast'),
+                'claude_enhanced': True
+            }
+            
+            return intelligent_rules
+            
+        except json.JSONDecodeError:
+            # Fallback to standard rules if Claude returns invalid JSON
+            print("Claude returned invalid JSON for rules, using fallback")
+            return generate_standard_rules(intent_details)
+            
+    except Exception as e:
+        print(f"Error generating intelligent rules: {e}")
+        # Fallback to standard rules
+        return generate_standard_rules(intent_details)
+
+def generate_standard_rules(intent_details):
+    """
+    Generate standard segment rules as fallback.
+    
+    Args:
+        intent_details (dict): Detected intent details
+        
+    Returns:
+        dict: Standard rules
+    """
+    rules = []
+    
+    # Device rules
+    if intent_details.get('device'):
+        device = intent_details['device']
+        rules.append({
+            'name': f'{device.title()} Device Type',
+            'func': 's.eq',
+            'value': device.title(),
+            'description': f'Identifies visitors using {device} devices',
+            'business_rationale': f'Focus on {device} user behavior patterns',
+            'performance_impact': 'low',
+            'data_requirement': 'Device type data'
+        })
+    
+    # Geographic rules
+    if intent_details.get('geographic'):
+        geo = intent_details['geographic']
+        rules.append({
+            'name': f'{geo.title()} Location',
+            'func': 's.contains',
+            'value': geo.title(),
+            'description': f'Identifies visitors from {geo}',
+            'business_rationale': f'Geographic targeting for {geo}',
+            'performance_impact': 'medium',
+            'data_requirement': 'Geographic data'
+        })
+    
+    # Behavioral rules
+    if intent_details.get('behavioral'):
+        for behavior in intent_details['behavioral']:
+            if behavior == 'page_views':
+                rules.append({
+                    'name': 'High Page Views',
+                    'func': 's.gt',
+                    'value': '5',
+                    'description': 'Identifies visitors with more than 5 page views',
+                    'business_rationale': 'Engaged users with high page views',
+                    'performance_impact': 'medium',
+                    'data_requirement': 'Page view data'
+                })
+            elif behavior == 'time_on_site':
+                rules.append({
+                    'name': 'Long Session Duration',
+                    'func': 's.gt',
+                    'value': '600',
+                    'description': 'Identifies visitors with session duration > 10 minutes',
+                    'business_rationale': 'Engaged users with long session duration',
+                    'performance_impact': 'medium',
+                    'data_requirement': 'Session duration data'
+                })
+    
+    return {
+        'rules': rules,
+        'logic_operators': [{'position': 1, 'operator': 'AND', 'description': 'All conditions must be met'}],
+        'alternative_rules': [],
+        'threshold_suggestions': [],
+        'performance_optimization': ['Use specific values for better performance'],
+        'validation_checks': ['Test segment performance before deployment'],
+        'complexity': 'simple',
+        'estimated_performance': 'fast',
+        'claude_enhanced': False
+    }
+
 # Page configuration
 st.set_page_config(page_title="Adobe Experience League Documentation Chatbot", layout="wide", page_icon="🤖")
 
@@ -510,10 +931,9 @@ st.set_page_config(page_title="Adobe Experience League Documentation Chatbot", l
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-# Initialize auto-hide timer
+# Initialize page load time for other features
 if "page_load_time" not in st.session_state:
     st.session_state.page_load_time = time.time()
-    st.session_state.show_info_boxes = True
 
 @st.cache_resource
 def load_knowledge_base():
@@ -540,7 +960,103 @@ def load_knowledge_base():
         return None
 
 @st.cache_resource
-def setup_qa_chain(_vectorstore, provider="Groq (Cloud)"):
+def setup_direct_llm(provider="Anthropic Claude (Cloud)"):
+    """Setup direct LLM without RAG"""
+    try:
+        # Initialize LLM based on provider selection
+        if provider == "Groq (Cloud)":
+            try:
+                # Initialize Groq LLM
+                groq_api_key = st.secrets.get("GROQ_API_KEY", "")
+                if not groq_api_key:
+                    st.error("❌ Groq API key not found. Please add GROQ_API_KEY to Streamlit secrets.")
+                    return None
+                
+                llm = ChatGroq(
+                    groq_api_key=groq_api_key,
+                    model_name="llama-3.1-8b-instant",
+                    temperature=0.1,
+                    max_tokens=4000
+                )
+                
+                # Test the connection with a simple call
+                try:
+                    test_response = llm.invoke("Hello")
+                    st.success("✅ Groq connection successful!")
+                except Exception as groq_error:
+                    if "rate limit" in str(groq_error).lower() or "quota" in str(groq_error).lower():
+                        st.error("❌ Groq rate limit exceeded. Please try again later or switch to another provider.")
+                    elif "unauthorized" in str(groq_error).lower() or "invalid" in str(groq_error).lower():
+                        st.error("❌ Invalid Groq API key. Please check your API key.")
+                    else:
+                        st.error(f"❌ Groq connection error: {groq_error}")
+                    return None
+                    
+            except Exception as e:
+                st.error(f"❌ Error initializing Groq: {e}")
+                return None
+                
+        elif provider == "Anthropic Claude (Cloud)":
+            try:
+                # Initialize Anthropic Claude LLM
+                anthropic_api_key = st.secrets.get("ANTHROPIC_API_KEY", "")
+                if not anthropic_api_key:
+                    st.error("❌ Anthropic API key not found. Please add ANTHROPIC_API_KEY to Streamlit secrets.")
+                    return None
+                
+                llm = ChatAnthropic(
+                    anthropic_api_key=anthropic_api_key,
+                    model_name="claude-3-5-haiku-20241022",  # Claude 3.5 Haiku - Fast and efficient # old: claude-3-5-sonnet-20241022
+                    temperature=0.1,
+                    max_tokens=4000
+                )
+                
+                # Test the connection with a simple call
+                try:
+                    test_response = llm.invoke("Hello")
+
+                except Exception as claude_error:
+                    if "rate limit" in str(claude_error).lower() or "quota" in str(claude_error).lower():
+                        st.error("❌ Anthropic rate limit exceeded. Please try again later or switch to another provider.")
+                    elif "unauthorized" in str(claude_error).lower() or "invalid" in str(claude_error).lower():
+                        st.error("❌ Invalid Anthropic API key. Please check your API key.")
+                    else:
+                        st.error(f"❌ Anthropic Claude connection error: {claude_error}")
+                    return None
+                    
+            except Exception as e:
+                st.error(f"❌ Error initializing Anthropic Claude: {e}")
+                return None
+                
+        else:
+            # Initialize Ollama LLM (fallback)
+            try:
+                llm = OllamaLLM(
+                    model="llama3:8b",  # Using the available model
+                    temperature=0.1,
+                    base_url="http://localhost:11434"
+                )
+                
+                # Test the connection with a simple call
+                try:
+                    test_response = llm.invoke("Hello")
+                    st.success("✅ Ollama connection successful!")
+                except Exception as ollama_error:
+                    st.error("❌ Ollama connection failed. Please ensure Ollama is running with `ollama serve`")
+                    st.info("💡 You can switch to 'Groq (Cloud)' or 'Anthropic Claude (Cloud)' in the sidebar for cloud-based responses.")
+                    return None
+                    
+            except Exception as e:
+                st.error(f"❌ Error initializing Ollama: {e}")
+                return None
+        
+        return llm
+    except Exception as e:
+        st.error(f"❌ Error setting up direct LLM: {e}")
+        return None
+
+@st.cache_resource
+def setup_qa_chain(_vectorstore, provider="Anthropic Claude (Cloud)"):
     """Setup the QA chain with selected LLM provider"""
     try:
         # Initialize LLM based on provider selection
@@ -564,7 +1080,7 @@ def setup_qa_chain(_vectorstore, provider="Groq (Cloud)"):
                     st.success("✅ Groq connection successful!")
                 except Exception as groq_error:
                     if "rate limit" in str(groq_error).lower() or "quota" in str(groq_error).lower():
-                        st.error("❌ Groq rate limit exceeded. Please try again later or switch to Ollama.")
+                        st.error("❌ Groq rate limit exceeded. Please try again later or switch to another provider.")
                     elif "unauthorized" in str(groq_error).lower() or "invalid" in str(groq_error).lower():
                         st.error("❌ Invalid Groq API key. Please check your API key.")
                     else:
@@ -574,6 +1090,39 @@ def setup_qa_chain(_vectorstore, provider="Groq (Cloud)"):
             except Exception as e:
                 st.error(f"❌ Error initializing Groq: {e}")
                 return None
+                
+        elif provider == "Anthropic Claude (Cloud)":
+            try:
+                # Initialize Anthropic Claude LLM
+                anthropic_api_key = st.secrets.get("ANTHROPIC_API_KEY", "")
+                if not anthropic_api_key:
+                    st.error("❌ Anthropic API key not found. Please add ANTHROPIC_API_KEY to Streamlit secrets.")
+                    return None
+                
+                llm = ChatAnthropic(
+                    anthropic_api_key=anthropic_api_key,
+                    model_name="claude-3-5-haiku-20241022",  # Claude 3.5 Haiku - Fast and efficient
+                    temperature=0.1,
+                    max_tokens=4000
+                )
+                
+                # Test the connection with a simple call
+                try:
+                    test_response = llm.invoke("Hello")
+
+                except Exception as claude_error:
+                    if "rate limit" in str(claude_error).lower() or "quota" in str(claude_error).lower():
+                        st.error("❌ Anthropic rate limit exceeded. Please try again later or switch to another provider.")
+                    elif "unauthorized" in str(claude_error).lower() or "invalid" in str(claude_error).lower():
+                        st.error("❌ Invalid Anthropic API key. Please check your API key.")
+                    else:
+                        st.error(f"❌ Anthropic Claude connection error: {claude_error}")
+                    return None
+                    
+            except Exception as e:
+                st.error(f"❌ Error initializing Anthropic Claude: {e}")
+                return None
+                
         else:
             # Initialize Ollama LLM (fallback)
             try:
@@ -589,7 +1138,7 @@ def setup_qa_chain(_vectorstore, provider="Groq (Cloud)"):
                     st.success("✅ Ollama connection successful!")
                 except Exception as ollama_error:
                     st.error("❌ Ollama connection failed. Please ensure Ollama is running with `ollama serve`")
-                    st.info("💡 You can switch to 'Groq (Cloud)' in the sidebar for cloud-based responses.")
+                    st.info("💡 You can switch to 'Groq (Cloud)' or 'Anthropic Claude (Cloud)' in the sidebar for cloud-based responses.")
                     return None
                     
             except Exception as e:
@@ -625,6 +1174,70 @@ Answer:"""
     except Exception as e:
         st.error(f"❌ Error setting up QA chain: {e}")
         return None
+
+def generate_direct_response_stream(question, llm, provider):
+    """Generate streaming response using direct LLM approach"""
+    try:
+        # Create a comprehensive prompt for direct LLM
+        if provider == "Anthropic Claude (Cloud)":
+            direct_prompt = f"""You are an expert on Adobe Experience League solutions including Adobe Analytics, Adobe Experience Manager, Adobe Target, Customer Journey Analytics, and other Adobe Experience Cloud products.
+
+Question: {question}
+
+Please provide a comprehensive and accurate answer based on your knowledge of Adobe Experience League solutions. Include specific details, best practices, and implementation guidance where relevant.
+
+Answer:"""
+        else:
+            direct_prompt = f"""You are a helpful assistant that answers questions about Adobe Experience League solutions.
+
+Question: {question}
+
+Please provide a comprehensive answer based on your knowledge of Adobe Experience League solutions. Be helpful and accurate in your response.
+
+Answer:"""
+        
+        # Use streaming for faster response
+        for chunk in llm.stream(direct_prompt):
+            if hasattr(chunk, 'content') and chunk.content:
+                yield chunk.content  # Stream the content
+                
+    except Exception as e:
+        yield f"Error generating direct response: {str(e)}"
+
+def generate_direct_response(question, llm, provider):
+    """Generate response using direct LLM approach (non-streaming fallback)"""
+    try:
+        # Create a comprehensive prompt for direct LLM
+        if provider == "Anthropic Claude (Cloud)":
+            direct_prompt = f"""You are an expert on Adobe Experience League solutions including Adobe Analytics, Adobe Experience Manager, Adobe Target, Customer Journey Analytics, and other Adobe Experience Cloud products.
+
+Question: {question}
+
+Please provide a comprehensive and accurate answer based on your knowledge of Adobe Experience League solutions. Include specific details, best practices, and implementation guidance where relevant.
+
+Answer:"""
+        else:
+            direct_prompt = f"""You are a helpful assistant that answers questions about Adobe Experience League solutions.
+
+Question: {question}
+
+Please provide a comprehensive answer based on your knowledge of Adobe Experience League solutions. Be helpful and accurate in your response.
+
+Answer:"""
+        
+        response = llm.invoke(direct_prompt)
+        
+        return {
+            "result": response.content,
+            "source_documents": [],
+            "method": f"Direct {provider}"
+        }
+    except Exception as e:
+        return {
+            "result": f"Error generating direct response: {str(e)}",
+            "source_documents": [],
+            "method": f"Direct {provider}"
+        }
 
 def generate_follow_up_questions(answer, original_question):
     """Generate relevant follow-up questions based on the answer content and original question"""
@@ -1114,20 +1727,98 @@ def render_segment_builder_workflow():
     
     intent_data = st.session_state.segment_intent
     
+    # Display segment definition first (if available from Claude)
+    if intent_data.get('definition') and intent_data.get('claude_enhanced'):
+        st.subheader("📖 Segment Definition")
+        
+        definition = intent_data['definition']
+        
+        # Display definition in an expandable section
+        with st.expander(f"🎯 {definition.get('title', 'Segment Definition')}", expanded=True):
+            st.markdown(f"**What this segment captures:**")
+            st.info(definition.get('content', 'No content available'))
+            
+            st.markdown(f"**Business Value:**")
+            st.success(definition.get('business_value', 'No business value specified'))
+            
+            if definition.get('use_cases'):
+                st.markdown(f"**Use Cases:**")
+                for use_case in definition.get('use_cases', []):
+                    st.markdown(f"• {use_case}")
+            
+            if definition.get('best_practices'):
+                st.markdown(f"**Best Practices:**")
+                for practice in definition.get('best_practices', []):
+                    st.markdown(f"✅ {practice}")
+            
+            if definition.get('limitations'):
+                st.markdown(f"**Considerations:**")
+                for limitation in definition.get('limitations', []):
+                    st.markdown(f"⚠️ {limitation}")
+            
+            if definition.get('related_segments'):
+                st.markdown(f"**Related Segments:**")
+                for related in definition.get('related_segments', []):
+                    st.markdown(f"🔗 {related}")
+        
+        st.markdown("---")
+    
     # Display detected intent
     st.subheader("📊 Detected Intent")
+    
+    # Show Claude enhancement indicator
+    if intent_data.get('claude_enhanced'):
+        st.success("🧠 Enhanced with Anthropic Claude analysis")
+    
     col1, col2 = st.columns(2)
     
     with col1:
         st.metric("Target Audience", intent_data['action_details'].get('target_audience', 'visitors').title())
         if intent_data['action_details'].get('device'):
             st.metric("Device Type", intent_data['action_details']['device'].title())
+        if intent_data['action_details'].get('complexity'):
+            st.metric("Complexity", intent_data['action_details']['complexity'].title())
     
     with col2:
         if intent_data['action_details'].get('geographic'):
             st.metric("Geographic", intent_data['action_details']['geographic'].title())
         if intent_data['action_details'].get('time_based'):
             st.metric("Time-based", intent_data['action_details']['time_based'].replace('_', ' ').title())
+        if intent_data['action_details'].get('intent_confidence'):
+            st.metric("Confidence", intent_data['action_details']['intent_confidence'].title())
+    
+    # Display Claude's enhanced analysis if available
+    if intent_data.get('claude_enhanced'):
+        enhanced_details = intent_data['action_details']
+        
+        if enhanced_details.get('business_context'):
+            st.markdown("**🎯 Business Context:**")
+            st.info(enhanced_details['business_context'])
+        
+        if enhanced_details.get('business_value'):
+            st.markdown("**💼 Business Value:**")
+            st.success(enhanced_details['business_value'])
+        
+        if enhanced_details.get('recommended_approach'):
+            st.markdown("**🚀 Recommended Approach:**")
+            st.info(enhanced_details['recommended_approach'])
+        
+        if enhanced_details.get('conditions'):
+            st.markdown("**📋 Detected Conditions:**")
+            for condition in enhanced_details['conditions']:
+                st.markdown(f"• {condition}")
+        
+        if enhanced_details.get('behavioral'):
+            st.markdown("**🎭 Behavioral Patterns:**")
+            for behavior in enhanced_details['behavioral']:
+                st.markdown(f"• {behavior.replace('_', ' ').title()}")
+        
+        if enhanced_details.get('custom_variables'):
+            st.markdown("**🔧 Custom Variables:**")
+            for var in enhanced_details['custom_variables']:
+                st.markdown(f"• {var}")
+        
+        st.markdown("---")
     
     # Display relevant examples from vector database
     if 'relevant_examples' in intent_data['suggestions'] and intent_data['suggestions']['relevant_examples']:
@@ -1155,6 +1846,126 @@ def render_segment_builder_workflow():
                     "context": example.get('context'),
                     "pred_func": example.get('pred_func')
                 }, indent=2), language="json")
+    
+    # Display enhanced suggestions if available
+    if intent_data['suggestions'].get('claude_enhanced'):
+        st.subheader("🧠 Enhanced Suggestions")
+        st.success("✨ Powered by Anthropic Claude for intelligent segment recommendations")
+        
+        suggestions = intent_data['suggestions']
+        
+        # Show alternative configurations
+        if suggestions.get('alternative_configurations'):
+            st.markdown("**🔄 Alternative Configurations:**")
+            for i, alt in enumerate(suggestions['alternative_configurations'], 1):
+                with st.expander(f"Option {i}: {alt.get('name', 'Alternative')}", expanded=False):
+                    st.write(f"**Description:** {alt.get('description', 'No description')}")
+                    st.write(f"**Use Case:** {alt.get('use_case', 'Not specified')}")
+                    if alt.get('rules'):
+                        st.write("**Rules:**")
+                        for rule in alt['rules']:
+                            st.markdown(f"• {rule}")
+        
+        # Show performance considerations
+        if suggestions.get('performance_considerations'):
+            st.markdown("**⚡ Performance Considerations:**")
+            for consideration in suggestions['performance_considerations']:
+                st.markdown(f"• {consideration}")
+        
+        # Show best practices
+        if suggestions.get('best_practices'):
+            st.markdown("**✅ Best Practices:**")
+            for practice in suggestions['best_practices']:
+                st.markdown(f"• {practice}")
+        
+        # Show validation tips
+        if suggestions.get('validation_tips'):
+            st.markdown("**🔍 Validation Tips:**")
+            for tip in suggestions['validation_tips']:
+                st.markdown(f"• {tip}")
+        
+        # Show related segments
+        if suggestions.get('related_segments'):
+            st.markdown("**🔗 Related Segments:**")
+            for related in suggestions['related_segments']:
+                st.markdown(f"• {related}")
+        
+        st.markdown("---")
+    
+    # Display intelligent rules if available
+    if intent_data.get('intelligent_rules') and intent_data.get('claude_enhanced'):
+        st.subheader("🧠 Intelligent Rules")
+        st.success("✨ Powered by Anthropic Claude for intelligent rule generation")
+        
+        intelligent_rules = intent_data['intelligent_rules']
+        
+        # Show rules with detailed information
+        if intelligent_rules.get('rules'):
+            st.markdown("**📋 Generated Rules:**")
+            for i, rule in enumerate(intelligent_rules['rules'], 1):
+                with st.expander(f"Rule {i}: {rule.get('name', 'Unnamed Rule')}", expanded=False):
+                    col1, col2 = st.columns(2)
+                    
+                    with col1:
+                        st.write(f"**Function:** `{rule.get('func', 'N/A')}`")
+                        st.write(f"**Value:** `{rule.get('value', 'N/A')}`")
+                        st.write(f"**Description:** {rule.get('description', 'No description')}")
+                    
+                    with col2:
+                        st.write(f"**Performance Impact:** {rule.get('performance_impact', 'N/A').title()}")
+                        st.write(f"**Data Requirement:** {rule.get('data_requirement', 'N/A')}")
+                        st.write(f"**Business Rationale:** {rule.get('business_rationale', 'N/A')}")
+        
+        # Show logic operators
+        if intelligent_rules.get('logic_operators'):
+            st.markdown("**🔗 Logic Operators:**")
+            for op in intelligent_rules['logic_operators']:
+                st.markdown(f"• **{op.get('operator', 'N/A')}** - {op.get('description', 'No description')}")
+        
+        # Show threshold suggestions
+        if intelligent_rules.get('threshold_suggestions'):
+            st.markdown("**📊 Threshold Suggestions:**")
+            for threshold in intelligent_rules['threshold_suggestions']:
+                with st.expander(f"Threshold: {threshold.get('metric', 'Unknown Metric')}", expanded=False):
+                    st.write(f"**Suggested Value:** {threshold.get('suggested_value', 'N/A')}")
+                    st.write(f"**Reasoning:** {threshold.get('reasoning', 'No reasoning provided')}")
+                    if threshold.get('alternatives'):
+                        st.write("**Alternatives:**")
+                        for alt in threshold['alternatives']:
+                            st.markdown(f"• {alt}")
+        
+        # Show alternative rules
+        if intelligent_rules.get('alternative_rules'):
+            st.markdown("**🔄 Alternative Rules:**")
+            for i, alt in enumerate(intelligent_rules['alternative_rules'], 1):
+                with st.expander(f"Alternative {i}: {alt.get('name', 'Unnamed Alternative')}", expanded=False):
+                    st.write(f"**Description:** {alt.get('description', 'No description')}")
+                    st.write(f"**Use Case:** {alt.get('use_case', 'No use case specified')}")
+                    if alt.get('rules'):
+                        st.write("**Rules:**")
+                        for rule in alt['rules']:
+                            st.markdown(f"• {rule}")
+        
+        # Show performance optimization
+        if intelligent_rules.get('performance_optimization'):
+            st.markdown("**⚡ Performance Optimization:**")
+            for tip in intelligent_rules['performance_optimization']:
+                st.markdown(f"• {tip}")
+        
+        # Show validation checks
+        if intelligent_rules.get('validation_checks'):
+            st.markdown("**🔍 Validation Checks:**")
+            for check in intelligent_rules['validation_checks']:
+                st.markdown(f"• {check}")
+        
+        # Show complexity and performance estimates
+        col1, col2 = st.columns(2)
+        with col1:
+            st.metric("Complexity", intelligent_rules.get('complexity', 'N/A').title())
+        with col2:
+            st.metric("Estimated Performance", intelligent_rules.get('estimated_performance', 'N/A').title())
+        
+        st.markdown("---")
     
     # Segment configuration
     st.subheader("⚙️ Segment Configuration")
@@ -1619,39 +2430,6 @@ def main():
     if 'current_workflow' not in st.session_state:
         st.session_state.current_workflow = 'chat'
     
-    # Debug: Show current workflow state in sidebar
-    with st.sidebar:
-        st.header("🔧 Workflow Status")
-        st.info(f"**Current Workflow:** {st.session_state.current_workflow}")
-        
-        # Show additional debug info
-        if 'segment_intent' in st.session_state:
-            st.success("✅ Segment Intent Detected")
-        if 'segment_config' in st.session_state:
-            st.success("✅ Segment Config Ready")
-        
-        st.markdown("---")
-        
-        # Debug Controls
-        st.header("🐛 Debug Controls")
-        if st.button("🔄 Reset Workflow State", help="Reset to main chat"):
-            st.session_state.current_workflow = 'chat'
-            if 'segment_intent' in st.session_state:
-                del st.session_state.segment_intent
-            if 'segment_config' in st.session_state:
-                del st.session_state.segment_config
-            st.rerun()
-        
-        if st.button("🔧 Test Segment Builder", help="Manually enter segment builder workflow"):
-            st.session_state.current_workflow = 'segment_builder'
-            st.session_state.segment_intent = {
-                'prompt': 'Test segment creation',
-                'action_details': {'action_type': 'segment', 'target_audience': 'visitors'},
-                'suggestions': {'segment_name': 'Test Segment', 'segment_description': 'Test description', 'recommended_rules': []}
-            }
-            st.rerun()
-        
-        st.markdown("---")
     
     # Header
     st.title("🤖 Adobe Experience League Documentation Chatbot")
@@ -1672,12 +2450,13 @@ def main():
     # Sidebar for controls and information
     with st.sidebar:
         st.header("About")
-        st.markdown("This POC demonstrates a chatbot built with LangChain and Ollama and powered by Adobe Experience League documentation")
+        st.markdown("This POC demonstrates a chatbot built with LangChain and multiple LLM providers, powered by Adobe Experience League documentation")
         
         st.markdown("""
         **Tech Stack:**
         - **FAISS Vector Store**: For semantic search
-        - **Ollama LLM**: llama3:8b for text generation
+        - **LLM Providers**: Anthropic Claude (Direct Mode), Groq (RAG Mode), Ollama (RAG Mode)
+        - **Smart Mode Selection**: Automatic based on provider choice
         - **Streamlit**: For the web app
         - **LangChain**: For the chatbot
         - **HuggingFace**: For the embeddings
@@ -1693,9 +2472,17 @@ def main():
         st.markdown("**🤖 LLM Provider:**")
         llm_provider = st.selectbox(
             "Choose your LLM provider:",
-            ["Groq (Cloud)", "Ollama (Local)"],
+            ["Anthropic Claude (Cloud)", "Groq (Cloud)", "Ollama (Local)"],
             key="llm_provider"
         )
+        
+        # Automatically determine response mode based on provider
+        if llm_provider == "Anthropic Claude (Cloud)":
+            response_mode = "Direct LLM (No RAG)"
+            st.info("🧠 **Direct Mode**: Anthropic Claude uses its training data directly for comprehensive responses without document retrieval.")
+        else:
+            response_mode = "RAG (Adobe Docs + Stack Overflow)"
+            st.info("🔍 **RAG Mode**: Uses your ingested Adobe documentation and Stack Overflow data for context-aware responses with source attribution.")
         
         
         # Check Ollama connection silently (for app functionality)
@@ -1734,29 +2521,6 @@ def main():
                 # Set the question in session state to be used in chat input
                 st.session_state.selected_question = question
                 st.rerun()
-        
-        # Usage Statistics
-        st.markdown("---")
-        st.markdown("**📊 Usage Statistics:**")
-        
-        # Initialize usage stats if not exists
-        if "usage_stats" not in st.session_state:
-            st.session_state.usage_stats = {
-                "total_questions": 0,
-                "total_responses": 0,
-                "avg_response_time": 0,
-                "last_question_time": None
-            }
-        
-        # Display stats
-        st.metric("Questions Asked", st.session_state.usage_stats["total_questions"])
-        st.metric("Responses Generated", st.session_state.usage_stats["total_responses"])
-        if st.session_state.usage_stats["avg_response_time"] > 0:
-            st.metric("Avg Response Time", f"{st.session_state.usage_stats['avg_response_time']:.1f}s")
-        
-
-
-
     
     # Load knowledge base
     with st.spinner("Loading knowledge base..."):
@@ -1772,82 +2536,42 @@ def main():
     if qa_chain is None:
         st.stop()
     
-    # Comprehensive info section at the top (auto-hide after 3 seconds)
-    current_time = time.time()
-    time_since_load = current_time - st.session_state.page_load_time
-    
-    # Auto-hide after 3 seconds unless manually closed
-    if time_since_load > 3 and st.session_state.show_info_boxes:
-        st.session_state.show_info_boxes = False
-    
-    if st.session_state.show_info_boxes:
-        with st.container():
-            # Show countdown for auto-hide
-            remaining_time = max(0, 3 - time_since_load)
-            if remaining_time > 0:
-                st.caption(f"⏰ Info boxes will auto-hide in {remaining_time:.1f}s")
+    # Welcome message for new users with close button
+    if not st.session_state.messages:
+        # Initialize welcome message state
+        if "show_welcome" not in st.session_state:
+            st.session_state.show_welcome = True
+        
+        if st.session_state.show_welcome:
+            st.markdown("---")
             
-            # Status indicators
-            status_col1, status_col2, status_col3, status_col4 = st.columns([2, 2, 2, 1])
-            
-            with status_col1:
-                st.success("✅ Ready to answer questions!")
-            
-            with status_col2:
-                # Show current LLM provider
-                current_provider = st.session_state.get("llm_provider", "Groq (Cloud)")
-                st.info(f"🤖 Using: {current_provider}")
-            
-            with status_col3:
-                # Show knowledge base status
-                adobe_docs_count = len(list(Path("./adobe_docs").glob("*.txt")))
-                stackoverflow_docs_count = len(list(Path("./stackoverflow_docs").glob("*.txt")))
-                total_docs = adobe_docs_count + stackoverflow_docs_count
+            # Create a container for the tips box with close button
+            tips_container = st.container()
+            with tips_container:
+                col1, col2 = st.columns([10, 1])
                 
-                if stackoverflow_docs_count > 0:
-                    st.info(f"📚 Knowledge Base: {adobe_docs_count} Adobe docs, {stackoverflow_docs_count} SO docs")
-                else:
-                    st.info(f"📚 Knowledge Base: {adobe_docs_count} Adobe docs")
-                
-                # Show attribution system status
-                if SOURCE_ATTRIBUTION_AVAILABLE:
-                    st.success("✅ Source Attribution: Available")
-                else:
-                    st.warning("⚠️ Source Attribution: Not Available")
-            
-            with status_col4:
-                # Close button for the entire info section
-                if st.button("❌", key="close_info", help="Close info section"):
-                    st.session_state.show_info_boxes = False
-                    st.rerun()
-            
-            # Welcome message for new users
-            if not st.session_state.messages:
-                # Initialize welcome message state
-                if "show_welcome" not in st.session_state:
-                    st.session_state.show_welcome = True
-                
-                if st.session_state.show_welcome:
-                    st.markdown("---")
+                with col1:
                     st.info("""
                     🎉 **Welcome to Adobe Experience League Documentation Chatbot!**
                     
                     **💡 Tips:**
                     - Ask questions about Adobe Experience League solutions features, implementation, or best practices
                     - Use the sidebar to quickly access common questions
-                    - Groq (cloud) is the default for fast responses, Ollama (local) is available as fallback
+                    - Multiple LLM providers available: Anthropic Claude (default, direct mode), Groq (RAG mode), Ollama (RAG mode)
+                    - Automatic mode selection: Claude uses direct responses, others use RAG with Adobe docs
                     - Use reactions (👍👎💡) to provide feedback on responses
                     
                     **🚀 Getting Started:**
                     Try asking: "What is Adobe Analytics?" or "How do I implement tracking?"
                     """)
+                
+                with col2:
+                    if st.button("❌", key="close_tips", help="Close tips"):
+                        st.session_state.show_welcome = False
+                        st.rerun()
     
     # Main chat interface
     st.markdown("---")
-    
-
-            
-
     
     # Display chat messages from history
     for message in st.session_state.messages:
@@ -1862,7 +2586,10 @@ def main():
                     st.success(f"🎉 Let's create a {action_type}! This feature is coming soon.")
             
             # Display simple attribution for assistant messages if available
-            if message["role"] == "assistant" and "sources" in message:
+            # Skip attribution panel for Anthropic Claude
+            current_provider = st.session_state.get("llm_provider", "Groq (Cloud)")
+            if (message["role"] == "assistant" and "sources" in message and 
+                current_provider != "Anthropic Claude (Cloud)"):
                 if SOURCE_ATTRIBUTION_AVAILABLE:
                     try:
                         attributions = get_simple_attributions(message["sources"])
@@ -1954,9 +2681,6 @@ def main():
                 user_message["create_action"] = {"type": action_type, "details": action_details}
             st.session_state.messages.append(user_message)
             
-            # Update usage statistics
-            st.session_state.usage_stats["total_questions"] += 1
-            st.session_state.usage_stats["last_question_time"] = time.time()
             
             # Display user message in chat message container
             with st.chat_message("user"):
@@ -1964,16 +2688,54 @@ def main():
             
             # Handle segment creation workflow
             if action_type == 'segment':
-                # Store the intent details in session state for the segment builder
-                suggestions = generate_segment_suggestions(action_details)
-                st.session_state.segment_intent = {
-                    'prompt': prompt,
-                    'action_details': action_details,
-                    'suggestions': suggestions
-                }
-                # Set the current workflow step to segment builder immediately
-                st.session_state.current_workflow = 'segment_builder'
-                st.rerun()  # Redirect to segment builder workflow
+                # Show loading spinner for segment processing
+                with st.spinner("🧠 Analyzing your segment request and generating intelligent recommendations..."):
+                    # Enhanced segment workflow with Claude integration
+                    enhanced_intent = action_details
+                    segment_definition = None
+                    
+                    # Try to enhance with Claude if available and in Direct mode
+                    if response_mode == "Direct LLM (No RAG)" and llm_provider == "Anthropic Claude (Cloud)":
+                        try:
+                            # Get Claude LLM instance
+                            claude_llm = setup_direct_llm(llm_provider)
+                            if claude_llm:
+                                # Enhanced intent detection with Claude
+                                claude_intent = detect_segment_intent_with_claude(prompt, claude_llm)
+                                if claude_intent:
+                                    enhanced_intent = claude_intent
+                                
+                                # Generate segment definition
+                                segment_definition = generate_segment_definition(prompt, enhanced_intent, claude_llm)
+                        except Exception as e:
+                            print(f"Error in Claude segment enhancement: {e}")
+                            # Continue with standard workflow
+                    
+                    # Generate suggestions (enhanced if Claude was used)
+                    if claude_llm and enhanced_intent.get('claude_enhanced'):
+                        suggestions = generate_enhanced_segment_suggestions(prompt, enhanced_intent, claude_llm)
+                    else:
+                        suggestions = generate_segment_suggestions(enhanced_intent)
+                    
+                    # Generate intelligent rules (enhanced if Claude was used)
+                    if claude_llm and enhanced_intent.get('claude_enhanced'):
+                        intelligent_rules = generate_intelligent_rules(enhanced_intent, claude_llm)
+                    else:
+                        intelligent_rules = generate_standard_rules(enhanced_intent)
+                    
+                    # Store enhanced intent details in session state
+                    st.session_state.segment_intent = {
+                        'prompt': prompt,
+                        'action_details': enhanced_intent,
+                        'suggestions': suggestions,
+                        'definition': segment_definition,
+                        'intelligent_rules': intelligent_rules,
+                        'claude_enhanced': enhanced_intent.get('claude_enhanced', False)
+                    }
+                    
+                    # Set the current workflow step to segment builder immediately
+                    st.session_state.current_workflow = 'segment_builder'
+                    st.rerun()  # Redirect to segment builder workflow
             
             # Display assistant response in chat message container
             with st.chat_message("assistant"):
@@ -1982,16 +2744,41 @@ def main():
                         # Start timer for response time
                         start_time = time.time()
                         
-                        # Get answer with error handling
+                        # Get answer with error handling based on response mode
                         try:
-                            response = qa_chain.invoke({"query": prompt})
-                            answer = response["result"]
+                            if response_mode == "RAG (Adobe Docs + Stack Overflow)":
+                                # Use RAG with vector store
+                                response = qa_chain.invoke({"query": prompt})
+                                answer = response["result"]
+                            else:
+                                # Use direct LLM without RAG with streaming
+                                direct_llm = setup_direct_llm(llm_provider)
+                                if direct_llm is None:
+                                    st.error("❌ Failed to initialize direct LLM. Please check your API keys.")
+                                    st.session_state.is_processing = False
+                                    st.rerun()
+                                
+                                # Create a placeholder for streaming response
+                                message_placeholder = st.empty()
+                                full_response = ""
+                                
+                                # Show streaming indicator
+                                with st.spinner("🤖 Claude is thinking..."):
+                                    # Stream the response
+                                    for chunk in generate_direct_response_stream(prompt, direct_llm, llm_provider):
+                                        if isinstance(chunk, str):
+                                            full_response += chunk
+                                            message_placeholder.markdown(full_response + "▌")
+                                
+                                # Final response without cursor
+                                message_placeholder.markdown(full_response)
+                                answer = full_response
                         except Exception as api_error:
                             error_message = str(api_error).lower()
                             
                             if "rate limit" in error_message or "quota" in error_message:
-                                st.error("❌ Groq rate limit exceeded. Please try again later or switch to Ollama.")
-                                st.info("💡 You can switch to 'Ollama (Local)' in the sidebar to continue using the chatbot.")
+                                st.error("❌ Groq rate limit exceeded. Please try again later or switch to another provider.")
+                                st.info("💡 You can switch to 'Anthropic Claude (Cloud)' or 'Ollama (Local)' in the sidebar to continue using the chatbot.")
                             elif "unauthorized" in error_message or "invalid" in error_message:
                                 st.error("❌ Invalid Groq API key. Please check your API key in Streamlit secrets.")
                             elif "timeout" in error_message:
@@ -2002,7 +2789,7 @@ def main():
                             # Add error message to chat history
                             st.session_state.messages.append({
                                 "role": "assistant", 
-                                "content": "Sorry, I encountered an error while processing your request. Please try again or switch to Ollama (Local) in the sidebar.",
+                                "content": "Sorry, I encountered an error while processing your request. Please try again or switch to another provider in the sidebar.",
                                 "sources": []
                             })
                             
@@ -2010,9 +2797,9 @@ def main():
                             st.session_state.is_processing = False
                             st.rerun()
                         
-                        # Check if response has Stack Overflow sources
+                        # Check if response has Stack Overflow sources (only for RAG mode)
                         has_stackoverflow = False
-                        if "source_documents" in response:
+                        if response_mode == "RAG (Adobe Docs + Stack Overflow)" and "source_documents" in response:
                             sources = [doc.metadata.get('source', 'Unknown') for doc in response["source_documents"]]
                             has_stackoverflow = has_stackoverflow_sources(sources)
                         
@@ -2026,7 +2813,11 @@ def main():
                             st.markdown(answer)
                             
                             # Display integrated source attribution directly in the response
-                            if "source_documents" in response:
+                            # Skip attribution panel for Anthropic Claude
+                            current_provider = st.session_state.get("llm_provider", "Groq (Cloud)")
+                            if (response_mode == "RAG (Adobe Docs + Stack Overflow)" and 
+                                "source_documents" in response and 
+                                current_provider != "Anthropic Claude (Cloud)"):
                                 sources = [doc.metadata.get('source', 'Unknown') for doc in response["source_documents"]]
                                 
                                 # Generate attributions for all sources
@@ -2052,13 +2843,17 @@ def main():
                                         
                                         # Display each source with its attribution
                                         for i, (source, attribution) in enumerate(zip(sources, attributions), 1):
-                                            # Determine source type and icon
-                                            if source.startswith('stackoverflow_'):
-                                                source_icon = "💬"
-                                                source_type = "Stack Overflow"
-                                            else:
-                                                source_icon = "📖"
-                                                source_type = "Adobe Docs"
+                                            # Use attribution metadata for source type and URL
+                                            stype = attribution.source_metadata.source_type
+                                            if stype == SourceType.STACK_OVERFLOW:
+                                                source_icon, source_type_label = "💬", "Stack Overflow"
+                                            elif stype == SourceType.ADOBE_DOCS:
+                                                source_icon, source_type_label = "📖", "Adobe Docs"
+                                            elif stype == SourceType.GENERIC_WEB:
+                                                source_icon, source_type_label = "🌐", "Web"
+                                            else:  # SourceType.UNKNOWN
+                                                source_icon, source_type_label = "❓", "Unknown"
+                                            doc_url = attribution.source_metadata.url
                                             
                                             # Clean up source name for display
                                             source_name = source
@@ -2068,25 +2863,8 @@ def main():
                                                 source_name = source_name[8:]
                                             source_name = source_name.replace('_', ' ').title()
                                             
-                                            # Generate URL for the source
-                                            if source.startswith('stackoverflow_'):
-                                                parts = source.split('_')
-                                                if len(parts) >= 2:
-                                                    try:
-                                                        question_id = parts[1]
-                                                        doc_url = f"https://stackoverflow.com/questions/{question_id}"
-                                                    except:
-                                                        doc_url = "https://stackoverflow.com/questions"
-                                                else:
-                                                    doc_url = "https://stackoverflow.com/questions"
-                                            else:
-                                                # Use existing URL mapping logic for Adobe docs
-                                                doc_url = generate_adobe_url(source)
-                                                if not doc_url:
-                                                    doc_url = "https://experienceleague.adobe.com/docs/analytics.html"
-                                            
                                             # Display source with attribution
-                                            with st.expander(f"{i}. {source_icon} {source_name} ({source_type})", expanded=False):
+                                            with st.expander(f"{i}. {source_icon} {source_name} ({source_type_label})", expanded=False):
                                                 # Show attribution status
                                                 if attribution.compliance_status == "compliant":
                                                     st.success(f"✅ **Attribution:** {attribution.attribution_markdown}")
@@ -2168,9 +2946,13 @@ def main():
                                             st.info(f"{i}. 💬 {source} (Stack Overflow)")
                                         else:
                                             st.info(f"{i}. 📖 {source} (Adobe Docs)")
+                            else:
+                                # Direct mode - no source documents
+                                st.markdown("---")
+                                st.info("🧠 **Direct LLM Response**: This answer is generated using the LLM's training data without document retrieval.")
                             
-                            # Extract and display links from source documents
-                            if "source_documents" in response:
+                            # Extract and display links from source documents (only for RAG mode)
+                            if response_mode == "RAG (Adobe Docs + Stack Overflow)" and "source_documents" in response:
                                 links_found = []
                                 video_links = []
                                 
@@ -2225,9 +3007,11 @@ def main():
                         
                         # Prepare sources for display
                         sources = []
-                        if "source_documents" in response:
+                        if response_mode == "RAG (Adobe Docs + Stack Overflow)" and "source_documents" in response:
                             for doc in response["source_documents"]:
                                 sources.append(doc.metadata.get('source', 'Unknown'))
+                        elif response_mode == "Direct LLM (No RAG)":
+                            sources = [f"Direct {llm_provider} Response"]
                         
                         # Add assistant response to chat history with sources
                         st.session_state.messages.append({
@@ -2236,13 +3020,6 @@ def main():
                             "sources": sources
                         })
                         
-                        # Update usage statistics
-                        st.session_state.usage_stats["total_responses"] += 1
-                        # Update average response time
-                        current_avg = st.session_state.usage_stats["avg_response_time"]
-                        total_responses = st.session_state.usage_stats["total_responses"]
-                        new_avg = ((current_avg * (total_responses - 1)) + response_time) / total_responses
-                        st.session_state.usage_stats["avg_response_time"] = new_avg
                         
                         # Reset processing state after successful response
                         st.session_state.is_processing = False
