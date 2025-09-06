@@ -2484,7 +2484,10 @@ def main():
                 action_info = message["create_action"]
                 action_type = action_info["type"]
                 message_idx = st.session_state.messages.index(message)
-                if st.button(f"📋 Help Create {action_type.title()}", key=f"create_{action_type}_{message_idx}"):
+                # Create unique key that includes message content hash to avoid duplicates
+                message_content_hash = hash(message["content"]) % 10000
+                unique_key = f"create_{action_type}_{message_idx}_{message_content_hash}"
+                if st.button(f"📋 Help Create {action_type.title()}", key=unique_key):
                     st.success(f"🎉 Let's create a {action_type}! This feature is coming soon.")
             
             # Display simple attribution for assistant messages if available
@@ -2513,14 +2516,17 @@ def main():
         st.markdown("**💬 How was this response?**")
         reaction_col1, reaction_col2, reaction_col3 = st.columns([1, 1, 1])
         message_idx = len(st.session_state.messages) - 1
+        # Create unique keys that include timestamp to avoid duplicates
+        import time
+        timestamp = int(time.time() * 1000) % 100000
         with reaction_col1:
-            if st.button("👍 Helpful", key=f"thumbs_up_{message_idx}", help="This response was helpful"):
+            if st.button("👍 Helpful", key=f"thumbs_up_{message_idx}_{timestamp}", help="This response was helpful"):
                 st.success("✅ Thank you for the feedback!")
         with reaction_col2:
-            if st.button("👎 Not Helpful", key=f"thumbs_down_{message_idx}", help="This response was not helpful"):
+            if st.button("👎 Not Helpful", key=f"thumbs_down_{message_idx}_{timestamp}", help="This response was not helpful"):
                 st.error("❌ We'll work to improve!")
         with reaction_col3:
-            if st.button("💡 Suggest", key=f"suggest_{message_idx}", help="Suggest improvement"):
+            if st.button("💡 Suggest", key=f"suggest_{message_idx}_{timestamp}", help="Suggest improvement"):
                 st.info("💡 Thanks for the suggestion!")
     
     # Initialize selected question in session state if not exists
@@ -2775,7 +2781,11 @@ def main():
                                         
                                         # Generate attribution report button
                                         message_idx = len(st.session_state.messages) - 1
-                                        if st.button("📊 Generate Attribution Report", key=f"attribution_report_{message_idx}"):
+                                        # Create unique key that includes timestamp to avoid duplicates
+                                        import time
+                                        timestamp = int(time.time() * 1000) % 100000
+                                        unique_key = f"attribution_report_{message_idx}_{timestamp}"
+                                        if st.button("📊 Generate Attribution Report", key=unique_key):
                                             try:
                                                 json_report = attributor.export_attribution_report(attributions, "json")
                                                 markdown_report = attributor.export_attribution_report(attributions, "markdown")
@@ -2871,7 +2881,11 @@ def main():
                         with col2:
                             # Copy to clipboard button
                             message_idx = len(st.session_state.messages) - 1
-                            if st.button("📋 Copy", key=f"copy_{message_idx}", help="Copy response to clipboard"):
+                            # Create unique key that includes timestamp to avoid duplicates
+                            import time
+                            timestamp = int(time.time() * 1000) % 100000
+                            unique_key = f"copy_{message_idx}_{timestamp}"
+                            if st.button("📋 Copy", key=unique_key, help="Copy response to clipboard"):
                                 st.write("✅ Copied to clipboard!")
                                 # Note: Actual clipboard functionality requires additional setup
                         
