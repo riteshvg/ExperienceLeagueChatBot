@@ -2483,7 +2483,8 @@ def main():
             if message["role"] == "user" and "create_action" in message:
                 action_info = message["create_action"]
                 action_type = action_info["type"]
-                if st.button(f"📋 Help Create {action_type.title()}", key=f"create_{action_type}_{len(st.session_state.messages)}"):
+                message_idx = st.session_state.messages.index(message)
+                if st.button(f"📋 Help Create {action_type.title()}", key=f"create_{action_type}_{message_idx}"):
                     st.success(f"🎉 Let's create a {action_type}! This feature is coming soon.")
             
             # Display simple attribution for assistant messages if available
@@ -2756,7 +2757,8 @@ def main():
                                             st.metric("❌ Non-Compliant", non_compliant_count)
                                         
                                         # Generate attribution report button
-                                        if st.button("📊 Generate Attribution Report", key=f"attribution_report_{len(st.session_state.messages)}"):
+                                        message_idx = st.session_state.messages.index(message)
+                                        if st.button("📊 Generate Attribution Report", key=f"attribution_report_{message_idx}"):
                                             try:
                                                 json_report = attributor.export_attribution_report(attributions, "json")
                                                 markdown_report = attributor.export_attribution_report(attributions, "markdown")
@@ -2851,7 +2853,8 @@ def main():
                         
                         with col2:
                             # Copy to clipboard button
-                            if st.button("📋 Copy", key=f"copy_{len(st.session_state.messages)}", help="Copy response to clipboard"):
+                            message_idx = st.session_state.messages.index(message)
+                            if st.button("📋 Copy", key=f"copy_{message_idx}", help="Copy response to clipboard"):
                                 st.write("✅ Copied to clipboard!")
                                 # Note: Actual clipboard functionality requires additional setup
                         
@@ -2886,14 +2889,15 @@ def main():
                         st.markdown("---")
                         st.markdown("**💬 How was this response?**")
                         reaction_col1, reaction_col2, reaction_col3 = st.columns([1, 1, 1])
+                        message_idx = st.session_state.messages.index(message)
                         with reaction_col1:
-                            if st.button("👍 Helpful", key=f"thumbs_up_{len(st.session_state.messages)}", help="This response was helpful"):
+                            if st.button("👍 Helpful", key=f"thumbs_up_{message_idx}", help="This response was helpful"):
                                 st.success("✅ Thank you for the feedback!")
                         with reaction_col2:
-                            if st.button("👎 Not Helpful", key=f"thumbs_down_{len(st.session_state.messages)}", help="This response was not helpful"):
+                            if st.button("👎 Not Helpful", key=f"thumbs_down_{message_idx}", help="This response was not helpful"):
                                 st.error("❌ We'll work to improve!")
                         with reaction_col3:
-                            if st.button("💡 Suggest", key=f"suggest_{len(st.session_state.messages)}", help="Suggest improvement"):
+                            if st.button("💡 Suggest", key=f"suggest_{message_idx}", help="Suggest improvement"):
                                 st.info("💡 Thanks for the suggestion!")
                         
                     except Exception as e:
