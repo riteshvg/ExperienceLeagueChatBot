@@ -1,0 +1,30 @@
+Source URL: https://experienceleague.adobe.com/en/docs/analytics-learn/tutorials/intro-to-analytics/what-can-aa-do-for-me/how-adobe-analysis-workspace-can-change-your-business
+================================================================================
+
+Documentation
+Analytics
+Analytics Tutorials
+Change your business with Adobe Analysis Workspace
+Last update: Mon Mar 27 2023 00:00:00 GMT+0000 (Coordinated Universal Time)
+Topics:
+Workspace Basics
+CREATED FOR:
+Beginner
+User
+Developer
+Admin
+Leader
+Learn about the types of analyses available in Analysis Workspace, such as Ad Hoc,Cohort, and Fallout. Use the drag and drop features to analyze data easily and quickly.
+https://video.tv.adobe.com/v/31501/?quality=12&learn=on
+Transcript
+When you really start to dig into data, most people don’t even know what’s possible. There are gems buried in that data, but you have to know how to find them and you have to know how to find them fast. We wanted working with your data to feel very natural, and sharing to be very impactful.
+We know that making data usable, is difficult for both analysts and marketers. Culling through mountains of information can be overwhelming and it takes forever. And then you have to share it, in a way that people understand. So we set out to create a flexible, powerful and beautiful tool, where art and science meet.
+Analysis Workspace is our new visual experience that allows you to drag and drop different dimensions and elements onto a canvas, to create ad hoc queries against huge data sets and do that with results returning in seconds. Our customers wanted to be able to paint a picture with data, and be able to tell the story with it. We had to figure out a way for them to be able to do this in a very visual way. Not just with the analyst who has special skills and training, but to bring these insights to everyone in the organization. Since we were already reinventing the heart of Adobe Analytics, it was a given that the experience had to be extremely nimble, agile and fast.
+The horsepower behind Analysis Workspace is incredibly impressive. We’re able to process millions and millions of queries per second, and federate those queries to hundreds of servers simultaneously, that are then combing through petabytes of data and return those responses in seconds and sometimes within milliseconds. It feels like a desktop application even though it’s running in a browser.
+We wanted to give our customers the ability to curate their data. To simplify and control what their audiences see in shared workspaces. These flexible workspaces are always dynamic and updated in real time. Our customers don’t have to start with a laundry list of possible reports. Those teams, who receive these curated environments can then do their own analysis. They become analysts unto themselves.
+The beauty of the Analysis Workspace is its simplicity. You don’t want a complicated experience on top of complicated data. So simplicity is critical to an experience like this. We’ve really wanted to make it easy for people to get in and hit the ground running. And so, when you first open the tool, you’re not going to find a completely blank canvas. You have several templates that allow you to get going. And from there on, you can then modify, personalize, customize, that experience to become your own. These flexible workspaces are very dynamic and very alive. It’s always telling a new story and it’s making it relevant.
+If you’re an analyst that wants to let your team monitor and measure their own App Retention Rates, it’s easy with data visualizations. Histogram, fallout, flow, these are built right into Analysis Workspace.
+This is a beautiful product. There’s very little competition out there that enables the analyst, the marketer, or a business professional, to be the artist in a very meaningful way. -
+Learn more about Adobe Analysis Workspace
+recommendation-more-help
+b5d9c99f-be9f-4b96-8809-4e7d6ae353ba

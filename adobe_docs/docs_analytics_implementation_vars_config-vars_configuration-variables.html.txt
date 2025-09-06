@@ -1,0 +1,34 @@
+Source URL: https://experienceleague.adobe.com/docs/analytics/implementation/vars/config-vars/configuration-variables.html
+================================================================================
+
+Documentation
+Analytics
+Implementation Guide
+Configuration variables overview
+Last update: Mon Jun 23 2025 00:00:00 GMT+0000 (Coordinated Universal Time)
+Topics:
+Appmeasurement Implementation
+CREATED FOR:
+Admin
+Developer
+Configuration variables control the way data is captured and processed in reporting. They do not typically contain dimension or metric values.
+Setting configuration variables
+In implementations using the Web SDK extension or Analytics extension, configuration variables are typically found in the extension’s settings:
+Log in to
+Adobe Experience Platform Data Collection
+using your AdobeID credentials.
+Click the desired tag property.
+Click the Extensions tab, then Click Configure under the extension.
+In JavaScript implementations using
+AppMeasurement.js
+, configuration variables are typically set at the top of the JS file.
+IMPORTANT
+Make sure that all configuration variables are set before calling a tracking method (
+t()
+or
+tl()
+). Avoid setting configuration variables in the
+doPlugins()
+function.
+recommendation-more-help
+b4f6d761-4a8b-4322-b801-c85b9e3be690

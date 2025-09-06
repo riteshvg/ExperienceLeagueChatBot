@@ -13,9 +13,9 @@ User
 Admin
 Analytics components help you fine tune and empower your analysis of data. Components include:
 Dimensions:
-Reference for dimensions usable in Adobe.
+Reference for dimensions usable in Adobe Analytics.
 Metrics:
-Reference for metrics usable in Adobe.
+Reference for metrics usable in Adobe Analytics.
 Segmentation:
 Focus on a subset of your data.
 Calculated metrics:
@@ -34,7 +34,7 @@ Marketing channels:
 Understand how visitors arrive to your site and determine which channels are most successful.
 recommendation-more-help
 See
-Adobe overview
+Adobe Analytics overview
 for a demo video.
 style
 shade-box
@@ -45,7 +45,7 @@ More Analytics user guides
 Analytics User Guides
 Key Analytics resources
 Contact Customer Care
-Adobe Community on Experience League
-Adobe Resources
+Adobe Analytics Community on Experience League
+Adobe Analytics Resources
 Experience League
 46b8682c-fda6-4669-9355-1a44923e549e

@@ -1,0 +1,154 @@
+Source URL: https://github.com/Adobe-Marketing-Cloud/analytics-realtime-dashboard-example
+================================================================================
+
+Adobe-Marketing-Cloud
+/
+analytics-realtime-dashboard-example
+Public
+Notifications
+You must be signed in to change notification settings
+Fork
+45
+Star
+95
+A Demo Application in Javascript
+License
+Apache-2.0 license
+95
+stars
+45
+forks
+Branches
+Tags
+Activity
+Star
+Notifications
+You must be signed in to change notification settings
+Code
+Issues
+0
+Pull requests
+0
+Actions
+Projects
+0
+Wiki
+Security
+Uh oh!
+There was an error while loading.
+Please reload this page
+.
+Insights
+Additional navigation options
+Code
+Issues
+Pull requests
+Actions
+Projects
+Wiki
+Security
+Insights
+Adobe-Marketing-Cloud/analytics-realtime-dashboard-example
+master
+Branches
+Tags
+Go to file
+Code
+Open more actions menu
+Folders and files
+Name
+Name
+Last commit message
+Last commit date
+Latest commit
+History
+118 Commits
+css
+css
+finished
+finished
+images
+images
+js
+js
+lessons
+lessons
+slides
+slides
+.gitignore
+.gitignore
+.travis.yml
+.travis.yml
+LICENSE
+LICENSE
+README.md
+README.md
+deploy.sh
+deploy.sh
+index.html
+index.html
+View all files
+Repository files navigation
+README
+Apache-2.0 license
+Adobe Analytics Real-time Dashboard Example
+Welcome to the Adobe Analytics Real-time Dashboard example.
+Table of Contents
+Lesson 1
+: Getting Real-time Reports via the Analytics API
+Lesson 2
+: Getting Real-time Reports via a Web Page Using JavaScript
+Lesson 3
+: Using Real-time Report Data to Create a Dashboard
+Extra Credit
+Exercise 1
+: Enabling Real-time Reports on Your Report Suite (Advanced)
+Recommended Tools
+Brackets Code Editor -
+http://brackets.io/
+About
+A Demo Application in Javascript
+Resources
+Readme
+License
+Apache-2.0 license
+Uh oh!
+There was an error while loading.
+Please reload this page
+.
+Activity
+Custom properties
+Stars
+95
+stars
+Watchers
+32
+watching
+Forks
+45
+forks
+Report repository
+Releases
+No releases published
+Packages
+0
+No packages published
+Uh oh!
+There was an error while loading.
+Please reload this page
+.
+Contributors
+5
+Uh oh!
+There was an error while loading.
+Please reload this page
+.
+Languages
+JavaScript
+66.1%
+HTML
+22.6%
+CSS
+9.5%
+Shell
+1.8%

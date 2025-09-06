@@ -1,0 +1,156 @@
+Source URL: https://github.com/Adobe-Marketing-Cloud/analytics-samples
+================================================================================
+
+Adobe-Marketing-Cloud
+/
+analytics-samples
+Public
+Notifications
+You must be signed in to change notification settings
+Fork
+10
+Star
+15
+Samples on using Analytics APIs
+15
+stars
+10
+forks
+Branches
+Tags
+Activity
+Star
+Notifications
+You must be signed in to change notification settings
+Code
+Issues
+0
+Pull requests
+0
+Actions
+Projects
+0
+Wiki
+Security
+Uh oh!
+There was an error while loading.
+Please reload this page
+.
+Insights
+Additional navigation options
+Code
+Issues
+Pull requests
+Actions
+Projects
+Wiki
+Security
+Insights
+Adobe-Marketing-Cloud/analytics-samples
+master
+Branches
+Tags
+Go to file
+Code
+Open more actions menu
+Folders and files
+Name
+Name
+Last commit message
+Last commit date
+Latest commit
+History
+74 Commits
+export-report
+export-report
+import-users
+import-users
+real-time-demo/
+js
+real-time-demo/
+js
+report-settings
+report-settings
+user-management-tool
+user-management-tool
+.gitignore
+.gitignore
+README.md
+README.md
+View all files
+Repository files navigation
+README
+analytics-samples
+Samples on using Analytics APIs
+Export report
+Application that exports a report into CSV file.
+Code
+Java
+JS
+See the JS version online
+Import users
+This application imports users from a CSV file.
+Code
+Java
+JS
+See the JS version online
+Report settings
+This application gathers report suite configuration and saves it on disk as a JSON file.
+Code
+Java
+JS
+See the JS version online
+Real time demo
+This application allows to view real time statistics based on Analytics real time reports
+Code
+JS
+See the JS version online
+User management tool
+This application allows to manage the users and groups in your Analytics account
+Code
+JS
+See the JS version online
+About
+Samples on using Analytics APIs
+Resources
+Readme
+Uh oh!
+There was an error while loading.
+Please reload this page
+.
+Activity
+Custom properties
+Stars
+15
+stars
+Watchers
+28
+watching
+Forks
+10
+forks
+Report repository
+Releases
+No releases published
+Packages
+0
+No packages published
+Uh oh!
+There was an error while loading.
+Please reload this page
+.
+Contributors
+3
+Uh oh!
+There was an error while loading.
+Please reload this page
+.
+Languages
+JavaScript
+72.8%
+HTML
+18.3%
+Java
+8.6%
+CSS
+0.3%

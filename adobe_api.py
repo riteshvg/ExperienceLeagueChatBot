@@ -554,7 +554,7 @@ def create_analytics_segment_enhanced(name: str, description: str, rsid: str, co
     Example rules structure:
         rules = [
             {'func': 'streq', 'name': 'variables/geocountry', 'val': 'United States'},
-            {'func': 'gt', 'name': 'variables/pageviews', 'val': 10}
+            {'func': 'gt', 'name': 'metrics/pageviews', 'val': 10}
         ]
     """
     try:

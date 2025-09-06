@@ -1,0 +1,20 @@
+Source URL: https://experienceleague.adobe.com/docs/analytics-learn/tutorials/analysis-workspace/analyzing-customer-journeys/multi-dimensional-fallout.html
+================================================================================
+
+Documentation
+Analytics
+Analytics Tutorials
+Create a fallout visualization
+Last update: Wed May 31 2023 00:00:00 GMT+0000 (Coordinated Universal Time)
+Topics:
+Visualizations
+CREATED FOR:
+Beginner
+User
+Fallout visualizations in Analysis Workspace are used to explore where customers fall through or fall out of key flows on your digital properties. Understand how to add several types of touch points and how to create and use segments in this component.
+https://video.tv.adobe.com/v/345883/?quality=12&learn=on
+For more information on this feature, visit the
+documentation
+.
+recommendation-more-help
+b5d9c99f-be9f-4b96-8809-4e7d6ae353ba

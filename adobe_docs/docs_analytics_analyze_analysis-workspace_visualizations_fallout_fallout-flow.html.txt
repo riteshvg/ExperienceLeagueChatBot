@@ -1,0 +1,46 @@
+Source URL: https://experienceleague.adobe.com/docs/analytics/analyze/analysis-workspace/visualizations/fallout/fallout-flow.html
+================================================================================
+
+Documentation
+Analytics
+Tools Guide
+Fallout overview
+fallout-overview
+Last update: Fri Jun 27 2025 00:00:00 GMT+0000 (Coordinated Universal Time)
+Topics:
+Visualizations
+CREATED FOR:
+User
+Admin
+recommendation-more-help
+This article documents the Fallout visualization in
+Adobe Analytics
+.
+See
+Fallout
+for the
+Customer Journey Analytics
+version of this article.
+style
+shade-box
+A
+Fallout
+visualization shows where persons left (fell out) and continued through (fell through) a predefined sequence of pages.
+See
+Fallout visualization
+for a demo video.
+style
+shade-box
+Fallout visualizations let you
+Perform side-by-side comparisons of two different segments in the same report.
+Drag, drop, and rearrange funnel steps (touchpoints)
+Mix and match values from different dimensions and metrics
+Create a multi-dimensional fallout report
+Identify where customers go immediately after falling out
+Fallout displays conversion and fallout rates between each step or touchpoint in a sequence.
+For example, you can track a visitor’s fallout points during a purchase process. Just select a beginning touchpoint and a conclusion touchpoint, and add intermediate touchpoints to create a website navigation path. But you can also do multi-dimensional fallouts.
+A fallout visualization is useful for analyzing:
+Conversion rates through specific processes on your site (such as a purchase or registration process).
+General, wider-scope traffic flows: Of the people who saw the home page, this flow shows how many went on to perform a search, and then how many of them eventually went on to look at a specific item.
+Correlations between events on your site. Correlations show what percentage of people who looked at your privacy policy went on to purchase a product.
+a83f8947-1ec6-4156-b2fc-94b5551b3efc

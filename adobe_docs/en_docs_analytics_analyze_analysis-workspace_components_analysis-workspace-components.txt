@@ -1,0 +1,172 @@
+Source URL: https://experienceleague.adobe.com/en/docs/analytics/analyze/analysis-workspace/components/analysis-workspace-components
+================================================================================
+
+Documentation
+Analytics
+Tools Guide
+Components overview
+Last update: Fri Jul 04 2025 00:00:00 GMT+0000 (Coordinated Universal Time)
+Topics:
+Components
+CREATED FOR:
+User
+Admin
+Components are features in Adobe Analytics that can be used in visualizations (like Freeform table), or to complement reporting features.
+To manage components from the main Adobe Analytics interface:
+Select
+Components
+from the top bar.
+Select
+Components
+to see an overview of the components you can manage, or directly select the component you want to manage from the menu.
+You can manage the following components:
+Segments
+: Build, manage, share, and apply powerful, focused audience segments to your reports. Segments let you identify subsets of persons based on characteristics or interactions.
+Calculated metrics
+: Use metrics and formulas as new components for use in reporting
+Date ranges
+: Customize and refine the date ranges Analysis Workspace offers.
+Scheduled projects
+: Manage your scheduled projects.
+Locations
+: Manage the locations to export your projects to.
+Alerts
+: Allow you to be notified based on changed percentages or specific data points.
+Annotations
+: Communicate contextual data nuances and insights to your organization.
+Preferences
+: Manage the preferences for Analysis Workspace.
+Analysis Workspace components
+Components in Analysis Workspace consist of metrics, dimensions, segments, and date ranges that you can drag-and-drop onto panels and visualizations in your Workspace project. Custom components that you create are added to these panels, such as a calculated metric, or a custom date range.
+To access the Components panel, select
+Components
+in the button panel.
+See
+Create a project
+for information on how to use components in a project.
+Manage components
+actions
+You can quickly create a new component using the
+Components
+menu in Analysis Workspace. See the
+Analysis Workspace menu
+for more details.
+You can manage components (individually or by selecting more than one).
+Select one or more components.
+From the context menu, or from the
+Component actions button (at the top of Components), select one of the following actions.
+note tip
+TIP
+You can select multiple components by holding
+Shift
+, or by holding
+Command
+(on macOS) or
+Ctrl
+(on Windows).
+table 0-row-2 1-row-2 2-row-2 3-row-2 4-row-2 5-row-2 6-row-2
+Component action
+Description
+Tag
+Organize or manage components by applying tags to them. You can then search by tag in the left panel by selecting the
+filter or typing
+#
+. Tags also act as filters in the component managers.
+Favorite
+Add the component to your list of favorites. Like tags, you can search by Favorites in the left panel and filter by them in the component managers.
+Un-favorite
+Remove the component from your list of favorites.
+Approve
+Mark components as Approved to signal to your users that the component is organization-approved. Like tags, you can search and filter by Approved in the left panel. A
+identifies approved components.
+Share
+Share components to users in your organization. This option is available for custom components only, such as segments or calculated metrics.
+Delete
+Delete components that you no longer need. This option is available for custom components only, such as segments or calculated metrics.
+Custom components can also be managed through their respective Component managers. For example, see
+Manage segments
+.
+Manage the component list
+You can search, filter, and sort the component list in the left panel of Analysis Workspace to locate a particular component.
+Search
+Select
+Components
+in the left panel.
+In the search field, begin typing the name of the component you want to use in your project.
+A color and icon identify the type of component.
+Dimensions
+are orange,
+Segments
+are blue,
+Date ranges
+are purple, and
+Metrics
+are green.
+The Adobe icon
+indicates either a calculated metric template or a segment template. The calculator icon
+indicates a calculated metric that an administrator in your organization has created.
+Select the component from the drop-down menu.
+Filter
+Select the
+Components
+icon
+in the left panel.
+Select
+Filter
+, or enter
+#
+in the search field.
+Select any of the following filter options to filter the list of components:
+table 0-row-3 1-row-3 2-row-3 3-row-3 4-row-3 5-row-3 6-row-3 7-row-3
+Icon
+Filter option
+Description
+Approved
+Show only components that are marked as Approved by an administrator.
+Favorites
+Show only components that are in your list of Favorites.
+For information about adding components to your list of favorites, see
+Manage components
+.
+Dimensions
+Show only components that are Dimensions.
+Metrics
+Show only components that are Metrics.
+Segments
+Show only components that are segments.
+Date ranges
+Show only components that are Date ranges.
+Tag name
+Show only components with the specific selected tags. A dedicated tag is available for Adobe Template which are the
+default calculated metrics
+from Adobe.
+Select
+in a filter to remove the filter.
+You can optionally sort the component list, as described in
+Sort the component list
+.
+Sort
+(Optional) Apply any filters to the component list, as described in
+Filter the component list
+.
+Select
+Components
+in the left panel.
+Select
+Sort
+, then select any of the following filter options to sort the list of components.
+The following sort options are available:
+Option
+Function
+Recommended
+Sorts components with those that are recommended at the top of the list. Components that are used most frequently and most recently by you or by others in your organization are shown higher in the list.
+Alphabetical
+Sorts components alphabetically.
+Categorical
+Sorts components according to component type (dimension, metric, segment, date range).
+Access permissions
+In Analysis Workspace, administrators can
+curate
+which components are exposed to users in reporting.
+recommendation-more-help
+a83f8947-1ec6-4156-b2fc-94b5551b3efc

@@ -1,0 +1,168 @@
+Source URL: https://github.com/AdobeDocs/analytics-2.0-apis
+================================================================================
+
+AdobeDocs
+/
+analytics-2.0-apis
+Public
+Notifications
+You must be signed in to change notification settings
+Fork
+136
+Star
+107
+Documentation for the Adobe Analytics 2.0 APIs
+developer.adobe.com/analytics-apis/docs/2.0/
+License
+Apache-2.0 license
+107
+stars
+136
+forks
+Branches
+Tags
+Activity
+Star
+Notifications
+You must be signed in to change notification settings
+Code
+Issues
+3
+Pull requests
+10
+Actions
+Security
+Uh oh!
+There was an error while loading.
+Please reload this page
+.
+Insights
+Additional navigation options
+Code
+Issues
+Pull requests
+Actions
+Security
+Insights
+AdobeDocs/analytics-2.0-apis
+main
+Branches
+Tags
+Go to file
+Code
+Open more actions menu
+Folders and files
+Name
+Name
+Last commit message
+Last commit date
+Latest commit
+History
+1,413 Commits
+.github
+.github
+.yarn/
+releases
+.yarn/
+releases
+docs
+docs
+resources
+resources
+src
+src
+static
+static
+.env.example
+.env.example
+.gitignore
+.gitignore
+.yarnrc.yml
+.yarnrc.yml
+CODE_OF_CONDUCT.md
+CODE_OF_CONDUCT.md
+COPYRIGHT
+COPYRIGHT
+LICENSE
+LICENSE
+README.md
+README.md
+gatsby-config.js
+gatsby-config.js
+gatsby-ssr.js
+gatsby-ssr.js
+package.json
+package.json
+yarn.lock
+yarn.lock
+View all files
+Repository files navigation
+README
+Code of conduct
+Contributing
+Apache-2.0 license
+Adobe Analytics 2.0 API Documentation
+This is the source repository for the
+Adobe Analytics 2.0 API documentation
+. See the
+Contributing
+page to learn how to make edits or improvements to this repository so they are reflected in the published documentation.
+Most help content is located under
+src/pages/guides/endpoints/
+.
+This site was built with
+Adobe Developer Gatsby Theme
+.
+About
+Documentation for the Adobe Analytics 2.0 APIs
+developer.adobe.com/analytics-apis/docs/2.0/
+Resources
+Readme
+License
+Apache-2.0 license
+Code of conduct
+Code of conduct
+Contributing
+Contributing
+Uh oh!
+There was an error while loading.
+Please reload this page
+.
+Activity
+Custom properties
+Stars
+107
+stars
+Watchers
+26
+watching
+Forks
+136
+forks
+Report repository
+Releases
+1
+Bulk Data Insertion, Data Repair (Beta) and Report Suite APIs
+Latest
+Jul 16, 2020
+Packages
+0
+No packages published
+Uh oh!
+There was an error while loading.
+Please reload this page
+.
+Contributors
+48
+Uh oh!
+There was an error while loading.
+Please reload this page
+.
++ 34 contributors
+Languages
+JavaScript
+77.3%
+Java
+17.3%
+Python
+5.4%

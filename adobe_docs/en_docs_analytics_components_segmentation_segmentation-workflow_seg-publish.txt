@@ -1,0 +1,183 @@
+Source URL: https://experienceleague.adobe.com/en/docs/analytics/components/segmentation/segmentation-workflow/seg-publish
+================================================================================
+
+Documentation
+Analytics
+Components Guide
+Publish segments
+publish-segments
+Last update: Sun Jul 06 2025 00:00:00 GMT+0000 (Coordinated Universal Time)
+Topics:
+Segmentation
+CREATED FOR:
+User
+Admin
+You can publish an Adobe Analytics segment to the Experience Cloud. So, you can use the segment for marketing activity in Audience Manager and in other activation channels, including Advertising Cloud, Target, and Campaign.
+You can publish Analytics segments to Experience Cloud in under 8 hours. Use these segments to activate audiences in Audience Manager to all downstream destinations.
+recommendation-more-help
+See
+Publish segments
+for a demo video.
+style
+shade-box
+NOTE
+Adobe Campaign (Classic and Standard) behaves differently in that it incurs an additional 24-hour latency on top of the 8-hour latency.
+Prerequisites
+Ensure that the report suite that you are saving this segment to is
+enabled for Experience Cloud
+. Otherwise, you cannot publish it to Experience Cloud.
+Ensure that your organization is using Experience Cloud IDs.
+Before you can publish segments, your Admin needs to assign the Segment Publishing permission to a product profile in the
+Admin Console
+, and add you to the product profile.
+Considerations
+Report Suite limits
+: You can publish up to 75 segments per report suite. This limit is enforced. If you already have 75 segments published, you cannot publish any additional segments until you un-publish enough segments to get below the 75-segment threshold.
+Membership limits
+: Audiences shared to the Experience Cloud from Adobe Analytics cannot exceed 20 million unique members.
+Data Privacy
+: Audiences are not filtered based on the authentication state of a visitor. A visitor might be able to browse your site in un-authenticated and authenticated states. Actions that occur when a visitor is un-authenticated can still cause a visitor to be included in an audience. Review
+Adobe Experience Cloud privacy
+to understand the full privacy implications of audience sharing.
+For a discussion about the
+differences between segments in Adobe Analytics and Audience Manager
+, see
+Understand segments in Analytics and Audience Manager
+.
+Segment publishing timeline
+What’s available
+When it’s available
+Where it’s available
+Meta data (segment title and definition)
+Immediately after publishing
+Audience Manager, Experience Cloud Audience Library, Target
+Usable segment with membership
+~ 8 hours after publishing
+Visitor Profile Viewer in Audience Manager
+Trait and membership population
+Within 24-48 hours
+Audience Manager
+NOTE
+Once a week, all data is fully synced to account for any deltas or discrepancies not captured in the previous week.
+Publish segments in Segment builder
+In Adobe Analytics, go to
+Components
+>
+Segments
+Select
+Add
+to create a new segment.
+Provide a title and a description for the segment. These fields are required before you can save the segment.
+In the
+Experience Cloud publishing
+section, select the option
+Publish this segment to the Experience Cloud (for
+report suite
+)
+.
+note important
+IMPORTANT
+Make sure that you monitor
+Visitors with Experience Cloud ID
+in the
+Data Preview
+instead of the
+Unique Visitors
+when you compare Adobe Analytics numbers to Audience Manager numbers.
+Element
+Description
+Publish this segment to the Experience Cloud (for
+report suite
+)
+When this option is enabled, the segment title and definition are shared with Experience Cloud instantaneously, while the segment membership is evaluated and shared every 4 hours.
+When that audience is associated with an activity in Target, for example, Analytics begins sending IDs for visitors that qualify for that Experience Cloud and Target audience. At that point, the audience name and corresponding data begin displaying on the Audience Library page in Experience Cloud.
+Audience Creation Window
+The time frame that you select is used to create the audience on a rolling-calendar basis. For example,
+Last 30 days
+(default) includes visitors that have qualified for the audience over the last 30 days from today’s date (NOT from the original date when the segment was created).
+Create in Audience Library
+The segments that you create and publish can be made available without latency on the Audience Library page in Experience Cloud. They are not dependent on Analytics updates. These segments do not count against your limit of 75 published segments.
+x of 75 Published
+The number of segments that you have published to Experience Cloud. Click the link to see a list of published segments and their associated report suite and owner.
+Save
+Saves this segment.
+Unpublish or delete segments
+CAUTION
+To delete a segment that has been published to Experience Cloud, you have to unpublish the segment first. To unpublish a segment, just unselect
+Publish this segment to the Experience Cloud (for
+report suite
+)
+.
+NOTE
+You
+cannot
+unpublish a segment that is currently in use by any of the following Adobe solutions: Analytics (in Audience Analytics), Campaign, Advertising Cloud (for Core Service & Audience Manager customers) and all other external partners (for Audience Manager customers). You
+can
+unpublish a segment that is in use by Target.
+View the publishing status of segments
+The maximum number of publishable Adobe Analytics segments is 75.
+To view published segments:
+In Adobe Analytics, go to
+Components
+>
+Segments
+.
+View the
+Published
+column.
+Yes
+in this column indicates that the segment is published to Experience Cloud.
+No
+indicates that the segment is not published.
+Retrieve the Audience Manager UUID
+There are two ways to capture the Adobe Audience Manager UUID currently associated with the browser:
+Adobe Experience Cloud Debugger
+Native developer tool in browsers (for example, Chrome Developer Tools)
+The following screenshots show you how to retrieve the Adobe Audience Manager UUID in your browser and use it in Audience Manager Visitor Profile Viewer to validate trait & segment membership.
+Method 1: Use Adobe Experience Cloud Debugger
+Download and install
+Adobe Experience Cloud Debugger
+in the Chrome Web Store.
+Launch the debugger when loading a page.
+Scroll to the Audience Manager section and find the Adobe Audience Manager UUID set on the current browser page
+(
+35721780439475290181087231320657663953
+in the example below)
+Method 2: Use Chrome Developer Tools (or other browser developer tools)
+Launch Chrome Developer Tools before loading a page
+Load the page and check Applications > Cookies. The Adobe Audience Manager UUID should be set in the third-party
+Demdex cookie (
+adobe.demdex.net
+in the example below). The field demdex is the Adobe Audience Manager UUID set
+on the browser (
+35721780439475290181087231320657663953
+in the example below).
+Use Audience Manager Visitor Profile Viewer
+The Adobe Audience Manager UUID on the browser is by default when Visitor Profile Viewer is loaded. If you verify trait realizations for other users, input a UUID in the UUID field and click Refresh. Refer to
+Visitor Profile Viewer
+for more information.
+View the segment traits in Audience Manager
+In Adobe Audience Manager, the list of visitors with ECIDs for a given segment is evaluated while Analytics shares segments with Experience Cloud.
+In Audience Manager, go to
+Audience Data
+>
+Traits
+>
+Analytics Traits
+. You see a folder for each Analytics reports suite that is mapped to your Experience Cloud organization. These folders (for Traits, Segments, and Data Sources) get created when the Profiles and Audiences/People core service gets initiated or provisioned.
+Select the folder for the report suite in which you previously created the segment you wanted to share with Audience Manager. You see the segment/audience you created. When you share a segment, 2 things happen in Audience Manager:
+A trait gets created, first with no data in it. Approx. 8 hours after the segment gets published in Analytics, the list of ECIDs gets onboarded and shared with Audience Manager and other Experience Cloud solutions.
+A one-trait segment gets created. It uses the data source that is associated with the report suite where you published the segment.
+Trait expiration is now set to 16 days (previously it was 2 days).
+View the segment in Adobe Target
+The
+Publish this segment to the Experience Cloud
+allows the segment to be available within the Adobe Target’s custom audience library. A segment created in Analytics or Audience Manager can be used for activities in Target. For example, you can create campaign activities based on Analytics conversion metrics and audience segments created in Analytics.
+In Adobe Target:
+Select
+Audiences
+.
+On the
+Audiences
+page, locate the audience sourced from the Experience Cloud. These audiences are available for use in Target activities.
+46b8682c-fda6-4669-9355-1a44923e549e

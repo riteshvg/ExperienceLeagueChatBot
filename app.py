@@ -26,6 +26,22 @@ except ImportError:
     SOURCE_ATTRIBUTION_AVAILABLE = False
     st.warning("⚠️ Source attribution system not available. Install source_attributor.py")
 
+# Import segment utilities
+try:
+    from segment_utils import (
+        build_segment_payload,
+        validate_segment_config_realtime,
+        render_live_preview_section,
+        render_validation_messages,
+        validate_segment_name_realtime,
+        validate_rsid_realtime,
+        validate_rules_realtime
+    )
+    SEGMENT_UTILS_AVAILABLE = True
+except ImportError:
+    SEGMENT_UTILS_AVAILABLE = False
+    st.warning("⚠️ Segment utilities not available. Install segment_utils.py")
+
 def categorize_sources(sources):
     """Categorize sources into Adobe docs and Stack Overflow"""
     adobe_sources = []
@@ -495,13 +511,13 @@ def generate_segment_suggestions(intent_details):
             if behavior == 'page_views':
                 rules.append({
                     'func': 'gt',
-                    'name': 'variables/pageviews',  # This is a standard Adobe variable
+                    'name': 'metrics/pageviews',  # Page views are metrics, not variables
                     'val': 5
                 })
             elif behavior == 'time_on_site':
                 rules.append({
                     'func': 'gt',
-                    'name': 'variables/timeonsite',  # Use correct Adobe variable name
+                    'name': 'metrics/timeonsite',  # Time on site is a metric, not a variable
                     'val': 600  # 10 minutes in seconds
                 })
     
@@ -1198,8 +1214,16 @@ Answer:"""
         
         # Use streaming for faster response
         for chunk in llm.stream(direct_prompt):
+            # Handle different response types properly
             if hasattr(chunk, 'content') and chunk.content:
-                yield chunk.content  # Stream the content
+                yield chunk.content
+            elif isinstance(chunk, str):
+                yield chunk
+            elif hasattr(chunk, 'text'):
+                yield chunk.text
+            else:
+                # Fallback: convert to string
+                yield str(chunk)
                 
     except Exception as e:
         yield f"Error generating direct response: {str(e)}"
@@ -1367,13 +1391,13 @@ def handle_segment_creation_workflow(prompt, action_details):
         suggestions = generate_segment_suggestions(action_details)
         
         st.subheader("💡 Suggested Configuration")
-        st.info(f"**Suggested Name:** {suggestions['segment_name']}")
-        st.info(f"**Suggested Description:** {suggestions['segment_description']}")
-        st.info(f"**Recommended Rules:** {len(suggestions['recommended_rules'])} rules")
+        st.info(f"**Suggested Name:** {suggestions.get('segment_name', 'New Segment')}")
+        st.info(f"**Suggested Description:** {suggestions.get('segment_description', '')}")
+        st.info(f"**Recommended Rules:** {len(suggestions.get('recommended_rules', []))} rules")
         
         # Show next steps
         st.subheader("🔄 Next Steps")
-        for i, step in enumerate(suggestions['next_steps'], 1):
+        for i, step in enumerate(suggestions.get('next_steps', []), 1):
             st.markdown(f"{i}. {step}")
         
         # Action buttons
@@ -1564,149 +1588,11 @@ def render_segment_creation_workflow():
                     st.session_state.current_workflow = 'segment_builder'
                     st.rerun()
 
-def transform_rules_to_adobe_format(rules, target_audience):
-    """
-    Transform simplified rules into proper Adobe Analytics 2.0 API segment format
-    
-    Args:
-        rules: List of simplified rule objects
-        target_audience: Target audience context (visitors, visits, hits)
-    
-    Returns:
-        dict: Adobe Analytics 2.0 API compatible segment definition
-    """
-    if not rules:
-        return None
-    
-    # If only one rule, create simple structure
-    if len(rules) == 1:
-        rule = rules[0]
-        return {
-            "version": [1, 0, 0],
-            "func": "segment",
-            "container": {
-                "func": "container",
-                "context": target_audience,
-                "pred": {
-                    "func": "container",
-                    "context": "hits",
-                    "pred": {
-                        "func": rule.get('func', 'streq'),
-                        "val": {
-                            "func": "attr",
-                            "name": rule.get('name', 'variables/geocountry')
-                        },
-                        "str": rule.get('str', rule.get('val', ''))
-                    }
-                }
-            }
-        }
-    
-    # If multiple rules, create container with AND logic
-    pred_conditions = []
-    
-    for rule in rules:
-        if rule.get('func') == 'streq':
-            pred_conditions.append({
-                "func": "container",
-                "context": "hits",
-                "pred": {
-                    "func": "streq",
-                    "val": {
-                        "func": "attr",
-                        "name": rule.get('name', 'variables/geocountry')
-                    },
-                    "str": rule.get('str', rule.get('val', ''))
-                }
-            })
-        elif rule.get('func') == 'gt':
-            pred_conditions.append({
-                "func": "container",
-                "context": "hits",
-                "pred": {
-                    "func": "gt",
-                    "val": {
-                        "func": "attr",
-                        "name": rule.get('name', 'variables/pageviews')
-                    },
-                    "num": rule.get('val', 0)
-                }
-            })
-        elif rule.get('func') == 'event-exists':
-            pred_conditions.append({
-                "func": "container",
-                "context": "hits",
-                "pred": {
-                    "func": "event-exists",
-                    "evt": {
-                        "func": "event",
-                        "name": rule.get('evt', {}).get('name', 'metrics/purchase')
-                    }
-                }
-            })
-        elif rule.get('func') == 'streq-in':
-            pred_conditions.append({
-                "func": "container",
-                "context": "hits",
-                "pred": {
-                    "func": "streq-in",
-                    "val": {
-                        "func": "attr",
-                        "name": rule.get('name', 'variables/dayofweek')
-                    },
-                    "list": rule.get('list', [])
-                }
-            })
-        elif rule.get('func') == 'not-streq':
-            pred_conditions.append({
-                "func": "container",
-                "context": "hits",
-                "pred": {
-                    "func": "not-streq",
-                    "val": {
-                        "func": "attr",
-                        "name": rule.get('name', 'variables/mobiledevice')
-                    },
-                    "str": rule.get('str', rule.get('val', ''))
-                }
-            })
-    
-    # If we have multiple conditions, combine them with AND logic
-    if len(pred_conditions) > 1:
-        return {
-            "version": [1, 0, 0],
-            "func": "segment",
-            "container": {
-                "func": "container",
-                "context": target_audience,
-                "pred": {
-                    "func": "and",
-                    "preds": pred_conditions
-                }
-            }
-        }
-    else:
-        # Fallback to single rule format
-        return {
-            "version": [1, 0, 0],
-            "func": "segment",
-            "container": {
-                "func": "container",
-                "context": target_audience,
-                "pred": pred_conditions[0] if pred_conditions else {
-                    "func": "container",
-                    "context": "hits",
-                    "pred": {
-                        "func": "streq",
-                        "val": {
-                            "func": "attr",
-                            "name": "variables/geocountry"
-                        },
-                        "str": "United States"
-                    }
-                }
-            }
-        }
+# Import the function from segment_utils instead of defining it here
+from segment_utils import build_adobe_definition
+
+# Alias for backward compatibility
+transform_rules_to_adobe_format = build_adobe_definition
 
 def render_segment_builder_workflow():
     """Render the segment builder workflow within the main app."""
@@ -1773,23 +1659,23 @@ def render_segment_builder_workflow():
     col1, col2 = st.columns(2)
     
     with col1:
-        st.metric("Target Audience", intent_data['action_details'].get('target_audience', 'visitors').title())
-        if intent_data['action_details'].get('device'):
-            st.metric("Device Type", intent_data['action_details']['device'].title())
-        if intent_data['action_details'].get('complexity'):
-            st.metric("Complexity", intent_data['action_details']['complexity'].title())
+        st.metric("Target Audience", intent_data.get('action_details', {}).get('target_audience', 'visitors').title())
+        if intent_data.get('action_details', {}).get('device'):
+            st.metric("Device Type", intent_data.get('action_details', {})['device'].title())
+        if intent_data.get('action_details', {}).get('complexity'):
+            st.metric("Complexity", intent_data.get('action_details', {})['complexity'].title())
     
     with col2:
-        if intent_data['action_details'].get('geographic'):
-            st.metric("Geographic", intent_data['action_details']['geographic'].title())
-        if intent_data['action_details'].get('time_based'):
-            st.metric("Time-based", intent_data['action_details']['time_based'].replace('_', ' ').title())
-        if intent_data['action_details'].get('intent_confidence'):
-            st.metric("Confidence", intent_data['action_details']['intent_confidence'].title())
+        if intent_data.get('action_details', {}).get('geographic'):
+            st.metric("Geographic", intent_data.get('action_details', {})['geographic'].title())
+        if intent_data.get('action_details', {}).get('time_based'):
+            st.metric("Time-based", intent_data.get('action_details', {})['time_based'].replace('_', ' ').title())
+        if intent_data.get('action_details', {}).get('intent_confidence'):
+            st.metric("Confidence", intent_data.get('action_details', {})['intent_confidence'].title())
     
     # Display Claude's enhanced analysis if available
     if intent_data.get('claude_enhanced'):
-        enhanced_details = intent_data['action_details']
+        enhanced_details = intent_data.get('action_details', {})
         
         if enhanced_details.get('business_context'):
             st.markdown("**🎯 Business Context:**")
@@ -1821,11 +1707,11 @@ def render_segment_builder_workflow():
         st.markdown("---")
     
     # Display relevant examples from vector database
-    if 'relevant_examples' in intent_data['suggestions'] and intent_data['suggestions']['relevant_examples']:
+    if 'relevant_examples' in intent_data.get('suggestions', {}) and intent_data.get('suggestions', {}).get('relevant_examples'):
         st.subheader("📚 Relevant Segment Examples")
         st.info("Based on your request, here are some relevant segment examples from our database:")
         
-        for i, example in enumerate(intent_data['suggestions']['relevant_examples']):
+        for i, example in enumerate(intent_data.get('suggestions', {}).get('relevant_examples', [])):
             with st.expander(f"📋 {example.get('name', 'Example Segment')}", expanded=False):
                 col1, col2 = st.columns([2, 1])
                 with col1:
@@ -1848,11 +1734,11 @@ def render_segment_builder_workflow():
                 }, indent=2), language="json")
     
     # Display enhanced suggestions if available
-    if intent_data['suggestions'].get('claude_enhanced'):
+    if intent_data.get('suggestions', {}).get('claude_enhanced'):
         st.subheader("🧠 Enhanced Suggestions")
         st.success("✨ Powered by Anthropic Claude for intelligent segment recommendations")
         
-        suggestions = intent_data['suggestions']
+        suggestions = intent_data.get('suggestions', {})
         
         # Show alternative configurations
         if suggestions.get('alternative_configurations'):
@@ -1970,30 +1856,46 @@ def render_segment_builder_workflow():
     # Segment configuration
     st.subheader("⚙️ Segment Configuration")
     
-    # Basic information
+    # Basic information with real-time validation
     segment_name = st.text_input(
         "Segment Name",
-        value=intent_data['suggestions']['segment_name'],
-        help="Enter a descriptive name for your segment"
+        value=intent_data.get('suggestions', {}).get('segment_name', 'New Segment'),
+        help="Enter a descriptive name for your segment",
+        key="app_segment_name_input"
     )
+    
+    # Real-time name validation
+    if SEGMENT_UTILS_AVAILABLE:
+        is_name_valid, name_error = validate_segment_name_realtime(segment_name)
+        if not is_name_valid:
+            st.error(f"❌ {name_error}")
     
     segment_description = st.text_area(
         "Description",
-        value=intent_data['suggestions']['segment_description'],
-        help="Describe what this segment targets"
+        value=intent_data.get('suggestions', {}).get('segment_description', ''),
+        help="Describe what this segment targets",
+        key="app_segment_description_input"
     )
     
     rsid = st.text_input(
         "Report Suite ID (RSID)",
         value="argupaepdemo",
-        help="Enter your Adobe Analytics Report Suite ID"
+        help="Enter your Adobe Analytics Report Suite ID",
+        key="app_segment_rsid_input"
     )
+    
+    # Real-time RSID validation
+    if SEGMENT_UTILS_AVAILABLE:
+        is_rsid_valid, rsid_error = validate_rsid_realtime(rsid)
+        if not is_rsid_valid:
+            st.error(f"❌ {rsid_error}")
     
     target_audience = st.selectbox(
         "Target Audience",
         options=["visitors", "visits", "hits"],
         index=0,
-        help="Select the context for your segment"
+        help="Select the context for your segment",
+        key="app_segment_target_audience_input"
     )
     
     # Rules configuration
@@ -2001,7 +1903,7 @@ def render_segment_builder_workflow():
     st.info("Configure the rules that define your segment")
     
     # Dynamic rule configuration based on detected intent
-    intent_details = intent_data['action_details']
+    intent_details = intent_data.get('action_details', {})
     configured_rules = []
     
     # Geographic rule configuration
@@ -2174,7 +2076,7 @@ def render_segment_builder_workflow():
                 if page_views_threshold:
                     configured_rules.append({
                         'func': 'gt',
-                        'name': 'variables/pageviews',
+                        'name': 'metrics/pageviews',
                         'val': page_views_threshold,
                         'type': 'behavioral',
                         'description': f'Users with more than {page_views_threshold} page views'
@@ -2192,7 +2094,7 @@ def render_segment_builder_workflow():
                 if time_threshold:
                     configured_rules.append({
                         'func': 'gt',
-                        'name': 'variables/timeonsite',
+                        'name': 'metrics/timeonsite',
                         'val': time_threshold,
                         'type': 'behavioral',
                         'description': f'Users with session duration > {time_threshold} seconds'
@@ -2312,114 +2214,148 @@ def render_segment_builder_workflow():
                     'description': f'Users visiting during {", ".join(selected_times)}'
                 })
     
-    # Live preview of configured rules
-    st.write("**🔍 Live Preview of Configured Rules**")
-    
-    if configured_rules:
-        # Show rules in a nice format with live updates
-        for i, rule in enumerate(configured_rules):
-            with st.expander(f"Rule {i+1}: {rule.get('description', 'Custom Rule')}", expanded=True):
-                # Create a more readable display
-                col1, col2 = st.columns([1, 2])
-                
-                with col1:
-                    st.write(f"**Type:** {rule.get('type', 'Unknown').title()}")
-                    st.write(f"**Function:** {rule.get('func', 'Unknown')}")
-                
-                with col2:
-                    if rule.get('type') == 'geographic':
-                        st.write(f"**Target:** {rule.get('val', 'Unknown')}")
-                        st.write(f"**Variable:** {rule.get('name', 'Unknown')}")
-                    elif rule.get('type') == 'device':
-                        st.write(f"**Device:** {rule.get('val', 'Unknown')}")
-                        st.write(f"**eVar:** {rule.get('name', 'Unknown')}")
-                    elif rule.get('type') == 'behavioral':
-                        if rule.get('func') == 'gt':
-                            st.write(f"**Threshold:** {rule.get('val', 'Unknown')}")
-                            st.write(f"**Metric:** {rule.get('name', 'Unknown')}")
-                        elif rule.get('func') == 'event-exists':
-                            st.write(f"**Event:** {rule.get('evt', {}).get('name', 'Unknown')}")
-                    elif rule.get('type') == 'time_based':
-                        if rule.get('func') == 'streq-in':
-                            st.write(f"**Values:** {', '.join(rule.get('list', []))}")
-                            st.write(f"**Variable:** {rule.get('name', 'Unknown')}")
+    # Live preview using shared utilities
+    if SEGMENT_UTILS_AVAILABLE:
+        # Create segment config for validation and preview
+        segment_config = {
+            'name': segment_name,
+            'description': segment_description,
+            'rsid': rsid,
+            'target_audience': target_audience,
+            'rules': configured_rules
+        }
+        
+        # Real-time validation of rules
+        with st.spinner('🔄 Validating rules...'):
+            are_rules_valid, rule_errors = validate_rules_realtime(configured_rules)
+        
+        if not are_rules_valid:
+            render_validation_messages(rule_errors)
+        
+        # Use shared live preview function
+        render_live_preview_section(segment_config, configured_rules)
+    else:
+        # Fallback to original preview if segment utils not available
+        st.write("**🔍 Live Preview of Configured Rules**")
+        
+        if configured_rules:
+            # Show rules in a nice format with live updates
+            for i, rule in enumerate(configured_rules):
+                with st.expander(f"Rule {i+1}: {rule.get('description', 'Custom Rule')}", expanded=True):
+                    # Create a more readable display
+                    col1, col2 = st.columns([1, 2])
                     
-                    # Show the raw rule structure in a collapsible section
-                    with st.expander("📋 Raw Rule Structure", expanded=False):
-                        st.json(rule)
+                    with col1:
+                        st.write(f"**Type:** {rule.get('type', 'Unknown').title()}")
+                        st.write(f"**Function:** {rule.get('func', 'Unknown')}")
+                    
+                    with col2:
+                        if rule.get('type') == 'geographic':
+                            st.write(f"**Target:** {rule.get('val', 'Unknown')}")
+                            st.write(f"**Variable:** {rule.get('name', 'Unknown')}")
+                        elif rule.get('type') == 'device':
+                            st.write(f"**Device:** {rule.get('val', 'Unknown')}")
+                            st.write(f"**eVar:** {rule.get('name', 'Unknown')}")
+                        elif rule.get('type') == 'behavioral':
+                            if rule.get('func') == 'gt':
+                                st.write(f"**Threshold:** {rule.get('val', 'Unknown')}")
+                                st.write(f"**Metric:** {rule.get('name', 'Unknown')}")
+                            elif rule.get('func') == 'event-exists':
+                                st.write(f"**Event:** {rule.get('evt', {}).get('name', 'Unknown')}")
+                        elif rule.get('type') == 'time_based':
+                            if rule.get('func') == 'streq-in':
+                                st.write(f"**Values:** {', '.join(rule.get('list', []))}")
+                                st.write(f"**Variable:** {rule.get('name', 'Unknown')}")
+                        
+                        # Show the raw rule structure in a collapsible section
+                        with st.expander("📋 Raw Rule Structure", expanded=False):
+                            st.json(rule)
+                
+                # Summary of all rules
+                st.success(f"✅ **{len(configured_rules)} rules configured successfully!**")
+                
+                # Show what the segment will target
+                st.write("**🎯 This segment will target:**")
+                targeting_summary = []
+                for rule in configured_rules:
+                    targeting_summary.append(rule.get('description', 'Custom rule'))
+                
+                for summary in targeting_summary:
+                    st.write(f"• {summary}")
+                
+                # Preview Adobe Analytics format
+                st.subheader("🔍 Adobe Analytics Format Preview")
+                st.info("This is how your segment will be structured when sent to Adobe Analytics:")
+                
+                try:
+                    adobe_definition = transform_rules_to_adobe_format(configured_rules, target_audience)
+                    adobe_payload = {
+                        "name": segment_name,
+                        "description": segment_description,
+                        "rsid": rsid,
+                        "definition": adobe_definition
+                    }
+                    
+                    # Show the Adobe Analytics format
+                    st.json(adobe_payload)
+                    
+                    # Explain the structure
+                    with st.expander("📚 Understanding Adobe Analytics Format", expanded=False):
+                        st.write("""
+                        **Adobe Analytics Segment Structure:**
+                        
+                        - **version**: Segment definition version
+                        - **func**: Function type (always 'segment')
+                        - **container**: Contains the segment logic
+                        - **context**: Target audience (visitors, visits, hits)
+                        - **pred**: Predicate defining the segment conditions
+                        - **func**: Comparison function (streq, gt, event-exists, etc.)
+                        - **val**: Value object with attribute function
+                        - **name**: Variable name (e.g., variables/geocountry)
+                        - **str**: String value for comparison
+                        """)
+                        
+                except Exception as e:
+                    st.error(f"Could not generate Adobe Analytics format preview: {str(e)}")
+                    
+            else:
+                st.warning("⚠️ **No rules configured yet.** Please fill in the fields above to see live updates.")
+                st.info("💡 **Tip:** As you fill in the fields above, the configured rules will appear here automatically!")
+    
+    # Create segment button with enhanced validation
+    if configured_rules:
+        # Overall validation status
+        overall_valid = True
+        
+        if SEGMENT_UTILS_AVAILABLE:
+            # Use shared validation
+            with st.spinner('🔄 Validating configuration...'):
+                is_name_valid, _ = validate_segment_name_realtime(segment_name)
+                is_rsid_valid, _ = validate_rsid_realtime(rsid)
+                are_rules_valid, _ = validate_rules_realtime(configured_rules)
             
-            # Summary of all rules
-            st.success(f"✅ **{len(configured_rules)} rules configured successfully!**")
-            
-            # Show what the segment will target
-            st.write("**🎯 This segment will target:**")
-            targeting_summary = []
-            for rule in configured_rules:
-                targeting_summary.append(rule.get('description', 'Custom rule'))
-            
-            for summary in targeting_summary:
-                st.write(f"• {summary}")
-            
-            # Preview Adobe Analytics format
-            st.subheader("🔍 Adobe Analytics Format Preview")
-            st.info("This is how your segment will be structured when sent to Adobe Analytics:")
-            
-            try:
-                adobe_definition = transform_rules_to_adobe_format(configured_rules, target_audience)
-                adobe_payload = {
-                    "name": segment_name,
-                    "description": segment_description,
-                    "rsid": rsid,
-                    "definition": adobe_definition
+            overall_valid = is_name_valid and is_rsid_valid and are_rules_valid
+        else:
+            # Basic validation fallback
+            overall_valid = segment_name and segment_description and rsid
+        
+        if st.button("🚀 Create Segment", type="primary", use_container_width=True, disabled=not overall_valid):
+            if overall_valid:
+                # Create segment configuration
+                segment_config = {
+                    'name': segment_name,
+                    'description': segment_description,
+                    'rsid': rsid,
+                    'target_audience': target_audience,
+                    'rules': configured_rules
                 }
                 
-                # Show the Adobe Analytics format
-                st.json(adobe_payload)
-                
-                # Explain the structure
-                with st.expander("📚 Understanding Adobe Analytics Format", expanded=False):
-                    st.write("""
-                    **Adobe Analytics Segment Structure:**
-                    
-                    - **version**: Segment definition version
-                    - **func**: Function type (always 'segment')
-                    - **container**: Contains the segment logic
-                    - **context**: Target audience (visitors, visits, hits)
-                    - **pred**: Predicate defining the segment conditions
-                    - **func**: Comparison function (streq, gt, event-exists, etc.)
-                    - **val**: Value object with attribute function
-                    - **name**: Variable name (e.g., variables/geocountry)
-                    - **str**: String value for comparison
-                    """)
-                    
-            except Exception as e:
-                st.error(f"Could not generate Adobe Analytics format preview: {str(e)}")
-                
-        else:
-            st.warning("⚠️ **No rules configured yet.** Please fill in the fields above to see live updates.")
-            st.info("💡 **Tip:** As you fill in the fields above, the configured rules will appear here automatically!")
-    
-    # Create segment button (outside of form for real-time updates)
-    if configured_rules:
-        if st.button("🚀 Create Segment", type="primary", use_container_width=True):
-            # Validate inputs
-            if not segment_name or not segment_description or not rsid:
-                st.error("❌ Please fill in all required fields.")
-                return
-            
-            # Create segment configuration
-            segment_config = {
-                'name': segment_name,
-                'description': segment_description,
-                'rsid': rsid,
-                'target_audience': target_audience,
-                'rules': configured_rules
-            }
-            
-            # Store in session state for the next step
-            st.session_state.segment_config = segment_config
-            st.session_state.current_workflow = 'segment_creation'
-            st.rerun()
+                # Store in session state for the next step
+                st.session_state.segment_config = segment_config
+                st.session_state.current_workflow = 'segment_creation'
+                st.rerun()
+            else:
+                st.error("❌ Please fix all validation errors before creating the segment.")
     else:
         st.info("ℹ️ **Complete the configuration above to enable segment creation.**")
 
@@ -2693,6 +2629,7 @@ def main():
                     # Enhanced segment workflow with Claude integration
                     enhanced_intent = action_details
                     segment_definition = None
+                    claude_llm = None  # Initialize claude_llm
                     
                     # Try to enhance with Claude if available and in Direct mode
                     if response_mode == "Direct LLM (No RAG)" and llm_provider == "Anthropic Claude (Cloud)":
@@ -2764,11 +2701,18 @@ def main():
                                 
                                 # Show streaming indicator
                                 with st.spinner("🤖 Claude is thinking..."):
-                                    # Stream the response
-                                    for chunk in generate_direct_response_stream(prompt, direct_llm, llm_provider):
-                                        if isinstance(chunk, str):
-                                            full_response += chunk
-                                            message_placeholder.markdown(full_response + "▌")
+                                    try:
+                                        # Stream the response
+                                        for chunk in generate_direct_response_stream(prompt, direct_llm, llm_provider):
+                                            if isinstance(chunk, str):
+                                                full_response += chunk
+                                                message_placeholder.markdown(full_response + "▌")
+                                    except Exception as stream_error:
+                                        # Fallback to non-streaming if streaming fails
+                                        st.warning("⚠️ Streaming failed, using standard response...")
+                                        response_data = generate_direct_response(prompt, direct_llm, llm_provider)
+                                        full_response = response_data.get("result", "Error generating response")
+                                        message_placeholder.markdown(full_response)
                                 
                                 # Final response without cursor
                                 message_placeholder.markdown(full_response)

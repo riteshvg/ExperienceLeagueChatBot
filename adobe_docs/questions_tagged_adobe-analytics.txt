@@ -1,0 +1,195 @@
+Source URL: https://stackoverflow.com/questions/tagged/adobe-analytics?sort=votes&pageSize=50
+================================================================================
+
+Page: Subscribe to RSS
+
+Question 1: Every WebKit-based browser crashes sites using Omniture. Why?
+
+Excerpt: Actually, a more accurate statement is:
+  Every WebKit-based browser crashes on http://m.allrecipes.com/ but only in a Samsung Continuum SCH-i400 phone.
+I am trying to implement a WebView-based ...
+
+Tags: android, webkit, android-webview, samsung-mobile, adobe-analytics
+
+---
+
+Question 2: TypeError: load_pem_private_key() missing 1 required positional argument: 'backend'
+
+Excerpt: I'm trying to pull adobe analytics data using adobe API2.0, I'm a newbie in this, So following this repo I did provide all details, such as APIKEY, techaccountID, org_id, client secret, modified ...
+
+Tags: python, adobe, jwt, adobe-analytics
+
+---
+
+Question 3: How to implement adobe analytics in Next Js (React )?
+
+Excerpt: I have given the requirement to add adobe analytics in the react js application that I have built.
+
+Please apologize me that I don't have any basic idea/ understanding on how to implement it, So help ...
+
+Tags: javascript, reactjs, react-native, next.js, adobe-analytics
+
+---
+
+Question 4: DTM Events are not reflecting in dashboard with new SDK version 4.x
+
+Excerpt: I have used Omniture/DTM latest SDK in my iOS application, I have followed the migration document provided by marketing.adobe.com, and all logs are requesting to Adobe server as per our requirements - ...
+
+Tags: ios, dashboard, adobe-analytics
+
+---
+
+Question 5: IOError: [Errno 2] No such file or directory: 'README.md'
+
+Excerpt: When I try to install omniture using pip I receive the following error:
+
+IOError: [Errno 2] No such file or directory: 'README.md'
+I am basically trying to connect to the Adobe Analytics API.
+Can ...
+
+Tags: python, pip, adobe-analytics
+
+---
+
+Question 6: OAuth 2 Authorization Code - how long is it valid?
+
+Excerpt: In Webserver Grant Flow
+After I obtain the Authorization Code from the authorization authority (after the user has authorized my access) how long is that code usually valid form?
+The reason i am ...
+
+Tags: google-analytics, google-api, google-oauth, google-analytics-api, adobe-analytics
+
+---
+
+Question 7: Tracking video milestones from a custom HTML5 video player to Omniture Media Module?
+
+Excerpt: I've got a mobile Javascript application that occasionally dynamically-creates a <video> element on the screen. I need to track video plays with Omniture. I have bound the play, pause, ended, ...
+
+Tags: javascript, html, video, dom-events, adobe-analytics
+
+---
+
+Question 8: How to Automate Web Analytics testing?
+
+Excerpt: Omniture/SiteCatalyst's code is integrated onto the webpage to collect the analytics in our firm.
+
+Current process: SiteCatalyst id deployed by pasting HTML code onto each page of the website. This ...
+
+Tags: google-analytics, automation, adobe-analytics
+
+---
+
+Question 9: How can i track user's choice in chrome when native app install banner shows using adobe analytics
+
+Excerpt: My mobile website when viewed on chrome, pops up the banner to ask the user if he/she wants to install the native app. Am able to use this by using the manifest.json. Since this pop up behavior is ...
+
+Tags: google-chrome, adobe-analytics, manifest.json
+
+---
+
+Question 10: Use AdobeMobileLibrary (for iOS) with cocoapods?
+
+Excerpt: We are going to use Omniture-Tracking for iOS, which is part of AdobeMobileLibrary.
+AdobeAdobeMobileLibrary is not available via cocoapods-repo (only an older version of Omniture), but as a static-...
+
+Tags: ios, static-libraries, cocoapods, adobe-analytics
+
+---
+
+Question 11: DTM - s.t function and page load rules relation
+
+Excerpt: It's not clear to me how Dynamic Tag Manager (DTM) executes the Adobe Analytics Page Load rules and specifically when does it fire the Adobe Analytics request (s.t function). 
+
+Adobe provides this ...
+
+Tags: javascript, adobe-analytics
+
+---
+
+Question 12: Adobe Analytics API request for ranked report using RSiteCatalyst package. Totals doesn't correspond to what I see in the Dashboard frontend
+
+Excerpt: I'm using R with the package RSiteCatalyst to get some information about number of visits for the last month to a set of sites:
+
+# Extract data for job search visits
+jobSearch <- QueueRanked(...
+
+Tags: r, adobe-analytics
+
+---
+
+Question 13: Where is 's' object cached when using AppMeasurement in DTM
+
+Excerpt: Omniture's basic page tracking function, s.t(), was not crafted for AJAX implementation. Unlike the onclick s.tl() function which has some gating instructions with s.linkTrackVars and s....
+
+Tags: adobe-analytics
+
+---
+
+Question 14: analytics script is not sending data from shadow DOM
+
+Excerpt: We are working on tracking a site which has components built using Shadow DOM concepts, when we are creating a rule in launch to add tagging to these components it’s not working. 
+
+Can you guide us ...
+
+Tags: dom, adobe, shadow, adobe-analytics
+
+---
+
+Question 15: Omniture sends double metrics on Safari browser
+
+Excerpt: I use omniture analytics for tracking when is product is viewed when shopping on the site. 
+These reports are send normally in FF, Chrome, IE browsers, but somehow when using Safari the reports are ...
+
+Tags: safari, analytics, adobe-analytics
+
+---
+
+Question 16: Omniture tracking and jQuery
+
+Excerpt: I've been creating a few websites with content being pulled with jQuery and CSS calling to the #div containers. Does anyone know a way to use Omniture Site Catalyst tracking code while creating these ...
+
+Tags: javascript, jquery, html, adobe-analytics
+
+---
+
+Question 17: will Omniture s.tl() function result in 0% bounce rate
+
+Excerpt: Will the Omniture s.tl() function count as an additional 'visit', therefore resulting in a non-bounce for that visitor?
+
+Tags: adobe-analytics
+
+---
+
+Question 18: jQuery form submit vs document.form.submit
+
+Excerpt: I have the following form:
+<form name="dealerLocatorForm"method="post"action="result.php">...</form>  
+
+I have attached the Omniture SiteCatalyst formAnalyis plugin to it, which is ...
+
+Tags: javascript, jquery, forms, adobe-analytics
+
+---
+
+Question 19: Adobe analytics - can I call _satellite.pageBottom() on dom ready?
+
+Excerpt: I'm working on a wordpress site, and have been tasked with integrating with Adobe Analytics. The instructions are to include a script at the top of the page:
+
+<script src="//assets.adobedtm.com/...
+
+Tags: dom, adobe, analytics, adobe-analytics, page-lifecycle
+
+---
+
+Question 20: App references non-public selectors in payload/AppName:consume
+
+Excerpt: I am facing issue where it shows warning below while uploading an App to Appstore 
+
+App references non-public selectors in payload/AppName:consume
+Any help is appreciated.
+
+I have uploaded the app ...
+
+Tags: xcode, app-store, adobe, ios8, adobe-analytics
+
+---

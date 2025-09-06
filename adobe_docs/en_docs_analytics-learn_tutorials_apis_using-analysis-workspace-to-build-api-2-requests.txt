@@ -1,0 +1,28 @@
+Source URL: https://experienceleague.adobe.com/en/docs/analytics-learn/tutorials/apis/using-analysis-workspace-to-build-api-2-requests
+================================================================================
+
+Documentation
+Analytics
+Analytics Tutorials
+Using Analysis Workspace to Build Adobe Analytics API 2.0 Requests
+using-analysis-workspace-to-build-adobe-analytics-api-requests
+Last update: Mon Jun 24 2024 00:00:00 GMT+0000 (Coordinated Universal Time)
+Topics:
+API
+CREATED FOR:
+Experienced
+Developer
+In this video, we show you how to leverage Analysis Workspace to build API 2.0 requests automatically. By debugging the UI, you can copy & paste JSON requests directly into any API client to return Analytics data. You can now enable the debugger more easily by going to Workspace Help > Enable Debugger.
+https://video.tv.adobe.com/v/25890/?quality=12&learn=on
+Transcript
+Hi this is Jen Lasser with Adobe Analytics Product Management. In this video I’m going show you how to use Analysis Workspace To build API 2.0 requests.
+The first thing you want to do when you are in an Analysis Workspace project is turn on what we call an OBEROn debugger. To do this you want to go to; more tools, developer tools, in the Chrome browser.
+In the console you want to type in adobe .tools .debug .includeoveronXML =true and hit enter. Once we’ve turned that on we’ll go ahead and reload the browser page.
+Back in Workspace we’ll go ahead and build a Freeform table. So we’ll just do a simple request for the demonstration. We’ll bring in page. Occurrences is the default but we’ll also just bring in visits. So we built a very simple page table here. So clicking on the bug up here, we call this the OBEROn bug. Within the Freeform Table folder, you want to select the requests with the latest timestamp. You can see the XML requests in response that was made on your behalf. Scrolling down a bit further, you can also see the JSON requests and response. The JSON request is the exact format that an API 2.0 request needs to be made to return data. So we’ll go ahead and copy this to our clipboard. Moving over to the Swagger UI, we can go ahead and test this JSON request that was created for us in Analysis Workspace. The Swagger UI is a place where you can test API 2.0 methods and calls. It is very similar to the 1.4 API Explorer that we offered previously.
+After you’ve logged in you can select your company and then you can choose from different API 2.0 methods that you want to try out. We’ll go to down to the reports methods and we’ll click on post and then we can go ahead and click try it out.
+In this screen we can go ahead and paste the JSON request that we got from the Analysis Workspace. So, I’ll just select all and replace the contents that are in here. Scrolling down a bit further, we can go ahead and click execute. What this is going to do is it’s going to run that JSON request that Analysis Workspace created for us and it’ll show us the response down below. In the body of the response you can see that the pages report was run for us with the visits metric and we can see all the different items that have been returned. So, homepage, purchase step one, so on and so forth. This data matches what you see in Analysis Workspace. Once you’re finished creating your request and learning how to build API queries you can go ahead to your console again and just turn off the debugger by doing adobe.tools .debug.includeoveronxml =false and hitting enter. That way the next time you come back to Workspace the orange bug will be gone. So this has been a demonstration of how to use the OBEROn debugger in Analysis Workspace to create API 2.0 requests. Hope you guys enjoy exploring the new API 2.0.
+For more information, visit the
+documentation
+.
+recommendation-more-help
+b5d9c99f-be9f-4b96-8809-4e7d6ae353ba

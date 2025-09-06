@@ -8,6 +8,7 @@ with human intervention points and intelligent suggestions based on user intent.
 
 import streamlit as st
 import json
+import copy
 from typing import Dict, Any, List, Optional
 import sys
 import os
@@ -17,6 +18,15 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from app import detect_create_action, generate_segment_suggestions
 from adobe_api import create_analytics_segment_from_json, get_company_id
+from segment_utils import (
+    build_segment_payload,
+    validate_segment_config_realtime,
+    render_live_preview_section,
+    render_validation_messages,
+    validate_segment_name_realtime,
+    validate_rsid_realtime,
+    validate_rules_realtime
+)
 
 
 class SegmentBuilder:
@@ -46,7 +56,13 @@ class SegmentBuilder:
                 },
                 'custom_rules': [],
                 'validation_errors': [],
-                'creation_status': None
+                'creation_status': None,
+                'real_time_validation': {
+                    'name_valid': True,
+                    'rsid_valid': True,
+                    'rules_valid': True,
+                    'overall_valid': False
+                }
             }
         
         # Check if we have pre-populated intent from the main app
@@ -131,9 +147,9 @@ class SegmentBuilder:
                 st.error(f"❌ I detected a '{action_type}' action, but this builder is for segments only.")
     
     def render_configuration_step(self):
-        """Render the segment configuration step."""
-        st.header("⚙️ Step 2: Segment Configuration")
-        st.markdown("Review and customize your segment configuration.")
+        """Render the segment configuration step with real-time validation and live preview."""
+        st.header("⚙️ Step 2: Segment Configuration & Review")
+        st.markdown("Configure your segment and see live preview as you make changes.")
         
         intent = self.session_state.segment_builder_state['detected_intent']
         suggestions = self.session_state.segment_builder_state['segment_suggestions']
@@ -159,37 +175,57 @@ class SegmentBuilder:
         
         st.markdown("---")
         
-        # Segment basic information
+        # Segment basic information with real-time validation
         st.subheader("📝 Basic Information")
         
         col1, col2 = st.columns(2)
         with col1:
-            config['name'] = st.text_input(
+            # Name input with real-time validation
+            name_input = st.text_input(
                 "Segment Name",
                 value=config['name'],
-                help="A descriptive name for your segment"
+                help="A descriptive name for your segment",
+                key="segment_name_input"
             )
+            config['name'] = name_input
             
-            config['rsid'] = st.text_input(
+            # Real-time name validation
+            is_name_valid, name_error = validate_segment_name_realtime(name_input)
+            self.session_state.segment_builder_state['real_time_validation']['name_valid'] = is_name_valid
+            if not is_name_valid:
+                st.error(f"❌ {name_error}")
+            
+            # RSID input with real-time validation
+            rsid_input = st.text_input(
                 "Report Suite ID",
                 value=config.get('rsid', ''),
                 placeholder="e.g., argupaepdemo",
-                help="The Adobe Analytics Report Suite ID where this segment will be created"
+                help="The Adobe Analytics Report Suite ID where this segment will be created",
+                key="segment_rsid_input"
             )
+            config['rsid'] = rsid_input
+            
+            # Real-time RSID validation
+            is_rsid_valid, rsid_error = validate_rsid_realtime(rsid_input)
+            self.session_state.segment_builder_state['real_time_validation']['rsid_valid'] = is_rsid_valid
+            if not is_rsid_valid:
+                st.error(f"❌ {rsid_error}")
         
         with col2:
             config['description'] = st.text_area(
                 "Description",
                 value=config['description'],
                 height=100,
-                help="A detailed description of what this segment represents"
+                help="A detailed description of what this segment represents",
+                key="segment_description_input"
             )
             
             config['target_audience'] = st.selectbox(
                 "Target Audience",
                 options=['visitors', 'visits', 'hits'],
                 index=['visitors', 'visits', 'hits'].index(config['target_audience']),
-                help="The level at which this segment will be applied"
+                help="The level at which this segment will be applied",
+                key="segment_target_audience_input"
             )
         
         # Rules configuration
@@ -198,8 +234,11 @@ class SegmentBuilder:
         if suggestions['recommended_rules']:
             st.info(f"💡 I've generated {len(suggestions['recommended_rules'])} recommended rules based on your intent.")
             
+            # Create working copy to avoid mutating suggestions
+            working_rules = copy.deepcopy(suggestions.get('recommended_rules', []))
+            
             # Display recommended rules
-            for i, rule in enumerate(suggestions['recommended_rules']):
+            for i, rule in enumerate(working_rules):
                 with st.expander(f"Rule {i+1}: {rule.get('func', 'Unknown')} - {rule.get('name', 'Unknown')}"):
                     col1, col2, col3 = st.columns(3)
                     
@@ -240,7 +279,8 @@ class SegmentBuilder:
                             key=f"rule_{i}_str"
                         )
             
-            config['rules'] = suggestions['recommended_rules']
+            # Assign working copy to config
+            config['rules'] = working_rules
         else:
             st.warning("⚠️ No specific rules detected. You'll need to add custom rules.")
             config['rules'] = []
@@ -305,7 +345,27 @@ class SegmentBuilder:
         # Add custom rules to main config
         config['rules'].extend(self.session_state.segment_builder_state['custom_rules'])
         
-        # Next steps
+        # Real-time validation of rules
+        with st.spinner('🔄 Validating rules...'):
+            are_rules_valid, rule_errors = validate_rules_realtime(config['rules'])
+        self.session_state.segment_builder_state['real_time_validation']['rules_valid'] = are_rules_valid
+        
+        if not are_rules_valid:
+            render_validation_messages(rule_errors)
+        
+        # Live preview section
+        st.markdown("---")
+        render_live_preview_section(config)
+        
+        # Overall validation status
+        overall_valid = (
+            self.session_state.segment_builder_state['real_time_validation']['name_valid'] and
+            self.session_state.segment_builder_state['real_time_validation']['rsid_valid'] and
+            self.session_state.segment_builder_state['real_time_validation']['rules_valid']
+        )
+        self.session_state.segment_builder_state['real_time_validation']['overall_valid'] = overall_valid
+        
+        # Action buttons
         st.markdown("---")
         col1, col2, col3 = st.columns(3)
         
@@ -315,181 +375,24 @@ class SegmentBuilder:
                 st.rerun()
         
         with col2:
-            if st.button("✅ Continue to Review", type="primary"):
-                if self.validate_configuration():
-                    self.session_state.segment_builder_state['current_step'] = 'review'
-                    st.rerun()
+            if st.button("🚀 Create Segment", type="primary", disabled=not overall_valid):
+                if overall_valid:
+                    self.create_segment_directly()
+                else:
+                    st.error("❌ Please fix all validation errors before creating the segment.")
         
         with col3:
             if st.button("🏠 Back to Main App", type="secondary"):
                 st.switch_page("app.py")
     
-    def validate_configuration(self) -> bool:
-        """Validate the segment configuration."""
-        config = self.session_state.segment_builder_state['segment_config']
-        errors = []
-        
-        if not config['name'].strip():
-            errors.append("Segment name is required")
-        
-        if not config['rsid'].strip():
-            errors.append("Report Suite ID is required")
-        
-        if not config['rules']:
-            errors.append("At least one rule is required")
-        
-        # Validate rules
-        for i, rule in enumerate(config['rules']):
-            if not rule.get('name'):
-                errors.append(f"Rule {i+1}: Variable name is required")
-            
-            # For string comparison functions, we need either 'str' or 'val' field
-            if rule.get('func') in ['streq', 'contains']:
-                if not rule.get('str') and not rule.get('val'):
-                    errors.append(f"Rule {i+1}: String value is required for {rule['func']}")
-        
-        self.session_state.segment_builder_state['validation_errors'] = errors
-        
-        if errors:
-            st.error("❌ Please fix the following errors:")
-            for error in errors:
-                st.error(f"  - {error}")
-            return False
-        
-        return True
-    
-    def render_review_step(self):
-        """Render the review and creation step."""
-        st.header("📋 Step 3: Review & Create")
-        st.markdown("Review your segment configuration before creating it.")
-        
+    def create_segment_directly(self):
+        """Create the segment directly from the configuration step."""
         config = self.session_state.segment_builder_state['segment_config']
         
-        # Configuration summary
-        st.subheader("📊 Configuration Summary")
+        # Build the payload using shared utilities
+        payload = build_segment_payload(config)
         
-        col1, col2 = st.columns(2)
-        with col1:
-            st.info(f"**Name:** {config['name']}")
-            st.info(f"**Description:** {config['description']}")
-            st.info(f"**Target Audience:** {config['target_audience']}")
-        
-        with col2:
-            st.info(f"**Report Suite ID:** {config['rsid']}")
-            st.info(f"**Total Rules:** {len(config['rules'])}")
-            st.info(f"**Status:** Ready to create")
-        
-        # Rules preview
-        st.subheader("🔧 Rules Preview")
-        
-        for i, rule in enumerate(config['rules']):
-            with st.expander(f"Rule {i+1}: {rule.get('func', 'Unknown')}"):
-                st.json(rule)
-        
-        # JSON preview
-        st.subheader("📄 Generated JSON")
-        
-        segment_payload = self.build_segment_payload()
-        
-        st.code(json.dumps(segment_payload, indent=2), language="json")
-        
-        # Creation actions
-        st.markdown("---")
-        col1, col2, col3, col4 = st.columns(4)
-        
-        with col1:
-            if st.button("🔙 Back to Configuration", type="secondary"):
-                self.session_state.segment_builder_state['current_step'] = 'configuration'
-                st.rerun()
-        
-        with col2:
-            if st.button("💾 Save Configuration", type="secondary"):
-                self.save_configuration(segment_payload)
-        
-        with col3:
-            if st.button("🚀 Create Segment", type="primary"):
-                self.create_segment(segment_payload)
-        
-        with col4:
-            if st.button("🏠 Back to Main App", type="secondary"):
-                st.switch_page("app.py")
-    
-    def build_segment_payload(self) -> Dict[str, Any]:
-        """Build the complete segment payload for Adobe Analytics API."""
-        config = self.session_state.segment_builder_state['segment_config']
-        
-        # Build the definition structure
-        if len(config['rules']) == 1:
-            # Single rule
-            rule = config['rules'][0]
-            definition = {
-                "version": [1, 0, 0],
-                "func": "segment",
-                "container": {
-                    "func": "container",
-                    "context": config['target_audience'],
-                    "pred": {
-                        "func": rule.get("func", "streq"),
-                        "val": {
-                            "func": "attr",
-                            "name": rule.get("name", "variables/page")
-                        }
-                    }
-                }
-            }
-            
-            # Add string value for string comparisons
-            if rule.get('func') in ['streq', 'contains'] and rule.get('str'):
-                definition["container"]["pred"]["str"] = rule['str']
-        else:
-            # Multiple rules - use the simple working structure
-            # For now, we'll use the first rule as the primary rule
-            # This is a limitation we can address in future enhancements
-            # Adobe Analytics has specific requirements for complex rule combinations
-            primary_rule = config['rules'][0]
-            
-            definition = {
-                "version": [1, 0, 0],
-                "func": "segment",
-                "container": {
-                    "func": "container",
-                    "context": config['target_audience'],
-                    "pred": {
-                        "func": primary_rule.get("func", "streq"),
-                        "val": {
-                            "func": "attr",
-                            "name": primary_rule.get("name", "variables/page")
-                        }
-                    }
-                }
-            }
-            
-            # Add string value for string comparisons
-            if primary_rule.get('func') in ['streq', 'contains'] and (primary_rule.get('str') or primary_rule.get('val')):
-                definition["container"]["pred"]["str"] = primary_rule.get('str') or primary_rule.get('val')
-            
-            # Handle numeric values for comparison functions
-            if primary_rule.get('func') in ['gt', 'lt', 'gte', 'lte']:
-                definition["container"]["pred"]["val"] = primary_rule.get('val', 0)
-        
-        # Build the complete payload
-        payload = {
-            "name": config['name'],
-            "description": config['description'],
-            "rsid": config['rsid'],
-            "definition": definition
-        }
-        
-        return payload
-    
-    def save_configuration(self, payload: Dict[str, Any]):
-        """Save the segment configuration for later use."""
-        # This could save to a file, database, or session state
-        st.success("✅ Configuration saved successfully!")
-        st.info("You can now create the segment or modify the configuration further.")
-    
-    def create_segment(self, payload: Dict[str, Any]):
-        """Create the segment using the Adobe Analytics API."""
+        # Create the segment
         with st.spinner("🚀 Creating your segment..."):
             try:
                 # Get company ID
@@ -529,9 +432,10 @@ class SegmentBuilder:
                     'message': str(e)
                 }
     
+    
     def render_completion_step(self):
         """Render the completion step."""
-        st.header("🎉 Step 4: Completion")
+        st.header("🎉 Step 3: Completion")
         st.markdown("Your segment has been created successfully!")
         
         status = self.session_state.segment_builder_state['creation_status']
@@ -590,7 +494,13 @@ class SegmentBuilder:
             },
             'custom_rules': [],
             'validation_errors': [],
-            'creation_status': None
+            'creation_status': None,
+            'real_time_validation': {
+                'name_valid': True,
+                'rsid_valid': True,
+                'rules_valid': True,
+                'overall_valid': False
+            }
         }
     
     def render(self):
@@ -605,22 +515,20 @@ class SegmentBuilder:
         st.markdown("Create sophisticated segments with intelligent suggestions and human intervention.")
         
         # Progress indicator
-        steps = ['intent_detection', 'configuration', 'review', 'completion']
+        steps = ['intent_detection', 'configuration', 'completion']
         current_step = self.session_state.segment_builder_state['current_step']
         current_index = steps.index(current_step) if current_step in steps else 0
         
         st.progress((current_index + 1) / len(steps))
         
         # Step navigation
-        col1, col2, col3, col4 = st.columns(4)
+        col1, col2, col3 = st.columns(3)
         with col1:
             st.markdown(f"**1. Intent Detection** {'✅' if current_index >= 0 else '⏳'}")
         with col2:
-            st.markdown(f"**2. Configuration** {'✅' if current_index >= 1 else '⏳'}")
+            st.markdown(f"**2. Configuration & Review** {'✅' if current_index >= 1 else '⏳'}")
         with col3:
-            st.markdown(f"**3. Review** {'✅' if current_index >= 2 else '⏳'}")
-        with col4:
-            st.markdown(f"**4. Completion** {'✅' if current_index >= 3 else '⏳'}")
+            st.markdown(f"**3. Completion** {'✅' if current_index >= 2 else '⏳'}")
         
         st.markdown("---")
         
@@ -629,8 +537,6 @@ class SegmentBuilder:
             self.render_intent_detection_step()
         elif current_step == 'configuration':
             self.render_configuration_step()
-        elif current_step == 'review':
-            self.render_review_step()
         elif current_step == 'completion':
             self.render_completion_step()
         else:

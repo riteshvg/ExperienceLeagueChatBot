@@ -1,0 +1,95 @@
+Source URL: https://experienceleague.adobe.com/en/docs/analytics/implementation/vars/overview
+================================================================================
+
+Documentation
+Analytics
+Implementation Guide
+Variables, functions, methods, and plug-ins overview
+Last update: Mon Jun 23 2025 00:00:00 GMT+0000 (Coordinated Universal Time)
+Topics:
+Appmeasurement Implementation
+CREATED FOR:
+Admin
+Developer
+Analytics provides a number of variables to collect Analytics data. Variables in this section are split into several sections:
+Page variables
+are values that are typically used directly in reporting. Common page variables include
+props
+,
+eVars
+, and
+events
+.
+Config variables
+are settings values that help make sure the correct data reaches Adobe. Common config variables include
+trackingServerSecure
+,
+charSet
+, and
+linkTrackVars
+. Config variables typically do not populate dimension items.
+Functions and methods
+are pieces of code that perform a specific task when referenced. Common functions include
+t()
+,
+tl()
+, and
+clearVars()
+.
+Variables and implementation methods
+Adobe offers multiple ways to implement Adobe Analytics. Each page offers a section on how to implement the variable using the Web SDK, using the Adobe Analytics extension, and using AppMeasurement for JavaScript.
+recommendation-more-help
+See
+Configuring variables
+for a demo video.
+style
+shade-box
+Order of operations
+AppMeasurement libraries published by Adobe Analytics follow a specific order when sending data to Adobe. If you execute these tasks out of order, data can be incomplete.
+If your site uses a data layer, make sure all applicable variables are populated first. For example, you populate
+adobeDataLayer.page.title
+with the page title. See
+Data layer
+for more information.
+Use the data layer to populate Analytics variables.
+If you use tags in Adobe Experience Platform, this task is accomplished by using data elements in between. Data elements are populated with values from the data layer. For example data element
+Page Title
+gets the value from data layer variable
+adobeDataLayer.page.title
+.
+Then you can use the data element to populate Analytics variables. For example
+eVar4
+gets the value from data element
+Page Title
+.
+See for more information
+Data elements
+,
+Map data layer objects to data elements
+, and
+Map tag data elements to Analytics variables
+Finally, call the tracking function. Most AppMeasurement libraries use the
+t()
+method, however some mobile SDK’s use
+track()
+. When the tracking function is called, all supported variables defined in the Analytics object are sent to Adobe in the form of an image request.
+Illegal characters
+The following characters and strings are never allowed in JavaScript variables.
+Tab (
+0x09
+)
+Carriage return (
+0x0D
+)
+Newline (
+0x0A
+)
+HTML tags (e.g.
+<b></b>
+or
+&#153
+)
+Some variables have additional limitations or syntax requirements. For example, the
+products
+variable reserves semicolons and commas to delimit separate products and categories.
+b4f6d761-4a8b-4322-b801-c85b9e3be690

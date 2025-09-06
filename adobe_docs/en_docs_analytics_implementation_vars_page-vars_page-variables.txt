@@ -1,0 +1,25 @@
+Source URL: https://experienceleague.adobe.com/en/docs/analytics/implementation/vars/page-vars/page-variables
+================================================================================
+
+Documentation
+Analytics
+Implementation Guide
+Page variables overview
+Last update: Mon Jun 23 2025 00:00:00 GMT+0000 (Coordinated Universal Time)
+Topics:
+Appmeasurement Implementation
+CREATED FOR:
+Admin
+Developer
+Page variables determine the values for dimensions and metrics in reporting.
+The following list are variables frequently used in implementations:
+pageName
+: The name of the page.
+campaign
+: Set this variable to a query string parameter for campaign tracking.
+events
+: Populate metrics for use in reporting.
+products
+: If you have an eCommerce site, set this variable when a visitor views or purchases a product.
+recommendation-more-help
+b4f6d761-4a8b-4322-b801-c85b9e3be690

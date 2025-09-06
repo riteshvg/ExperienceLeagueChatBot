@@ -4,16 +4,16 @@ Source URL: https://experienceleague.adobe.com/en/docs/analytics/analyze/admin-o
 Documentation
 Analytics
 Tools Guide
-Adobe overview
+Adobe Analytics overview
 Last update: Fri Jan 31 2025 00:00:00 GMT+0000 (Coordinated Universal Time)
 Topics:
 Analytics Basics
 CREATED FOR:
 User
 Admin
-Adobe enables organizations to gather data and gain actionable insights from any digital customer interaction. With in-depth analysis, versatile reporting, and predictive intelligence, organizations get the insightful foundation they need to build better experiences for their customers.
-Get started with Adobe
-Use the following resources to learn the basics of Adobe:
+Adobe Analytics enables organizations to gather data and gain actionable insights from any digital customer interaction. With in-depth analysis, versatile reporting, and predictive intelligence, organizations get the insightful foundation they need to build better experiences for their customers.
+Get started with Adobe Analytics
+Use the following resources to learn the basics of Adobe Analytics:
 Documentation resource
 Function
 Get started (by role)
@@ -21,29 +21,29 @@ Provides detailed information explaining key features and tasks you need to be a
 Understand the Analytics interface
 Outlines key areas of the Analytics interface.
 Use cases
-Explains some of the key ways that Adobe helps organizations gain critical insights in order to better serve their customers.
-Which Adobe tool should I use?
-Contains recommended use cases for each Adobe tool.
+Explains some of the key ways that Adobe Analytics helps organizations gain critical insights in order to better serve their customers.
+Which Adobe Analytics tool should I use?
+Contains recommended use cases for each Adobe Analytics tool.
 Analytics product comparison and requirements
-Compares the various Adobe products that are available.
+Compares the various Adobe Analytics products that are available.
 System requirements
-Explains prerequisites and system requirements for implementing and using Adobe.
+Explains prerequisites and system requirements for implementing and using Adobe Analytics.
 Video overview
-To learn about Adobe basics, check out this
-Intro to Adobe - Skill Builder Webinar
-video. The video walks you through the basics of how data is captured, how data is sent to Adobe, and what visualization capabilities you can use within Adobe. The video provides a foundation for you to build, deploy, collect, and interpret data, allowing you to provide actionable insights and recommendations based on the collected data.
+To learn about Adobe Analytics basics, check out this
+Intro to Adobe Analytics - Skill Builder Webinar
+video. The video walks you through the basics of how data is captured, how data is sent to Adobe Analytics, and what visualization capabilities you can use within Adobe Analytics. The video provides a foundation for you to build, deploy, collect, and interpret data, allowing you to provide actionable insights and recommendations based on the collected data.
 recommendation-more-help
 See
-Intro to Adobe - Skill Builder
+Intro to Adobe Analytics - Skill Builder
 for the webinar video.
 style
 shade-box
 For questions about which tool to use, see
-Which Adobe tool should I use?
+Which Adobe Analytics tool should I use?
 .
 Go further with Customer Journey Analytics
 Customer Journey Analytics is Adobe’s next-generation Analytics solution that lets you use the power of Analysis Workspace with data from Adobe Experience Platform. It can break down, filter, query, and visualize years’ worth of data, and is combined with Platform’s ability to hold all kinds of data schemas and types.
-Following are some of the advantages of Customer Journey Analytics over Adobe:
+Following are some of the advantages of Customer Journey Analytics over Adobe Analytics:
 Unlimited variables and events
 : The concepts of eVars, props, and events no longer exist. Data is primarily focused on dimensions and metrics. Datasets can have an unlimited number of unique dimensions and metrics.
 Unlimited unique values

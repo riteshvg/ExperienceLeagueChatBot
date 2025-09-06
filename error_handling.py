@@ -258,17 +258,48 @@ class ValidationErrorHandler:
         return True, None
     
     @staticmethod
+    def validate_segment_name_realtime(name: str) -> Tuple[bool, Optional[str]]:
+        """Validate segment name in real-time with progressive feedback."""
+        if not name:
+            return True, None  # Allow empty for real-time validation
+        
+        if len(name.strip()) < 3:
+            return False, "Segment name must be at least 3 characters long"
+        
+        if len(name.strip()) > 100:
+            return False, "Segment name must be less than 100 characters"
+        
+        # Check for invalid characters
+        invalid_chars = ['<', '>', '&', '"', "'", '\\', '/']
+        for char in invalid_chars:
+            if char in name:
+                return False, f"Segment name contains invalid character: {char}"
+        
+        return True, None
+    
+    @staticmethod
     def validate_rsid(rsid: str) -> Tuple[bool, Optional[str]]:
         """Validate Report Suite ID format."""
         if not rsid or not rsid.strip():
             return False, "Report Suite ID is required"
         
-        # RSID should be alphanumeric and typically 8-20 characters
-        if not rsid.strip().isalnum():
-            return False, "Report Suite ID should contain only letters and numbers"
+        # RSID should be alphanumeric with underscores and hyphens, typically 8-20 characters
+        import re
+        if not re.fullmatch(r'^[A-Za-z0-9_-]{8,20}$', rsid.strip()):
+            return False, "Report Suite ID should contain only letters, numbers, underscores, and hyphens (8-20 characters)"
         
-        if len(rsid.strip()) < 8 or len(rsid.strip()) > 20:
-            return False, "Report Suite ID should be 8-20 characters long"
+        return True, None
+    
+    @staticmethod
+    def validate_rsid_realtime(rsid: str) -> Tuple[bool, Optional[str]]:
+        """Validate RSID format in real-time with progressive feedback."""
+        if not rsid:
+            return True, None  # Allow empty for real-time validation
+        
+        # RSID should be alphanumeric with underscores and hyphens, typically 8-20 characters
+        import re
+        if not re.fullmatch(r'^[A-Za-z0-9_-]{8,20}$', rsid.strip()):
+            return False, "Report Suite ID should contain only letters, numbers, underscores, and hyphens (8-20 characters)"
         
         return True, None
     
@@ -286,21 +317,72 @@ class ValidationErrorHandler:
             # Check required fields
             if 'func' not in rule:
                 rule_errors.append("Function type is required")
-            elif rule['func'] not in ['streq', 'gt', 'lt', 'gte', 'lte', 'contains', 'regex']:
+            elif rule['func'] not in ['streq', 'gt', 'lt', 'gte', 'lte', 'contains', 'regex', 'event-exists', 'streq-in', 'not-streq']:
                 rule_errors.append(f"Invalid function type: {rule['func']}")
             
-            if 'name' not in rule:
+            if 'name' not in rule and rule.get('func') != 'event-exists':
                 rule_errors.append("Variable name is required")
-            elif not rule['name'].startswith('variables/'):
+            elif 'name' in rule and not rule['name'].startswith('variables/'):
                 rule_errors.append("Variable name should start with 'variables/'")
             
             # Check value field based on function type
             if rule.get('func') in ['gt', 'lt', 'gte', 'lte']:
                 if 'val' not in rule or not isinstance(rule['val'], (int, float)):
                     rule_errors.append("Numeric value is required for comparison functions")
-            elif rule.get('func') in ['streq', 'contains']:
+            elif rule.get('func') in ['streq', 'contains', 'not-streq']:
                 if not rule.get('str') and not rule.get('val'):
                     rule_errors.append("String value is required for string functions")
+            elif rule.get('func') == 'event-exists':
+                if 'evt' not in rule or not isinstance(rule['evt'], dict):
+                    rule_errors.append("Event object is required for event-exists function")
+                elif 'name' not in rule['evt'] or not rule['evt']['name'].startswith('metrics/'):
+                    rule_errors.append("Event name should start with 'metrics/' for event-exists function")
+            elif rule.get('func') == 'streq-in':
+                if 'list' not in rule or not isinstance(rule['list'], list) or len(rule['list']) == 0:
+                    rule_errors.append("Non-empty list is required for streq-in function")
+            
+            if rule_errors:
+                errors.append(f"Rule {i+1}: {'; '.join(rule_errors)}")
+        
+        return len(errors) == 0, errors
+    
+    @staticmethod
+    def validate_segment_rules_realtime(rules: List[Dict[str, Any]]) -> Tuple[bool, List[str]]:
+        """Validate segment rules structure in real-time with progressive feedback."""
+        errors = []
+        
+        if not rules:
+            return True, []  # Allow empty for real-time validation
+        
+        for i, rule in enumerate(rules):
+            rule_errors = []
+            
+            # Check required fields
+            if 'func' not in rule:
+                rule_errors.append("Function type is required")
+            elif rule['func'] not in ['streq', 'gt', 'lt', 'gte', 'lte', 'contains', 'regex', 'event-exists', 'streq-in', 'not-streq']:
+                rule_errors.append(f"Invalid function type: {rule['func']}")
+            
+            if 'name' not in rule and rule.get('func') != 'event-exists':
+                rule_errors.append("Variable name is required")
+            elif 'name' in rule and not rule['name'].startswith('variables/'):
+                rule_errors.append("Variable name should start with 'variables/'")
+            
+            # Check value field based on function type
+            if rule.get('func') in ['gt', 'lt', 'gte', 'lte']:
+                if 'val' not in rule or not isinstance(rule['val'], (int, float)):
+                    rule_errors.append("Numeric value is required for comparison functions")
+            elif rule.get('func') in ['streq', 'contains', 'not-streq']:
+                if not rule.get('str') and not rule.get('val'):
+                    rule_errors.append("String value is required for string functions")
+            elif rule.get('func') == 'event-exists':
+                if 'evt' not in rule or not isinstance(rule['evt'], dict):
+                    rule_errors.append("Event object is required for event-exists function")
+                elif 'name' not in rule['evt'] or not rule['evt']['name'].startswith('metrics/'):
+                    rule_errors.append("Event name should start with 'metrics/' for event-exists function")
+            elif rule.get('func') == 'streq-in':
+                if 'list' not in rule or not isinstance(rule['list'], list) or len(rule['list']) == 0:
+                    rule_errors.append("Non-empty list is required for streq-in function")
             
             if rule_errors:
                 errors.append(f"Rule {i+1}: {'; '.join(rule_errors)}")
@@ -442,6 +524,115 @@ def validate_segment_configuration(name: str, rsid: str, rules: List[Dict[str, A
         errors.extend(rule_errors)
     
     return len(errors) == 0, errors
+
+
+def validate_segment_name_realtime(name: str) -> Tuple[bool, Optional[str]]:
+    """
+    Validate segment name in real-time for immediate feedback.
+    
+    Args:
+        name: Segment name to validate
+        
+    Returns:
+        Tuple of (is_valid, error_message)
+    """
+    return validation_handler.validate_segment_name_realtime(name)
+
+
+def validate_rsid_realtime(rsid: str) -> Tuple[bool, Optional[str]]:
+    """
+    Validate RSID format in real-time for immediate feedback.
+    
+    Args:
+        rsid: Report Suite ID to validate
+        
+    Returns:
+        Tuple of (is_valid, error_message)
+    """
+    return validation_handler.validate_rsid_realtime(rsid)
+
+
+def validate_rules_realtime(rules: List[Dict[str, Any]]) -> Tuple[bool, List[str]]:
+    """
+    Validate rule structure in real-time for immediate feedback.
+    
+    Args:
+        rules: List of rules to validate
+        
+    Returns:
+        Tuple of (is_valid, list_of_error_messages)
+    """
+    return validation_handler.validate_segment_rules_realtime(rules)
+
+
+def validate_segment_config_realtime(config: Dict[str, Any]) -> Tuple[bool, List[str]]:
+    """
+    Perform comprehensive real-time validation of segment configuration.
+    
+    Args:
+        config: Segment configuration to validate
+        
+    Returns:
+        Tuple of (is_valid, list_of_error_messages)
+    """
+    errors = []
+    
+    # Validate name
+    is_name_valid, name_error = validate_segment_name_realtime(config.get('name', ''))
+    if not is_name_valid:
+        errors.append(name_error)
+    
+    # Validate RSID
+    is_rsid_valid, rsid_error = validate_rsid_realtime(config.get('rsid', ''))
+    if not is_rsid_valid:
+        errors.append(rsid_error)
+    
+    # Validate rules
+    are_rules_valid, rule_errors = validate_rules_realtime(config.get('rules', []))
+    if not are_rules_valid:
+        errors.extend(rule_errors)
+    
+    return len(errors) == 0, errors
+
+
+def get_validation_summary(config: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    Get a comprehensive validation summary for the segment configuration.
+    
+    Args:
+        config: Segment configuration to validate
+        
+    Returns:
+        Dictionary with validation summary including field-level status
+    """
+    summary = {
+        'overall_valid': True,
+        'field_errors': {},
+        'total_errors': 0
+    }
+    
+    # Validate name
+    is_name_valid, name_error = validate_segment_name_realtime(config.get('name', ''))
+    if not is_name_valid:
+        summary['field_errors']['name'] = name_error
+        summary['overall_valid'] = False
+        summary['total_errors'] += 1
+    
+    # Validate RSID
+    is_rsid_valid, rsid_error = validate_rsid_realtime(config.get('rsid', ''))
+    if not is_rsid_valid:
+        summary['field_errors']['rsid'] = rsid_error
+        summary['overall_valid'] = False
+        summary['total_errors'] += 1
+    
+    # Validate rules
+    are_rules_valid, rule_errors = validate_rules_realtime(config.get('rules', []))
+    if not are_rules_valid:
+        summary['field_errors']['rules'] = rule_errors
+        summary['overall_valid'] = False
+        summary['total_errors'] += len(rule_errors)
+    
+    return summary
 
 
 def create_error_summary(error_log: List[Dict[str, Any]]) -> Dict[str, Any]:

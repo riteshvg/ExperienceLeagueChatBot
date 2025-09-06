@@ -1,0 +1,26 @@
+Source URL: https://experienceleague.adobe.com/en/docs/analytics-learn/tutorials/analysis-workspace/analyzing-customer-journeys/understand-your-data-fallout-flow
+================================================================================
+
+Documentation
+Analytics
+Analytics Tutorials
+Understand your data–Fallout & Flow
+Last update: Mon Jul 12 2021 00:00:00 GMT+0000 (Coordinated Universal Time)
+Topics:
+Visualizations
+CREATED FOR:
+Beginner
+User
+Learn how our pathing and funnel tools work together to better understand insights from user journeys.
+https://video.tv.adobe.com/v/334095/?quality=12&learn=on
+Transcript
+Hello, this is Travis Sabin with Adobe Analytics Product Management. And today I’m going to be walking through a video to help you better understand your data using a Fallout & Flow tool together. So, for my Fallout funnel, I am going to build it off of the actions that my users are performing. So, I have people who come in and View the Product, Add a Product to Cart, and then Complete a Purchase.
+And looking at this, I can see right away that, in this very first step, I’m losing 90% of my traffic. Only about 10% are keeping with it. And so, I know this is a huge drop-off point that I needed to try and address. And so, I want to know where they’re going instead. So, if I right-click, one of our options here is to break down the Fallout at this touchpoint, to know where people are going immediately after, instead of continuing along that path. And so, it immediately generates this table for me and gives me the other actions that they are performing instead of adding a product to cart. So, you can see that they’re going and navigating across other areas of the site. This is super helpful, but I want to analyze them further. So, if I come back to my fallout and I right-click, I can create a segment from this touchpoint as well. So, I can capture and give this a name, Product Viewers, and I can save it. And now I can use that segment to analyze them a little bit further. So here they are on my Segment list. So now I actually want to analyze them using a Flow. So, I’ve got a Flow started down here with my action name. I’m going to drag this on here, and I’m going to expand out my Flow to see where these people are going.
+So now that I have my Flow expanded, I can see for these people who viewed the product, there’s actually some previous steps they were doing. First, they go to the category page and the subcategory page before they even be the product. So, I’m missing a couple steps in my funnel. And then I can see all the other paths that they’re taking. Now many of them were actually adding to cart and are purchasing, but are starting to purchase. But they’re also going a bunch of other just random pages. Back to the category page. There’s a chunk of them just leaving and falling out altogether. And so, I can start seeing some of the other behaviors and patterns in terms of what people are doing. And so, this is really helpful to identify ways to redirect them and get them back on the path that I want. Using these tools together, it’s super valuable to provide some additional color to what we’re seeing here, and maybe why there’s some dropouts. So, something about the experiences driving them back to those subcategory pages, the category page, and things like that, where they’re not completing this journey that I would want them to. So, using these two tools together can better help you understand your data and the insights that you’re seeing. Thank you. - -
+For more information, please visit the documentation for
+Fallout
+and
+Flow
+visualizations.
+recommendation-more-help
+b5d9c99f-be9f-4b96-8809-4e7d6ae353ba

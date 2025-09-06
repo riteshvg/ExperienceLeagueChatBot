@@ -1,0 +1,28 @@
+Source URL: https://stackoverflow.com/questions/20643944/questions-about-omniture-sitecatalyst-or-adobe-analytics
+================================================================================
+
+Question Content: I am implementing SiteCatalyst for my site and preparing AppMeasurement.js . Within the documentation, I am told that I should paste the following code in the default AppMeasurement.js . s = new AppMeasurement()
+s.account="my-report-suite"
+s.visitorNamespace = "INSERT-NAMESPACE-HERE"
+
+/******** VISITOR ID SERVICE CONFIG - REQUIRES VisitorAPI.js ********/
+s.visitor = Visitor.getInstance("INSERT-NAMESPACE-HERE") // same as s.VisitorNamespace
+
+/************************** CONFIG SECTION **************************/
+/* You may add or alter any code config here. */
+/* Link Tracking Config */
+s.trackDownloadLinks=true
+s.trackExternalLinks=true
+s.trackInlineStats=true
+s.linkDownloadFileTypes="exe,zip,wav,mp3,mov,mpg,avi,wmv,pdf,doc,docx,xls,xlsx,ppt,pptx"
+s.linkInternalFilters="javascript:" //optional: add your internal domain here
+s.linkLeaveQueryString=false
+s.linkTrackVars="None"
+s.linkTrackEvents="None"
+
+
+s.trackingServer="INSERT-TRACKING-SERVER-HERE" My question is:- Should I just copy the above code in AppMeasurement above the AppMeasurement()` function? Where can I find the VisitorNameSpace in my Sitecatalyst Admin? How can I find the trackingServer ? Many Thanks.
+
+Answer 1: The way I do it works well, but may not be the absolute right way. I believe that the concept for new implementations should use Tag management and thus these would get filled in for you. But I don't have much experience with that area and mostly use the old s_code method. This will also get you the right values for using AppMeasurement.js. The 3 values you need can be auto-generated in Code Manager. Go to Adobe Marketing Cloud->Reports & Analytics->Admin Tools Select Code Manager from the left-hand menu Under the table is a link to the "legacy code manager" "click here" Leave the defaults except for the Report Suite, which needs to be set the report suite you are targeting. Click "Generate Code", click "Ok" to the warning. Click the tab "Core Javascript File" This is the legacy s_code file for your Report Suite. It is still the most used option by customers today. s_account is your account. vistorNamespace and trackingServer are just above the "DO NOT ALTER ..." line and are your other two values. The code fragment you have above needs to appear at the top of your source for Analytics. Also look into Tag Management with Adobe, it is the best way forward, and is free. Here are some links: http://blogs.adobe.com/digitalmarketing/analytics/common-questions-about-dynamic-tag-management/ https://microsite.omniture.com/t2/help/en_US/dtm/index.html#Deploy_Adobe_Analytics
+
+Tags: javascript, adobe-analytics
