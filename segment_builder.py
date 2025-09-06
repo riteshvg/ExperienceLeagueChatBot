@@ -393,3 +393,12 @@ class SegmentBuilder:
 
 # Global instance for easy access
 segment_builder = SegmentBuilder()
+
+# Module-level functions for easy importing
+def build_segment_definition(components: List[Dict], mappings: List[Dict], user_inputs: Dict) -> Dict:
+    """Build complete Adobe Analytics segment definition"""
+    return segment_builder.build_segment_definition(components, mappings, user_inputs)
+
+def format_segment_summary(definition: Dict) -> str:
+    """Format segment definition as human-readable summary"""
+    return segment_builder.format_segment_summary(definition)

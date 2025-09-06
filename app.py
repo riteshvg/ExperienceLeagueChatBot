@@ -29,10 +29,17 @@ except ImportError:
 # Import segment creator system
 try:
     from segment_creator import segment_creator
+    from segment_parser import detect_segment_request, parse_segment_components
+    from variable_mapper import map_variable, get_missing_mappings, suggest_context
+    from segment_builder import build_segment_definition, format_segment_summary
+    from adobe_api_client import AdobeAnalyticsClient
+    from user_input_collector import collect_missing_parameters, collect_api_credentials, get_confirmation
+    from segment_chat_handler import handle_segment_request
+    from segment_config import *
     SEGMENT_CREATOR_AVAILABLE = True
-except ImportError:
+except ImportError as e:
     SEGMENT_CREATOR_AVAILABLE = False
-    st.warning("⚠️ Segment creator system not available. Install segment_creator.py")
+    st.warning(f"⚠️ Segment creator system not available. Missing modules: {str(e)}")
 
 
 def categorize_sources(sources):
@@ -940,6 +947,34 @@ if "messages" not in st.session_state:
 # Initialize page load time for other features
 if "page_load_time" not in st.session_state:
     st.session_state.page_load_time = time.time()
+
+# Initialize segment creation session state
+if "segment_creation_progress" not in st.session_state:
+    st.session_state.segment_creation_progress = {
+        "step": "detection",
+        "components": None,
+        "mappings": None,
+        "user_inputs": None,
+        "definition": None,
+        "api_response": None
+    }
+
+if "adobe_credentials" not in st.session_state:
+    st.session_state.adobe_credentials = {
+        "client_id": "",
+        "access_token": "",
+        "company_id": "",
+        "report_suite_id": ""
+    }
+
+if "current_segment_data" not in st.session_state:
+    st.session_state.current_segment_data = {
+        "name": "",
+        "description": "",
+        "context": "visitors",
+        "conditions": [],
+        "logic": "and"
+    }
 
 @st.cache_resource
 def load_knowledge_base():
@@ -2296,6 +2331,40 @@ def main():
             # Connection failed - app will show error when user tries to ask questions
             pass
         
+        # Adobe Analytics Configuration (collapsible)
+        if SEGMENT_CREATOR_AVAILABLE:
+            with st.expander("🔧 Adobe Analytics Configuration", expanded=False):
+                st.markdown("Configure your Adobe Analytics API credentials for segment creation:")
+                
+                # Collect API credentials
+                credentials = collect_api_credentials()
+                if credentials:
+                    st.session_state.adobe_credentials.update(credentials)
+                    st.success("✅ Credentials saved!")
+                
+                # Test connection button
+                if st.button("🔗 Test Connection", key="test_adobe_connection"):
+                    if all(st.session_state.adobe_credentials.values()):
+                        try:
+                            client = AdobeAnalyticsClient(
+                                client_id=st.session_state.adobe_credentials["client_id"],
+                                access_token=st.session_state.adobe_credentials["access_token"],
+                                company_id=st.session_state.adobe_credentials["company_id"]
+                            )
+                            # Test with a simple API call
+                            test_response = client.get_available_variables(
+                                st.session_state.adobe_credentials["report_suite_id"], 
+                                "dimensions"
+                            )
+                            if test_response.get("success"):
+                                st.success("✅ Connection successful!")
+                            else:
+                                st.error(f"❌ Connection failed: {test_response.get('error', 'Unknown error')}")
+                        except Exception as e:
+                            st.error(f"❌ Connection failed: {str(e)}")
+                    else:
+                        st.warning("⚠️ Please fill in all credentials first")
+        
         # Clear chat button
         if st.button("Clear Chat History"):
             st.session_state.messages = []
@@ -2504,9 +2573,9 @@ def main():
             action_type, action_details = detect_create_action(prompt)
             
             # Check for segment requests even without explicit "create" keywords
-            if not action_type and SEGMENT_CREATOR_AVAILABLE and segment_creator.detect_segment_request(prompt):
+            if not action_type and SEGMENT_CREATOR_AVAILABLE and detect_segment_request(prompt):
                 action_type = 'segment'
-                action_details = segment_creator.parse_segment_request(prompt)
+                action_details = parse_segment_components(prompt)
             
             # Add user message to chat history
             user_message = {"role": "user", "content": prompt}
@@ -2519,6 +2588,29 @@ def main():
             with st.chat_message("user"):
                 st.markdown(prompt)
             
+            # Handle segment creation requests
+            if action_type == 'segment' and SEGMENT_CREATOR_AVAILABLE:
+                try:
+                    # Check if credentials are configured
+                    if not all(st.session_state.adobe_credentials.values()):
+                        with st.chat_message("assistant"):
+                            st.warning("⚠️ Adobe Analytics credentials not configured. Please configure them in the sidebar to create segments.")
+                            st.info("💡 Go to the sidebar and expand 'Adobe Analytics Configuration' to set up your API credentials.")
+                            return
+                    
+                    # Handle segment creation workflow
+                    with st.chat_message("assistant"):
+                        st.info("🔍 I detected a segment creation request. Let me help you build this segment...")
+                        
+                        # Use the segment chat handler
+                        handle_segment_request(prompt, st.container())
+                        return
+                        
+                except Exception as e:
+                    with st.chat_message("assistant"):
+                        st.error(f"❌ Error in segment creation: {str(e)}")
+                        st.info("💡 Please try rephrasing your segment request or check the sidebar for configuration issues.")
+                    return
             
             # Display assistant response in chat message container
             with st.chat_message("assistant"):

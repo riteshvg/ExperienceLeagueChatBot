@@ -343,3 +343,16 @@ class VariableMapper:
 
 # Global instance for easy access
 variable_mapper = VariableMapper()
+
+# Module-level functions for easy importing
+def map_variable(component: Dict) -> Dict:
+    """Map a parsed component to Adobe Analytics variable reference"""
+    return variable_mapper.map_variable(component)
+
+def get_missing_mappings(components: List[Dict]) -> List[Dict]:
+    """Identify variables that need further user input"""
+    return variable_mapper.get_missing_mappings(components)
+
+def suggest_context(components: List[Dict]) -> str:
+    """Suggest appropriate context based on variable types"""
+    return variable_mapper.suggest_context(components)

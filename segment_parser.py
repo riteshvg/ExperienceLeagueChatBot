@@ -377,3 +377,12 @@ class SegmentParser:
 
 # Global instance for easy access
 segment_parser = SegmentParser()
+
+# Module-level functions for easy importing
+def detect_segment_request(user_message: str) -> bool:
+    """Detect if a user message contains segment creation intent"""
+    return segment_parser.detect_segment_request(user_message)
+
+def parse_segment_components(user_message: str) -> Dict:
+    """Parse user message and extract segment components"""
+    return segment_parser.parse_segment_components(user_message)
