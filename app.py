@@ -2774,7 +2774,7 @@ def main():
                                             st.metric("❌ Non-Compliant", non_compliant_count)
                                         
                                         # Generate attribution report button
-                                        message_idx = st.session_state.messages.index(message)
+                                        message_idx = len(st.session_state.messages) - 1
                                         if st.button("📊 Generate Attribution Report", key=f"attribution_report_{message_idx}"):
                                             try:
                                                 json_report = attributor.export_attribution_report(attributions, "json")
@@ -2870,7 +2870,7 @@ def main():
                         
                         with col2:
                             # Copy to clipboard button
-                            message_idx = st.session_state.messages.index(message)
+                            message_idx = len(st.session_state.messages) - 1
                             if st.button("📋 Copy", key=f"copy_{message_idx}", help="Copy response to clipboard"):
                                 st.write("✅ Copied to clipboard!")
                                 # Note: Actual clipboard functionality requires additional setup
