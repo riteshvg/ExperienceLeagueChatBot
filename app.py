@@ -26,21 +26,6 @@ except ImportError:
     SOURCE_ATTRIBUTION_AVAILABLE = False
     st.warning("⚠️ Source attribution system not available. Install source_attributor.py")
 
-# Import segment utilities
-try:
-    from segment_utils import (
-        build_segment_payload,
-        validate_segment_config_realtime,
-        render_live_preview_section,
-        render_validation_messages,
-        validate_segment_name_realtime,
-        validate_rsid_realtime,
-        validate_rules_realtime
-    )
-    SEGMENT_UTILS_AVAILABLE = True
-except ImportError:
-    SEGMENT_UTILS_AVAILABLE = False
-    st.warning("⚠️ Segment utilities not available. Install segment_utils.py")
 
 def categorize_sources(sources):
     """Categorize sources into Adobe docs and Stack Overflow"""
@@ -104,7 +89,6 @@ def detect_create_action(query):
     # Define supported action objects with enhanced detection
     action_keywords = {
         'dashboard': ['dashboard', 'dashboards', 'board'],
-        'segment': ['segment', 'segments', 'segmentation', 'audience', 'cohort'],
         'calculated metrics': ['calculated metrics', 'calculated metric', 'metric', 'metrics', 'kpi'],
         'workspace': ['workspace', 'analysis workspace', 'project', 'analysis'],
         'report': ['report', 'reports', 'reporting'],
@@ -129,9 +113,6 @@ def detect_create_action(query):
     if not detected_action:
         return None, None
     
-    # Enhanced detection for segments
-    if detected_action == 'segment':
-        return detect_segment_creation_intent(query, query_lower)
     
     return detected_action, detected_keyword
 
@@ -1588,11 +1569,6 @@ def render_segment_creation_workflow():
                     st.session_state.current_workflow = 'segment_builder'
                     st.rerun()
 
-# Import the function from segment_utils instead of defining it here
-from segment_utils import build_adobe_definition
-
-# Alias for backward compatibility
-transform_rules_to_adobe_format = build_adobe_definition
 
 def render_segment_builder_workflow():
     """Render the segment builder workflow within the main app."""
@@ -2371,17 +2347,6 @@ def main():
     st.title("🤖 Adobe Experience League Documentation Chatbot")
     st.caption("This chatbot is powered by local open-source models and Adobe's official documentation.")
     
-    # Check if we're in segment builder workflow
-    if st.session_state.current_workflow == 'segment_builder':
-        st.info("🔧 Entering Segment Builder Workflow")
-        render_segment_builder_workflow()
-        return
-    
-    # Check if we're in segment creation workflow
-    if st.session_state.current_workflow == 'segment_creation':
-        st.info("🚀 Entering Segment Creation Workflow")
-        render_segment_creation_workflow()
-        return
     
     # Sidebar for controls and information
     with st.sidebar:
@@ -2622,57 +2587,6 @@ def main():
             with st.chat_message("user"):
                 st.markdown(prompt)
             
-            # Handle segment creation workflow
-            if action_type == 'segment':
-                # Show loading spinner for segment processing
-                with st.spinner("🧠 Analyzing your segment request and generating intelligent recommendations..."):
-                    # Enhanced segment workflow with Claude integration
-                    enhanced_intent = action_details
-                    segment_definition = None
-                    claude_llm = None  # Initialize claude_llm
-                    
-                    # Try to enhance with Claude if available and in Direct mode
-                    if response_mode == "Direct LLM (No RAG)" and llm_provider == "Anthropic Claude (Cloud)":
-                        try:
-                            # Get Claude LLM instance
-                            claude_llm = setup_direct_llm(llm_provider)
-                            if claude_llm:
-                                # Enhanced intent detection with Claude
-                                claude_intent = detect_segment_intent_with_claude(prompt, claude_llm)
-                                if claude_intent:
-                                    enhanced_intent = claude_intent
-                                
-                                # Generate segment definition
-                                segment_definition = generate_segment_definition(prompt, enhanced_intent, claude_llm)
-                        except Exception as e:
-                            print(f"Error in Claude segment enhancement: {e}")
-                            # Continue with standard workflow
-                    
-                    # Generate suggestions (enhanced if Claude was used)
-                    if claude_llm and enhanced_intent.get('claude_enhanced'):
-                        suggestions = generate_enhanced_segment_suggestions(prompt, enhanced_intent, claude_llm)
-                    else:
-                        suggestions = generate_segment_suggestions(enhanced_intent)
-                    
-                    # Generate intelligent rules (enhanced if Claude was used)
-                    if claude_llm and enhanced_intent.get('claude_enhanced'):
-                        intelligent_rules = generate_intelligent_rules(enhanced_intent, claude_llm)
-                    else:
-                        intelligent_rules = generate_standard_rules(enhanced_intent)
-                    
-                    # Store enhanced intent details in session state
-                    st.session_state.segment_intent = {
-                        'prompt': prompt,
-                        'action_details': enhanced_intent,
-                        'suggestions': suggestions,
-                        'definition': segment_definition,
-                        'intelligent_rules': intelligent_rules,
-                        'claude_enhanced': enhanced_intent.get('claude_enhanced', False)
-                    }
-                    
-                    # Set the current workflow step to segment builder immediately
-                    st.session_state.current_workflow = 'segment_builder'
-                    st.rerun()  # Redirect to segment builder workflow
             
             # Display assistant response in chat message container
             with st.chat_message("assistant"):
