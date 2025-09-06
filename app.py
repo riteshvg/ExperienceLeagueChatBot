@@ -2517,7 +2517,6 @@ def main():
         reaction_col1, reaction_col2, reaction_col3 = st.columns([1, 1, 1])
         message_idx = len(st.session_state.messages) - 1
         # Create unique keys that include timestamp to avoid duplicates
-        import time
         timestamp = int(time.time() * 1000) % 100000
         with reaction_col1:
             if st.button("👍 Helpful", key=f"thumbs_up_{message_idx}_{timestamp}", help="This response was helpful"):
@@ -2782,7 +2781,6 @@ def main():
                                         # Generate attribution report button
                                         message_idx = len(st.session_state.messages) - 1
                                         # Create unique key that includes timestamp to avoid duplicates
-                                        import time
                                         timestamp = int(time.time() * 1000) % 100000
                                         unique_key = f"attribution_report_{message_idx}_{timestamp}"
                                         if st.button("📊 Generate Attribution Report", key=unique_key):
@@ -2882,7 +2880,6 @@ def main():
                             # Copy to clipboard button
                             message_idx = len(st.session_state.messages) - 1
                             # Create unique key that includes timestamp to avoid duplicates
-                            import time
                             timestamp = int(time.time() * 1000) % 100000
                             unique_key = f"copy_{message_idx}_{timestamp}"
                             if st.button("📋 Copy", key=unique_key, help="Copy response to clipboard"):
