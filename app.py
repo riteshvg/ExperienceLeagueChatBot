@@ -962,9 +962,8 @@ if "segment_creation_progress" not in st.session_state:
 if "adobe_credentials" not in st.session_state:
     st.session_state.adobe_credentials = {
         "client_id": "",
-        "access_token": "",
-        "company_id": "",
-        "report_suite_id": ""
+        "client_secret": "",
+        "org_id": ""
     }
 
 if "current_segment_data" not in st.session_state:
@@ -2348,14 +2347,11 @@ def main():
                         try:
                             client = AdobeAnalyticsClient(
                                 client_id=st.session_state.adobe_credentials["client_id"],
-                                access_token=st.session_state.adobe_credentials["access_token"],
-                                company_id=st.session_state.adobe_credentials["company_id"]
+                                client_secret=st.session_state.adobe_credentials["client_secret"],
+                                org_id=st.session_state.adobe_credentials["org_id"]
                             )
-                            # Test with a simple API call
-                            test_response = client.get_available_variables(
-                                st.session_state.adobe_credentials["report_suite_id"], 
-                                "dimensions"
-                            )
+                            # Test with a simple API call to get company info
+                            test_response = client.test_connection()
                             if test_response.get("success"):
                                 st.success("✅ Connection successful!")
                             else:

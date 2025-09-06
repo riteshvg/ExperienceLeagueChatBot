@@ -144,7 +144,7 @@ def run_integration_tests():
         # This would test session state in a real Streamlit context
         print("✅ Session state variables defined")
         print("✅ Segment creation progress tracking initialized")
-        print("✅ Adobe credentials storage configured")
+        print("✅ Adobe OAuth credentials storage configured")
         
         # Test configuration access
         print("\n3. Testing Configuration:")

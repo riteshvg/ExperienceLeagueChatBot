@@ -169,65 +169,61 @@ def collect_value_input(variable_name: str, variable_type: str = "string") -> st
 
 def collect_api_credentials() -> Dict[str, str]:
     """
-    Collect API credentials using Streamlit sidebar
+    Collect OAuth API credentials using Streamlit sidebar
     
     Returns:
-        Dict[str, str]: Dictionary of API credentials
+        Dict[str, str]: Dictionary of OAuth credentials
     """
     with st.sidebar:
-        st.header("🔐 Adobe Analytics API Configuration")
+        st.header("🔐 Adobe Analytics OAuth Configuration")
+        st.info("💡 Configure your OAuth credentials to access Adobe Analytics API")
         
         # Initialize session state for credentials
         if "api_credentials" not in st.session_state:
             st.session_state.api_credentials = {
                 "client_id": "",
-                "access_token": "",
-                "company_id": "",
-                "report_suite_id": ""
+                "client_secret": "",
+                "org_id": ""
             }
         
-        # Client ID
+        # Adobe Client ID
         client_id = st.text_input(
-            "Client ID (API Key):",
+            "Adobe Client ID:",
             value=st.session_state.api_credentials.get("client_id", ""),
             type="password",
-            key="api_client_id"
+            key="api_client_id",
+            help="Your Adobe Analytics API Client ID"
         )
         
-        # Access Token
-        access_token = st.text_input(
-            "Access Token:",
-            value=st.session_state.api_credentials.get("access_token", ""),
+        # Adobe Client Secret
+        client_secret = st.text_input(
+            "Adobe Client Secret:",
+            value=st.session_state.api_credentials.get("client_secret", ""),
             type="password",
-            key="api_access_token"
+            key="api_client_secret",
+            help="Your Adobe Analytics API Client Secret"
         )
         
-        # Company ID
-        company_id = st.text_input(
-            "Company ID:",
-            value=st.session_state.api_credentials.get("company_id", ""),
-            key="api_company_id"
-        )
-        
-        # Report Suite ID
-        report_suite_id = st.text_input(
-            "Report Suite ID:",
-            value=st.session_state.api_credentials.get("report_suite_id", ""),
-            key="api_report_suite_id"
+        # Adobe Organization ID
+        org_id = st.text_input(
+            "Adobe Organization ID:",
+            value=st.session_state.api_credentials.get("org_id", ""),
+            key="api_org_id",
+            help="Your Adobe Analytics Organization ID"
         )
         
         # Save credentials to session state
-        if client_id and access_token and company_id and report_suite_id:
+        if client_id and client_secret and org_id:
             st.session_state.api_credentials = {
                 "client_id": client_id,
-                "access_token": access_token,
-                "company_id": company_id,
-                "report_suite_id": report_suite_id
+                "client_secret": client_secret,
+                "org_id": org_id
             }
             
             # Test connection button
-            if st.button("🔗 Test Connection", key="test_connection"):
+            if st.button("🔗 Test OAuth Connection", key="test_oauth_connection"):
                 st.session_state.test_connection = True
+                st.success("✅ OAuth credentials configured! Access token will be generated automatically.")
         
         return st.session_state.api_credentials
 
