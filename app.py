@@ -2506,6 +2506,23 @@ def main():
                         st.write(f"*Sources: {len(message['sources'])} documents used*")
                 else:
                     st.write(f"*Sources: {len(message['sources'])} documents used*")
+    
+    # Add reaction buttons for the most recent assistant message
+    if st.session_state.messages and st.session_state.messages[-1]["role"] == "assistant":
+        st.markdown("---")
+        st.markdown("**💬 How was this response?**")
+        reaction_col1, reaction_col2, reaction_col3 = st.columns([1, 1, 1])
+        message_idx = len(st.session_state.messages) - 1
+        with reaction_col1:
+            if st.button("👍 Helpful", key=f"thumbs_up_{message_idx}", help="This response was helpful"):
+                st.success("✅ Thank you for the feedback!")
+        with reaction_col2:
+            if st.button("👎 Not Helpful", key=f"thumbs_down_{message_idx}", help="This response was not helpful"):
+                st.error("❌ We'll work to improve!")
+        with reaction_col3:
+            if st.button("💡 Suggest", key=f"suggest_{message_idx}", help="Suggest improvement"):
+                st.info("💡 Thanks for the suggestion!")
+    
     # Initialize selected question in session state if not exists
     if "selected_question" not in st.session_state:
         st.session_state.selected_question = ""
@@ -2885,20 +2902,6 @@ def main():
                         # Reset processing state after successful response
                         st.session_state.is_processing = False
                         
-                        # Message reactions - placed completely outside chat message for better visibility
-                        st.markdown("---")
-                        st.markdown("**💬 How was this response?**")
-                        reaction_col1, reaction_col2, reaction_col3 = st.columns([1, 1, 1])
-                        message_idx = st.session_state.messages.index(message)
-                        with reaction_col1:
-                            if st.button("👍 Helpful", key=f"thumbs_up_{message_idx}", help="This response was helpful"):
-                                st.success("✅ Thank you for the feedback!")
-                        with reaction_col2:
-                            if st.button("👎 Not Helpful", key=f"thumbs_down_{message_idx}", help="This response was not helpful"):
-                                st.error("❌ We'll work to improve!")
-                        with reaction_col3:
-                            if st.button("💡 Suggest", key=f"suggest_{message_idx}", help="Suggest improvement"):
-                                st.info("💡 Thanks for the suggestion!")
                         
                     except Exception as e:
                         error_msg = f"❌ Error generating answer: {e}"
