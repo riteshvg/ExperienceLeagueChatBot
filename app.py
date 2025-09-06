@@ -26,6 +26,14 @@ except ImportError:
     SOURCE_ATTRIBUTION_AVAILABLE = False
     st.warning("⚠️ Source attribution system not available. Install source_attributor.py")
 
+# Import segment creator system
+try:
+    from segment_creator import segment_creator
+    SEGMENT_CREATOR_AVAILABLE = True
+except ImportError:
+    SEGMENT_CREATOR_AVAILABLE = False
+    st.warning("⚠️ Segment creator system not available. Install segment_creator.py")
+
 
 def categorize_sources(sources):
     """Categorize sources into Adobe docs and Stack Overflow"""
@@ -94,7 +102,8 @@ def detect_create_action(query):
         'report': ['report', 'reports', 'reporting'],
         'alert': ['alert', 'alerts', 'notification'],
         'filter': ['filter', 'filters', 'filtering'],
-        'visualization': ['visualization', 'chart', 'charts', 'graph', 'plot']
+        'visualization': ['visualization', 'chart', 'charts', 'graph', 'plot'],
+        'segment': ['segment', 'segments', 'audience', 'cohort', 'user group', 'visitor group']
     }
     
     # Find which action object is mentioned
@@ -1449,10 +1458,12 @@ def render_segment_creation_workflow():
                 from adobe_api import create_analytics_segment_from_json
                 
                 # Transform rules to proper Adobe Analytics format
-                adobe_definition = transform_rules_to_adobe_format(
-                    segment_config['rules'], 
-                    segment_config['target_audience']
-                )
+                adobe_definition = {
+                    "container": {
+                        "type": segment_config['target_audience'],
+                        "rules": segment_config['rules']
+                    }
+                }
                 
                 # Build the proper Adobe Analytics payload
                 adobe_payload = {
@@ -1550,10 +1561,12 @@ def render_segment_creation_workflow():
                 # Show the payload that was attempted for debugging
                 st.subheader("🔍 Debug: Payload Attempted")
                 try:
-                    adobe_definition = transform_rules_to_adobe_format(
-                        segment_config['rules'], 
-                        segment_config['target_audience']
-                    )
+                    adobe_definition = {
+                        "container": {
+                            "type": segment_config['target_audience'],
+                            "rules": segment_config['rules']
+                        }
+                    }
                     adobe_payload = {
                         "name": segment_config['name'],
                         "description": segment_config['description'],
@@ -1840,11 +1853,10 @@ def render_segment_builder_workflow():
         key="app_segment_name_input"
     )
     
-    # Real-time name validation
-    if SEGMENT_UTILS_AVAILABLE:
-        is_name_valid, name_error = validate_segment_name_realtime(segment_name)
-        if not is_name_valid:
-            st.error(f"❌ {name_error}")
+    # Basic name validation
+    if not segment_name or len(segment_name.strip()) < 3:
+        st.error("❌ Segment name must be at least 3 characters long")
+        return None
     
     segment_description = st.text_area(
         "Description",
@@ -1860,11 +1872,10 @@ def render_segment_builder_workflow():
         key="app_segment_rsid_input"
     )
     
-    # Real-time RSID validation
-    if SEGMENT_UTILS_AVAILABLE:
-        is_rsid_valid, rsid_error = validate_rsid_realtime(rsid)
-        if not is_rsid_valid:
-            st.error(f"❌ {rsid_error}")
+    # Basic RSID validation
+    if not rsid or len(rsid.strip()) < 3:
+        st.error("❌ RSID must be at least 3 characters long")
+        return None
     
     target_audience = st.selectbox(
         "Target Audience",
@@ -2190,150 +2201,39 @@ def render_segment_builder_workflow():
                     'description': f'Users visiting during {", ".join(selected_times)}'
                 })
     
-    # Live preview using shared utilities
-    if SEGMENT_UTILS_AVAILABLE:
-        # Create segment config for validation and preview
-        segment_config = {
-            'name': segment_name,
-            'description': segment_description,
-            'rsid': rsid,
-            'target_audience': target_audience,
-            'rules': configured_rules
-        }
-        
-        # Real-time validation of rules
-        with st.spinner('🔄 Validating rules...'):
-            are_rules_valid, rule_errors = validate_rules_realtime(configured_rules)
-        
-        if not are_rules_valid:
-            render_validation_messages(rule_errors)
-        
-        # Use shared live preview function
-        render_live_preview_section(segment_config, configured_rules)
-    else:
-        # Fallback to original preview if segment utils not available
-        st.write("**🔍 Live Preview of Configured Rules**")
-        
-        if configured_rules:
-            # Show rules in a nice format with live updates
-            for i, rule in enumerate(configured_rules):
-                with st.expander(f"Rule {i+1}: {rule.get('description', 'Custom Rule')}", expanded=True):
-                    # Create a more readable display
-                    col1, col2 = st.columns([1, 2])
-                    
-                    with col1:
-                        st.write(f"**Type:** {rule.get('type', 'Unknown').title()}")
-                        st.write(f"**Function:** {rule.get('func', 'Unknown')}")
-                    
-                    with col2:
-                        if rule.get('type') == 'geographic':
-                            st.write(f"**Target:** {rule.get('val', 'Unknown')}")
-                            st.write(f"**Variable:** {rule.get('name', 'Unknown')}")
-                        elif rule.get('type') == 'device':
-                            st.write(f"**Device:** {rule.get('val', 'Unknown')}")
-                            st.write(f"**eVar:** {rule.get('name', 'Unknown')}")
-                        elif rule.get('type') == 'behavioral':
-                            if rule.get('func') == 'gt':
-                                st.write(f"**Threshold:** {rule.get('val', 'Unknown')}")
-                                st.write(f"**Metric:** {rule.get('name', 'Unknown')}")
-                            elif rule.get('func') == 'event-exists':
-                                st.write(f"**Event:** {rule.get('evt', {}).get('name', 'Unknown')}")
-                        elif rule.get('type') == 'time_based':
-                            if rule.get('func') == 'streq-in':
-                                st.write(f"**Values:** {', '.join(rule.get('list', []))}")
-                                st.write(f"**Variable:** {rule.get('name', 'Unknown')}")
-                        
-                        # Show the raw rule structure in a collapsible section
-                        with st.expander("📋 Raw Rule Structure", expanded=False):
-                            st.json(rule)
-                
-                # Summary of all rules
-                st.success(f"✅ **{len(configured_rules)} rules configured successfully!**")
-                
-                # Show what the segment will target
-                st.write("**🎯 This segment will target:**")
-                targeting_summary = []
-                for rule in configured_rules:
-                    targeting_summary.append(rule.get('description', 'Custom rule'))
-                
-                for summary in targeting_summary:
-                    st.write(f"• {summary}")
-                
-                # Preview Adobe Analytics format
-                st.subheader("🔍 Adobe Analytics Format Preview")
-                st.info("This is how your segment will be structured when sent to Adobe Analytics:")
-                
-                try:
-                    adobe_definition = transform_rules_to_adobe_format(configured_rules, target_audience)
-                    adobe_payload = {
-                        "name": segment_name,
-                        "description": segment_description,
-                        "rsid": rsid,
-                        "definition": adobe_definition
-                    }
-                    
-                    # Show the Adobe Analytics format
-                    st.json(adobe_payload)
-                    
-                    # Explain the structure
-                    with st.expander("📚 Understanding Adobe Analytics Format", expanded=False):
-                        st.write("""
-                        **Adobe Analytics Segment Structure:**
-                        
-                        - **version**: Segment definition version
-                        - **func**: Function type (always 'segment')
-                        - **container**: Contains the segment logic
-                        - **context**: Target audience (visitors, visits, hits)
-                        - **pred**: Predicate defining the segment conditions
-                        - **func**: Comparison function (streq, gt, event-exists, etc.)
-                        - **val**: Value object with attribute function
-                        - **name**: Variable name (e.g., variables/geocountry)
-                        - **str**: String value for comparison
-                        """)
-                        
-                except Exception as e:
-                    st.error(f"Could not generate Adobe Analytics format preview: {str(e)}")
-                    
-            else:
-                st.warning("⚠️ **No rules configured yet.** Please fill in the fields above to see live updates.")
-                st.info("💡 **Tip:** As you fill in the fields above, the configured rules will appear here automatically!")
+    # Basic validation and preview
+    if not configured_rules:
+        st.warning("⚠️ Please add at least one rule to your segment")
+        return None
     
-    # Create segment button with enhanced validation
-    if configured_rules:
-        # Overall validation status
-        overall_valid = True
-        
-        if SEGMENT_UTILS_AVAILABLE:
-            # Use shared validation
-            with st.spinner('🔄 Validating configuration...'):
-                is_name_valid, _ = validate_segment_name_realtime(segment_name)
-                is_rsid_valid, _ = validate_rsid_realtime(rsid)
-                are_rules_valid, _ = validate_rules_realtime(configured_rules)
-            
-            overall_valid = is_name_valid and is_rsid_valid and are_rules_valid
-        else:
-            # Basic validation fallback
-            overall_valid = segment_name and segment_description and rsid
-        
-        if st.button("🚀 Create Segment", type="primary", use_container_width=True, disabled=not overall_valid):
-            if overall_valid:
-                # Create segment configuration
-                segment_config = {
-                    'name': segment_name,
-                    'description': segment_description,
-                    'rsid': rsid,
-                    'target_audience': target_audience,
-                    'rules': configured_rules
-                }
-                
-                # Store in session state for the next step
-                st.session_state.segment_config = segment_config
-                st.session_state.current_workflow = 'segment_creation'
-                st.rerun()
-            else:
-                st.error("❌ Please fix all validation errors before creating the segment.")
-    else:
-        st.info("ℹ️ **Complete the configuration above to enable segment creation.**")
+    # Create segment config for preview
+    segment_config = {
+        'name': segment_name,
+        'description': segment_description,
+        'rsid': rsid,
+        'target_audience': target_audience,
+        'rules': configured_rules
+    }
+    
+    # Show preview
+    st.subheader("📊 Segment Preview")
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.info(f"**Name:** {segment_name}")
+        st.info(f"**Description:** {segment_description}")
+    
+    with col2:
+        st.info(f"**RSID:** {rsid}")
+        st.info(f"**Target:** {target_audience}")
+    
+    # Show rules
+    st.subheader("📋 Rules")
+    for i, rule in enumerate(configured_rules, 1):
+        with st.expander(f"Rule {i}: {rule.get('description', 'Custom Rule')}"):
+            st.json(rule)
+    
+    return segment_config
 
 def main():
     """Main Streamlit app"""
@@ -2488,7 +2388,11 @@ def main():
                 message_content_hash = hash(message["content"]) % 10000
                 unique_key = f"create_{action_type}_{message_idx}_{message_content_hash}"
                 if st.button(f"📋 Help Create {action_type.title()}", key=unique_key):
-                    st.success(f"🎉 Let's create a {action_type}! This feature is coming soon.")
+                    if action_type == 'segment' and SEGMENT_CREATOR_AVAILABLE:
+                        # Handle segment creation
+                        segment_creator.handle_segment_creation_flow(message["content"])
+                    else:
+                        st.success(f"🎉 Let's create a {action_type}! This feature is coming soon.")
             
             # Display simple attribution for assistant messages if available
             # Skip attribution panel for Anthropic Claude
@@ -2598,6 +2502,11 @@ def main():
             
             # Check for create actions and store in message
             action_type, action_details = detect_create_action(prompt)
+            
+            # Check for segment requests even without explicit "create" keywords
+            if not action_type and SEGMENT_CREATOR_AVAILABLE and segment_creator.detect_segment_request(prompt):
+                action_type = 'segment'
+                action_details = segment_creator.parse_segment_request(prompt)
             
             # Add user message to chat history
             user_message = {"role": "user", "content": prompt}
