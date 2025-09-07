@@ -2449,9 +2449,11 @@ def main():
                 action_info = message["create_action"]
                 action_type = action_info["type"]
                 message_idx = st.session_state.messages.index(message)
-                # Create unique key that includes message content hash to avoid duplicates
+                # Create unique key that includes message content hash and timestamp to avoid duplicates
                 message_content_hash = hash(message["content"]) % 10000
-                unique_key = f"create_{action_type}_{message_idx}_{message_content_hash}"
+                # Add a unique identifier based on message object id to ensure uniqueness
+                message_id = id(message) % 10000
+                unique_key = f"create_{action_type}_{message_idx}_{message_content_hash}_{message_id}"
                 if st.button(f"📋 Help Create {action_type.title()}", key=unique_key):
                     if action_type == 'segment' and SEGMENT_CREATOR_AVAILABLE:
                         # Handle segment creation
